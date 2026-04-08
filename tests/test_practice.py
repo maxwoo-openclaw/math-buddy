@@ -153,3 +153,20 @@ async def test_get_session_not_found(client, auth_headers):
         headers=auth_headers,
     )
     assert response.status_code == 404
+
+
+@pytest.mark.asyncio
+async def test_get_problem_with_operation_filter_only(client, auth_headers, db_session):
+    """GET /api/practice/problem with operation filter only returns matching operation.
+
+    Regression test: when only operation_filter is set (difficulty_filter is None),
+    the problem should still respect the operation filter instead of falling back
+    to a random operation.
+    """
+    response = await client.get(
+        "/api/practice/problem?operation=addition",
+        headers=auth_headers,
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data["operation_type"] == "addition"

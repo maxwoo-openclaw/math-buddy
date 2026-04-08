@@ -4,6 +4,9 @@ from app.models import MathProblem, PracticeSession, SessionAnswer, User
 from app.schemas import SessionCreate, AnswerSubmit, AnswerResponse
 from datetime import datetime
 import random
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class PracticeService:
@@ -11,6 +14,10 @@ class PracticeService:
         self.db = db
 
     async def _generate_problem(self, operation: str, difficulty: str) -> MathProblem:
+        # Normalize operation symbols to names
+        op_map = {"+": "addition", "-": "subtraction", "*": "multiplication", "/": "division"}
+        operation = op_map.get(operation, operation)
+
         # Generate a random math problem based on operation and difficulty
         if difficulty == "easy":
             a = random.randint(1, 9)
@@ -70,31 +77,20 @@ class PracticeService:
         operation_filter: str | None = None,
         difficulty_filter: str | None = None,
     ) -> MathProblem | None:
-        query = select(MathProblem)
-        
-        # First try to get an existing problem from DB
-        if operation_filter:
-            query = query.where(MathProblem.operation_type == operation_filter)
-        if difficulty_filter:
-            query = query.where(MathProblem.difficulty == difficulty_filter)
-        
-        result = await self.db.execute(query)
-        problems = list(result.scalars().all())
-        
-        if problems:
-            return random.choice(problems)
-        
-        # If no problems in DB, generate one on the fly
-        if operation_filter and difficulty_filter:
-            return await self._generate_problem(operation_filter, difficulty_filter)
-        
-        # Default: random operation and difficulty
+        # Normalize operation symbols to names
+        op_map = {"+": "addition", "-": "subtraction", "*": "multiplication", "/": "division"}
+        operation_filter = op_map.get(operation_filter, operation_filter) if operation_filter else None
+
         operations = ["addition", "subtraction", "multiplication", "division"]
         difficulties = ["easy", "medium", "hard"]
-        return await self._generate_problem(
-            random.choice(operations),
-            random.choice(difficulties),
-        )
+        op = operation_filter or random.choice(operations)
+        diff = difficulty_filter or random.choice(difficulties)
+        logger.info(f"[get_random_problem] generating new problem: op={op}, diff={diff}")
+        problem = await self._generate_problem(op, diff)
+        self.db.add(problem)
+        await self.db.commit()
+        await self.db.refresh(problem)
+        return problem
 
     async def submit_answer(
         self,

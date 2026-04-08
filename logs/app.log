@@ -68,3 +68,175 @@ AttributeError: module 'bcrypt' has no attribute '__about__'
 2026-04-08 10:00:18,694 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:55 - MathBuddy API starting up...
 2026-04-08 10:00:18,704 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:57 - Database initialized
 2026-04-08 10:01:16,663 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:59 - MathBuddy API shutting down...
+2026-04-08 11:20:39,866 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 11:20:39,895 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/practice/session "HTTP/1.1 201 Created"
+2026-04-08 11:20:40,601 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 11:20:40,666 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/practice/session/1/answer "HTTP/1.1 200 OK"
+2026-04-08 11:20:41,549 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 11:20:41,612 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/practice/session/1/answer "HTTP/1.1 200 OK"
+2026-04-08 11:20:42,357 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 11:20:42,389 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/practice/session/1/stats "HTTP/1.1 200 OK"
+2026-04-08 11:20:43,150 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 11:20:43,164 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/practice/session/99999/stats "HTTP/1.1 404 Not Found"
+2026-04-08 11:25:13,441 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 11:25:13,456 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/practice/problem?operation=addition "HTTP/1.1 200 OK"
+2026-04-08 11:26:55,172 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:55 - MathBuddy API starting up...
+2026-04-08 11:26:55,188 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:57 - Database initialized
+2026-04-08 11:28:28,981 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:59 - MathBuddy API shutting down...
+2026-04-08 11:28:48,306 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:55 - MathBuddy API starting up...
+2026-04-08 11:28:48,319 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:57 - Database initialized
+2026-04-08 11:37:25,955 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:55 - MathBuddy API starting up...
+2026-04-08 11:37:25,968 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:57 - Database initialized
+2026-04-08 11:40:01,123 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:59 - MathBuddy API shutting down...
+2026-04-08 11:40:03,217 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:55 - MathBuddy API starting up...
+2026-04-08 11:40:03,228 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:57 - Database initialized
+2026-04-08 11:40:13,480 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:59 - MathBuddy API shutting down...
+2026-04-08 11:40:14,123 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 11:40:14,157 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/practice/session "HTTP/1.1 201 Created"
+2026-04-08 11:40:15,064 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 11:40:15,135 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/practice/session/1/answer "HTTP/1.1 200 OK"
+2026-04-08 11:40:15,648 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:55 - MathBuddy API starting up...
+2026-04-08 11:40:15,648 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:57 - Database initialized
+2026-04-08 11:40:16,008 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 11:40:16,071 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/practice/session/1/answer "HTTP/1.1 200 OK"
+2026-04-08 11:40:16,795 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 11:40:16,837 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/practice/session/1/stats "HTTP/1.1 200 OK"
+2026-04-08 11:40:17,702 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 11:40:17,707 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/practice/session/99999/stats "HTTP/1.1 404 Not Found"
+2026-04-08 11:40:18,586 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 11:40:18,594 - app.services.practice_service - INFO - c:\Users\reeve\Documents\GitHub\math-buddy\app\services\practice_service.py:87 - [get_random_problem] operation_filter=addition, difficulty_filter=None, DB_problems_count=0, types=[]
+2026-04-08 11:40:18,594 - app.services.practice_service - INFO - c:\Users\reeve\Documents\GitHub\math-buddy\app\services\practice_service.py:103 - [get_random_problem] generating new problem: op=addition, diff=hard
+2026-04-08 11:40:18,596 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/practice/problem?operation=addition "HTTP/1.1 200 OK"
+2026-04-08 11:40:44,212 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:59 - MathBuddy API shutting down...
+2026-04-08 11:40:54,277 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:55 - MathBuddy API starting up...
+2026-04-08 11:40:54,295 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:57 - Database initialized
+2026-04-08 11:42:09,290 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:87 - [get_random_problem] operation_filter=+, difficulty_filter=easy, DB_problems_count=0, types=[]
+2026-04-08 11:42:09,291 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:103 - [get_random_problem] generating new problem: op=+, diff=easy
+2026-04-08 11:43:23,646 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:59 - MathBuddy API shutting down...
+2026-04-08 11:43:25,740 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:55 - MathBuddy API starting up...
+2026-04-08 11:43:25,752 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:57 - Database initialized
+2026-04-08 11:43:37,881 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 11:43:37,914 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/practice/session "HTTP/1.1 201 Created"
+2026-04-08 11:43:38,756 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 11:43:38,832 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/practice/session/1/answer "HTTP/1.1 200 OK"
+2026-04-08 11:43:39,766 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 11:43:39,824 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/practice/session/1/answer "HTTP/1.1 200 OK"
+2026-04-08 11:43:40,924 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 11:43:41,004 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/practice/session/1/stats "HTTP/1.1 200 OK"
+2026-04-08 11:43:41,852 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 11:43:41,860 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/practice/session/99999/stats "HTTP/1.1 404 Not Found"
+2026-04-08 11:43:42,780 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 11:43:42,788 - app.services.practice_service - INFO - c:\Users\reeve\Documents\GitHub\math-buddy\app\services\practice_service.py:95 - [get_random_problem] operation_filter=addition, difficulty_filter=None, DB_problems_count=0, types=[]
+2026-04-08 11:43:42,789 - app.services.practice_service - INFO - c:\Users\reeve\Documents\GitHub\math-buddy\app\services\practice_service.py:111 - [get_random_problem] generating new problem: op=addition, diff=medium
+2026-04-08 11:43:42,790 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/practice/problem?operation=addition "HTTP/1.1 200 OK"
+2026-04-08 11:43:43,682 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:59 - MathBuddy API shutting down...
+2026-04-08 11:43:46,373 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:55 - MathBuddy API starting up...
+2026-04-08 11:43:46,386 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:57 - Database initialized
+2026-04-08 11:51:32,232 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:59 - MathBuddy API shutting down...
+2026-04-08 11:51:37,070 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:55 - MathBuddy API starting up...
+2026-04-08 11:51:37,092 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:57 - Database initialized
+2026-04-08 11:51:51,971 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:95 - [get_random_problem] operation_filter=addition, difficulty_filter=easy, DB_problems_count=0, types=[]
+2026-04-08 11:51:51,971 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:111 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 11:53:35,622 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:59 - MathBuddy API shutting down...
+2026-04-08 11:53:37,954 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:55 - MathBuddy API starting up...
+2026-04-08 11:53:37,965 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:57 - Database initialized
+2026-04-08 11:54:06,313 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:59 - MathBuddy API shutting down...
+2026-04-08 11:54:08,019 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:55 - MathBuddy API starting up...
+2026-04-08 11:54:08,024 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:57 - Database initialized
+2026-04-08 11:56:02,746 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 11:56:02,775 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/practice/session "HTTP/1.1 201 Created"
+2026-04-08 11:56:03,601 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 11:56:03,639 - app.routers.practice - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=1, data=problem_id=1 user_answer=4
+2026-04-08 11:56:03,656 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/practice/session/1/answer "HTTP/1.1 200 OK"
+2026-04-08 11:56:04,469 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 11:56:04,516 - app.routers.practice - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=1, data=problem_id=1 user_answer=99
+2026-04-08 11:56:04,533 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/practice/session/1/answer "HTTP/1.1 200 OK"
+2026-04-08 11:56:05,301 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 11:56:05,360 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/practice/session/1/stats "HTTP/1.1 200 OK"
+2026-04-08 11:56:06,138 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 11:56:06,138 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/practice/session/99999/stats "HTTP/1.1 404 Not Found"
+2026-04-08 11:56:06,851 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 11:56:06,860 - app.services.practice_service - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\app\services\practice_service.py:95 - [get_random_problem] operation_filter=addition, difficulty_filter=None, DB_problems_count=0, types=[]
+2026-04-08 11:56:06,860 - app.services.practice_service - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\app\services\practice_service.py:111 - [get_random_problem] generating new problem: op=addition, diff=medium
+2026-04-08 11:56:06,862 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/practice/problem?operation=addition "HTTP/1.1 200 OK"
+2026-04-08 11:56:44,262 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:59 - MathBuddy API shutting down...
+2026-04-08 11:56:49,448 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:55 - MathBuddy API starting up...
+2026-04-08 11:56:49,458 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:57 - Database initialized
+2026-04-08 11:57:02,611 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:95 - [get_random_problem] operation_filter=addition, difficulty_filter=easy, DB_problems_count=0, types=[]
+2026-04-08 11:57:02,612 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:111 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 12:05:40,963 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:95 - [get_random_problem] operation_filter=addition, difficulty_filter=easy, DB_problems_count=0, types=[]
+2026-04-08 12:05:40,963 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:111 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 12:07:15,416 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 12:07:15,451 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/practice/session "HTTP/1.1 201 Created"
+2026-04-08 12:07:16,213 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 12:07:16,276 - app.routers.practice - INFO - c:\Users\reeve\Documents\GitHub\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=1, data=problem_id=1 user_answer=4
+2026-04-08 12:07:16,311 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/practice/session/1/answer "HTTP/1.1 200 OK"
+2026-04-08 12:07:17,171 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 12:07:17,202 - app.routers.practice - INFO - c:\Users\reeve\Documents\GitHub\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=1, data=problem_id=1 user_answer=99
+2026-04-08 12:07:17,226 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/practice/session/1/answer "HTTP/1.1 200 OK"
+2026-04-08 12:07:17,941 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 12:07:17,985 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/practice/session/1/stats "HTTP/1.1 200 OK"
+2026-04-08 12:07:18,682 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 12:07:18,682 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/practice/session/99999/stats "HTTP/1.1 404 Not Found"
+2026-04-08 12:07:19,379 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 12:07:19,402 - app.services.practice_service - INFO - c:\Users\reeve\Documents\GitHub\math-buddy\app\services\practice_service.py:95 - [get_random_problem] operation_filter=addition, difficulty_filter=None, DB_problems_count=0, types=[]
+2026-04-08 12:07:19,402 - app.services.practice_service - INFO - c:\Users\reeve\Documents\GitHub\math-buddy\app\services\practice_service.py:111 - [get_random_problem] generating new problem: op=addition, diff=hard
+2026-04-08 12:07:19,416 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/practice/problem?operation=addition "HTTP/1.1 200 OK"
+2026-04-08 12:07:33,860 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:59 - MathBuddy API shutting down...
+2026-04-08 12:07:35,844 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:55 - MathBuddy API starting up...
+2026-04-08 12:07:35,854 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:57 - Database initialized
+2026-04-08 12:07:40,525 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:55 - MathBuddy API starting up...
+2026-04-08 12:07:40,537 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:57 - Database initialized
+2026-04-08 12:07:56,844 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:95 - [get_random_problem] operation_filter=addition, difficulty_filter=easy, DB_problems_count=0, types=[]
+2026-04-08 12:07:56,845 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:111 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 12:07:59,681 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=9, data=problem_id=1 user_answer=12
+2026-04-08 12:08:01,241 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:95 - [get_random_problem] operation_filter=addition, difficulty_filter=easy, DB_problems_count=1, types=['addition']
+2026-04-08 12:08:01,241 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:103 - [get_random_problem] returning DB problem: addition - 4 + 8 = ?
+2026-04-08 12:08:04,317 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=9, data=problem_id=1 user_answer=12
+2026-04-08 12:08:05,871 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:95 - [get_random_problem] operation_filter=addition, difficulty_filter=easy, DB_problems_count=1, types=['addition']
+2026-04-08 12:08:05,871 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:103 - [get_random_problem] returning DB problem: addition - 4 + 8 = ?
+2026-04-08 12:08:07,541 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=9, data=problem_id=1 user_answer=12
+2026-04-08 12:08:09,104 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:95 - [get_random_problem] operation_filter=addition, difficulty_filter=easy, DB_problems_count=1, types=['addition']
+2026-04-08 12:08:09,104 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:103 - [get_random_problem] returning DB problem: addition - 4 + 8 = ?
+2026-04-08 12:09:39,389 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 12:09:39,418 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/practice/session "HTTP/1.1 201 Created"
+2026-04-08 12:09:40,194 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 12:09:40,238 - app.routers.practice - INFO - c:\Users\reeve\Documents\GitHub\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=1, data=problem_id=1 user_answer=4
+2026-04-08 12:09:40,258 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/practice/session/1/answer "HTTP/1.1 200 OK"
+2026-04-08 12:09:40,979 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 12:09:41,011 - app.routers.practice - INFO - c:\Users\reeve\Documents\GitHub\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=1, data=problem_id=1 user_answer=99
+2026-04-08 12:09:41,033 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/practice/session/1/answer "HTTP/1.1 200 OK"
+2026-04-08 12:09:41,729 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 12:09:41,797 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/practice/session/1/stats "HTTP/1.1 200 OK"
+2026-04-08 12:09:42,626 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 12:09:42,626 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/practice/session/99999/stats "HTTP/1.1 404 Not Found"
+2026-04-08 12:09:43,385 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 12:09:43,400 - app.services.practice_service - INFO - c:\Users\reeve\Documents\GitHub\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=medium
+2026-04-08 12:09:43,417 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/practice/problem?operation=addition "HTTP/1.1 200 OK"
+2026-04-08 12:10:07,982 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:59 - MathBuddy API shutting down...
+2026-04-08 12:10:09,915 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:55 - MathBuddy API starting up...
+2026-04-08 12:10:09,923 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:57 - Database initialized
+2026-04-08 12:10:21,375 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:59 - MathBuddy API shutting down...
+2026-04-08 12:10:25,458 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:55 - MathBuddy API starting up...
+2026-04-08 12:10:25,474 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:57 - Database initialized
+2026-04-08 12:10:34,693 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=subtraction, diff=easy
+2026-04-08 12:10:37,594 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=10, data=problem_id=2 user_answer=6
+2026-04-08 12:10:39,176 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=subtraction, diff=easy
+2026-04-08 12:10:41,503 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=10, data=problem_id=3 user_answer=4
+2026-04-08 12:10:43,073 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=subtraction, diff=easy
+2026-04-08 12:10:47,055 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=10, data=problem_id=4 user_answer=2
+2026-04-08 12:10:48,609 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=subtraction, diff=easy
+2026-04-08 12:10:50,899 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=10, data=problem_id=5 user_answer=7
+2026-04-08 12:10:52,464 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=subtraction, diff=easy
+2026-04-08 12:10:54,046 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=10, data=problem_id=6 user_answer=3
+2026-04-08 12:10:55,616 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=subtraction, diff=easy
+2026-04-08 12:10:57,318 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=10, data=problem_id=7 user_answer=1
+2026-04-08 12:10:58,872 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=subtraction, diff=easy
+2026-04-08 12:11:01,127 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=10, data=problem_id=8 user_answer=6
+2026-04-08 12:11:02,690 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=subtraction, diff=easy
+2026-04-08 12:11:04,379 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=10, data=problem_id=9 user_answer=6
+2026-04-08 12:11:05,960 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=subtraction, diff=easy
+2026-04-08 12:11:07,964 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=10, data=problem_id=10 user_answer=4
+2026-04-08 12:11:09,551 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=subtraction, diff=easy
+2026-04-08 12:11:12,232 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=10, data=problem_id=11 user_answer=7
+2026-04-08 12:16:41,684 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:59 - MathBuddy API shutting down...

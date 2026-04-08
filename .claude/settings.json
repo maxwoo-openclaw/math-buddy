@@ -11,7 +11,9 @@
       "Bash(.venv/Scripts/python -m pytest tests/ -v)",
       "Bash(.venv/Scripts/python -c \"from main import logger, setup_logging; print\\('Logging setup OK'\\)\")",
       "Bash(.venv/Scripts/python -m pytest tests/ -v --tb=short)",
-      "Bash(.venv/Scripts/python -c \"from main import logger; print\\('OK'\\)\")"
+      "Bash(.venv/Scripts/python -c \"from main import logger; print\\('OK'\\)\")",
+      "Bash(.venv/Scripts/python -m pytest tests/test_practice.py -v --tb=short)",
+      "Bash(.venv/Scripts/python -m pytest tests/test_practice.py::test_get_problem_with_operation_filter_only -v)"
     ]
   }
 }

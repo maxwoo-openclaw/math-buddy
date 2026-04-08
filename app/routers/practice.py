@@ -1,3 +1,4 @@
+import logging
 from fastapi import APIRouter, Depends, HTTPException, Header
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_db
@@ -5,6 +6,8 @@ from app.models import User
 from app.schemas import SessionCreate, AnswerSubmit, SessionStatsResponse
 from app.services.practice_service import PracticeService
 from app.routers.users import get_current_user
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/practice", tags=["practice"])
 
@@ -27,6 +30,7 @@ async def submit_answer(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
+    logger.info(f"[submit_answer] session_id={session_id}, data={data}")
     service = PracticeService(db)
     try:
         result = await service.submit_answer(session_id, data)

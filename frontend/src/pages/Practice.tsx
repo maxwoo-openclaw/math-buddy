@@ -103,9 +103,9 @@ export default function Practice() {
       // Brief delay before next problem
       setTimeout(async () => {
         if (problemNumber >= PROBLEMS_PER_SESSION) {
-          // Complete session
+          // Complete session and fetch real stats from server
           await completeSession(sessionId);
-          const finalStats = await getSessionStatsFromResponse(sessionId, score.total + (isCorrect ? 1 : 0), isCorrect ? 1 : 0);
+          const finalStats = await getSessionStats(sessionId);
           setSessionStats(finalStats);
           setSessionComplete(true);
 
