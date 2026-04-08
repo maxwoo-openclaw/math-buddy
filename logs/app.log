@@ -1,0 +1,70 @@
+2026-04-08 09:50:03,515 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:46 - MathBuddy API starting up...
+2026-04-08 09:50:03,525 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:48 - Database initialized
+2026-04-08 09:50:09,258 - passlib.handlers.bcrypt - WARNING - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\passlib\handlers\bcrypt.py:622 - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-04-08 09:50:09,586 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/register "HTTP/1.1 200 OK"
+2026-04-08 09:50:10,093 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/register "HTTP/1.1 400 Bad Request"
+2026-04-08 09:50:10,965 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 09:50:11,871 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 401 Unauthorized"
+2026-04-08 09:50:12,719 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 09:50:12,729 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/users/me "HTTP/1.1 200 OK"
+2026-04-08 09:50:12,966 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/users/me "HTTP/1.1 401 Unauthorized"
+2026-04-08 09:50:13,897 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 09:50:13,922 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/practice/session "HTTP/1.1 201 Created"
+2026-04-08 09:50:14,749 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 09:50:14,825 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/practice/session/1/answer "HTTP/1.1 200 OK"
+2026-04-08 09:50:15,816 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 09:50:15,880 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/practice/session/1/answer "HTTP/1.1 200 OK"
+2026-04-08 09:50:16,650 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 09:50:16,685 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/practice/session/1/stats "HTTP/1.1 200 OK"
+2026-04-08 09:50:17,519 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 09:50:17,535 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/practice/session/99999/stats "HTTP/1.1 404 Not Found"
+2026-04-08 09:50:18,306 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 09:50:18,852 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 09:50:18,859 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/problems/ "HTTP/1.1 200 OK"
+2026-04-08 09:50:19,613 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 09:50:19,638 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/problems/ "HTTP/1.1 200 OK"
+2026-04-08 09:50:20,499 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 09:50:20,510 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/problems/ "HTTP/1.1 403 Forbidden"
+2026-04-08 09:50:21,293 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 09:50:21,977 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 09:50:22,004 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/problems/1 "HTTP/1.1 200 OK"
+2026-04-08 09:50:22,775 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 09:50:22,782 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/problems/99999 "HTTP/1.1 404 Not Found"
+2026-04-08 09:50:23,586 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 09:50:23,645 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: DELETE http://test/api/problems/1 "HTTP/1.1 200 OK"
+2026-04-08 09:50:24,592 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 09:50:24,608 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: DELETE http://test/api/problems/1 "HTTP/1.1 403 Forbidden"
+2026-04-08 09:50:25,459 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 09:50:25,522 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/problems/?operation=addition "HTTP/1.1 200 OK"
+2026-04-08 09:50:26,517 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 09:50:26,539 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/problems/?difficulty=easy "HTTP/1.1 200 OK"
+2026-04-08 09:50:32,943 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 09:50:32,943 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/users/me "HTTP/1.1 200 OK"
+2026-04-08 09:50:33,762 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 09:50:34,045 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/users/ "HTTP/1.1 200 OK"
+2026-04-08 09:50:34,776 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 09:50:34,776 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: GET http://test/api/users/ "HTTP/1.1 403 Forbidden"
+2026-04-08 09:50:35,558 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 09:50:35,919 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: DELETE http://test/api/users/2 "HTTP/1.1 200 OK"
+2026-04-08 09:50:36,632 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 09:50:36,639 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: DELETE http://test/api/users/99999 "HTTP/1.1 403 Forbidden"
+2026-04-08 09:50:37,417 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-08 09:50:37,425 - httpx - INFO - C:\Users\reeve\Documents\GitHub\math-buddy\.venv\Lib\site-packages\httpx\_client.py:1740 - HTTP Request: DELETE http://test/api/users/99999 "HTTP/1.1 404 Not Found"
+2026-04-08 09:56:57,319 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:50 - MathBuddy API shutting down...
+2026-04-08 09:57:19,417 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:46 - MathBuddy API starting up...
+2026-04-08 09:57:19,428 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:48 - Database initialized
+2026-04-08 09:58:07,356 - passlib.handlers.bcrypt - WARNING - C:\Users\reeve\Documents\Github\math-buddy\.venv\Lib\site-packages\passlib\handlers\bcrypt.py:622 - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\reeve\Documents\Github\math-buddy\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-04-08 10:00:16,372 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:50 - MathBuddy API shutting down...
+2026-04-08 10:00:18,694 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:55 - MathBuddy API starting up...
+2026-04-08 10:00:18,704 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:57 - Database initialized
+2026-04-08 10:01:16,663 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:59 - MathBuddy API shutting down...

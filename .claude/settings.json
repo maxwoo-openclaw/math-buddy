@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install:*)",
+      "Bash(ls -la *.db)",
+      "Bash(.venv/Scripts/python -c \"from app.models.models import User; print\\('OK'\\)\")",
+      "Bash(.venv/Scripts/python -c ':*)",
+      "Bash(pip show:*)",
+      "Bash(.venv/Scripts/python -m pytest tests/test_auth.py -v)",
+      "Bash(.venv/Scripts/python -m pytest tests/test_security.py -v)",
+      "Bash(.venv/Scripts/python -m pytest tests/ -v)",
+      "Bash(.venv/Scripts/python -c \"from main import logger, setup_logging; print\\('Logging setup OK'\\)\")",
+      "Bash(.venv/Scripts/python -m pytest tests/ -v --tb=short)",
+      "Bash(.venv/Scripts/python -c \"from main import logger; print\\('OK'\\)\")"
+    ]
+  }
+}
