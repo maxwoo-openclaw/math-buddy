@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { startSession, getNextProblem, submitAnswer, completeSession } from '../services/api';
+import { startSession, getNextProblem, submitAnswer, completeSession, getSessionStats } from '../services/api';
 import type { ProblemDTO, AnswerResult, SessionStats } from '../types';
 
 const OPERATIONS = [
@@ -47,7 +47,7 @@ export default function Practice() {
     try {
       const res = await startSession(operation || undefined, difficulty);
       setSessionId(res.session_id);
-      setScore({ correct: 0, total: 0 });
+      setScore({ correct: 0, total: PROBLEMS_PER_SESSION });
       setProblemNumber(0);
       setSessionComplete(false);
       await loadNextProblem();
@@ -74,14 +74,16 @@ export default function Practice() {
     }
   };
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!currentProblem || !sessionId || answer === '') return;
+    if (!currentProblem || !sessionId || answer === '' || isSubmitting) return;
 
     const userAnswer = parseInt(answer, 10);
     if (isNaN(userAnswer)) return;
 
-    setLoading(true);
+    setIsSubmitting(true);
     try {
       const result = await submitAnswer(sessionId, currentProblem.id, userAnswer);
       const isCorrect = result.is_correct;
@@ -93,7 +95,7 @@ export default function Practice() {
 
       setScore((s) => ({
         correct: s.correct + (isCorrect ? 1 : 0),
-        total: s.total + 1,
+        total: s.total,
       }));
 
       // Update localStorage stats
@@ -101,29 +103,40 @@ export default function Practice() {
       const stats: SessionStats[] = stored ? JSON.parse(stored) : [];
 
       // Brief delay before next problem
+      const answeredCount = problemNumber;
+      console.log('[handleSubmit] answeredCount:', answeredCount, 'problemNumber:', problemNumber);
       setTimeout(async () => {
-        if (problemNumber >= PROBLEMS_PER_SESSION) {
-          // Complete session and fetch real stats from server
-          await completeSession(sessionId);
-          const finalStats = await getSessionStats(sessionId);
-          setSessionStats(finalStats);
-          setSessionComplete(true);
+        console.log('[setTimeout callback] answeredCount:', answeredCount, 'PROBLEMS_PER_SESSION:', PROBLEMS_PER_SESSION);
+        if (answeredCount >= PROBLEMS_PER_SESSION) {
+          try {
+            // Complete session and fetch real stats from server
+            await completeSession(sessionId);
+            const finalStats = await getSessionStats(sessionId);
+            setSessionStats(finalStats);
+            setSessionComplete(true);
 
-          // Save to localStorage
-          stats.push(finalStats);
-          localStorage.setItem('mathbuddy_stats', JSON.stringify(stats));
+            // Save to localStorage
+            stats.push(finalStats);
+            localStorage.setItem('mathbuddy_stats', JSON.stringify(stats));
+          } catch (err) {
+            console.error('Failed to complete session:', err);
+          } finally {
+            setIsSubmitting(false);
+          }
         } else {
+          console.log('[setTimeout] calling loadNextProblem');
           await loadNextProblem();
+          console.log('[setTimeout] loadNextProblem done');
+          setIsSubmitting(false);
         }
       }, 1500);
     } catch (err) {
       console.error('Failed to submit answer:', err);
-    } finally {
-      setLoading(false);
+      setIsSubmitting(false);
     }
   };
 
-  const getSessionStatsFromResponse = (sessId: number, total: number, correct: number): SessionStats => {
+  const buildSessionStats = (sessId: number, total: number, correct: number): SessionStats => {
     return {
       session_id: sessId,
       total_problems: total,
@@ -139,7 +152,7 @@ export default function Practice() {
     setSessionId(null);
     setCurrentProblem(null);
     setProblemNumber(0);
-    setScore({ correct: 0, total: 0 });
+    setScore({ correct: 0, total: PROBLEMS_PER_SESSION });
     setSessionComplete(false);
     setFeedback(null);
     startNewSession();
@@ -281,13 +294,13 @@ export default function Practice() {
                 value={answer}
                 onChange={(e) => setAnswer(e.target.value)}
                 placeholder="?"
-                disabled={loading}
+                disabled={loading || isSubmitting}
                 autoFocus
               />
               <button
                 type="submit"
                 className="btn btn-success btn-answer"
-                disabled={loading || answer === ''}
+                disabled={loading || answer === '' || isSubmitting}
               >
                 Check Answer! ✅
               </button>

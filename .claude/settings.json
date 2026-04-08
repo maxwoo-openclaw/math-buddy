@@ -13,7 +13,10 @@
       "Bash(.venv/Scripts/python -m pytest tests/ -v --tb=short)",
       "Bash(.venv/Scripts/python -c \"from main import logger; print\\('OK'\\)\")",
       "Bash(.venv/Scripts/python -m pytest tests/test_practice.py -v --tb=short)",
-      "Bash(.venv/Scripts/python -m pytest tests/test_practice.py::test_get_problem_with_operation_filter_only -v)"
+      "Bash(.venv/Scripts/python -m pytest tests/test_practice.py::test_get_problem_with_operation_filter_only -v)",
+      "Bash(npm run:*)",
+      "Bash(npx tsc:*)",
+      "Bash(node_modules/.bin/tsc --noEmit)"
     ]
   }
 }

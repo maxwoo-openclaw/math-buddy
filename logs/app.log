@@ -240,3 +240,119 @@ AttributeError: module 'bcrypt' has no attribute '__about__'
 2026-04-08 12:11:09,551 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=subtraction, diff=easy
 2026-04-08 12:11:12,232 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=10, data=problem_id=11 user_answer=7
 2026-04-08 12:16:41,684 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:59 - MathBuddy API shutting down...
+2026-04-08 14:15:45,724 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:55 - MathBuddy API starting up...
+2026-04-08 14:15:45,760 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:57 - Database initialized
+2026-04-08 14:16:05,730 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=multiplication, diff=easy
+2026-04-08 14:16:08,176 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=11, data=problem_id=12 user_answer=11
+2026-04-08 14:16:09,777 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=multiplication, diff=easy
+2026-04-08 14:16:12,871 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=11, data=problem_id=13 user_answer=7
+2026-04-08 14:16:13,964 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=11, data=problem_id=13 user_answer=7
+2026-04-08 14:16:14,430 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=multiplication, diff=easy
+2026-04-08 14:16:15,546 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=multiplication, diff=easy
+2026-04-08 14:16:16,582 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=11, data=problem_id=15 user_answer=5
+2026-04-08 14:16:18,155 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=multiplication, diff=easy
+2026-04-08 14:16:20,448 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=11, data=problem_id=16 user_answer=8
+2026-04-08 14:16:22,008 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=multiplication, diff=easy
+2026-04-08 14:16:23,633 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=11, data=problem_id=17 user_answer=1
+2026-04-08 14:16:25,209 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=multiplication, diff=easy
+2026-04-08 14:16:27,219 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=11, data=problem_id=18 user_answer=16
+2026-04-08 14:16:28,796 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=multiplication, diff=easy
+2026-04-08 14:16:32,459 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=11, data=problem_id=19 user_answer=15
+2026-04-08 14:16:34,034 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=multiplication, diff=easy
+2026-04-08 14:16:36,841 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=11, data=problem_id=20 user_answer=32
+2026-04-08 14:16:38,429 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=multiplication, diff=easy
+2026-04-08 14:16:47,570 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=11, data=problem_id=21 user_answer=24
+2026-04-08 14:16:52,229 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=11, data=problem_id=21 user_answer=24
+2026-04-08 14:16:54,246 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=11, data=problem_id=21 user_answer=24
+2026-04-08 14:16:55,122 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=11, data=problem_id=21 user_answer=24
+2026-04-08 14:16:55,912 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=11, data=problem_id=21 user_answer=24
+2026-04-08 14:16:56,249 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=11, data=problem_id=21 user_answer=24
+2026-04-08 14:17:00,742 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=11, data=problem_id=21 user_answer=24
+2026-04-08 14:17:01,187 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=11, data=problem_id=21 user_answer=24
+2026-04-08 14:17:01,413 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=11, data=problem_id=21 user_answer=24
+2026-04-08 14:17:01,612 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=11, data=problem_id=21 user_answer=24
+2026-04-08 14:17:01,797 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=11, data=problem_id=21 user_answer=24
+2026-04-08 14:17:01,993 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=11, data=problem_id=21 user_answer=24
+2026-04-08 14:17:02,197 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=11, data=problem_id=21 user_answer=24
+2026-04-08 14:17:02,405 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=11, data=problem_id=21 user_answer=24
+2026-04-08 14:17:02,585 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=11, data=problem_id=21 user_answer=24
+2026-04-08 14:25:38,763 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:59 - MathBuddy API shutting down...
+2026-04-08 14:25:48,186 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:55 - MathBuddy API starting up...
+2026-04-08 14:25:48,198 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:57 - Database initialized
+2026-04-08 14:26:06,651 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 14:26:10,364 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=12, data=problem_id=22 user_answer=12
+2026-04-08 14:26:11,360 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=12, data=problem_id=22 user_answer=12
+2026-04-08 14:26:11,955 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 14:26:12,946 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 14:26:27,751 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=12, data=problem_id=24 user_answer=11
+2026-04-08 14:26:29,334 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 14:26:34,853 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=12, data=problem_id=25 user_answer=7
+2026-04-08 14:26:36,423 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 14:26:40,570 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=12, data=problem_id=26 user_answer=6
+2026-04-08 14:26:42,143 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 14:26:46,418 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=12, data=problem_id=27 user_answer=7
+2026-04-08 14:26:46,879 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=12, data=problem_id=27 user_answer=7
+2026-04-08 14:26:47,793 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=12, data=problem_id=27 user_answer=7
+2026-04-08 14:26:47,983 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 14:26:48,451 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 14:26:49,335 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 14:26:52,472 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=12, data=problem_id=30 user_answer=4
+2026-04-08 14:26:54,024 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 14:26:56,462 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=12, data=problem_id=31 user_answer=8
+2026-04-08 14:26:57,587 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=12, data=problem_id=31 user_answer=8
+2026-04-08 14:27:00,768 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=12, data=problem_id=31 user_answer=8
+2026-04-08 14:27:01,558 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=12, data=problem_id=31 user_answer=8
+2026-04-08 14:27:06,032 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=12, data=problem_id=31 user_answer=7
+2026-04-08 14:29:33,927 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:59 - MathBuddy API shutting down...
+2026-04-08 14:29:38,347 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:55 - MathBuddy API starting up...
+2026-04-08 14:29:38,358 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:57 - Database initialized
+2026-04-08 14:29:45,679 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 14:29:51,546 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=13, data=problem_id=32 user_answer=9
+2026-04-08 14:29:53,119 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 14:29:57,115 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=13, data=problem_id=33 user_answer=16
+2026-04-08 14:29:58,660 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 14:30:04,740 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=13, data=problem_id=34 user_answer=16
+2026-04-08 14:30:06,289 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 14:30:09,175 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=13, data=problem_id=35 user_answer=10
+2026-04-08 14:30:10,748 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 14:30:12,409 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=13, data=problem_id=36 user_answer=6
+2026-04-08 14:30:13,959 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 14:30:15,612 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=13, data=problem_id=37 user_answer=11
+2026-04-08 14:30:17,185 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 14:30:18,671 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=13, data=problem_id=38 user_answer=4
+2026-04-08 14:30:20,244 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 14:30:22,126 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=13, data=problem_id=39 user_answer=11
+2026-04-08 14:30:23,696 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 14:30:25,761 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=13, data=problem_id=40 user_answer=10
+2026-04-08 14:30:27,339 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 14:30:29,336 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=13, data=problem_id=41 user_answer=18
+2026-04-08 14:37:54,301 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:59 - MathBuddy API shutting down...
+2026-04-08 14:37:58,662 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:55 - MathBuddy API starting up...
+2026-04-08 14:37:58,678 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:57 - Database initialized
+2026-04-08 14:38:10,547 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=multiplication, diff=easy
+2026-04-08 14:38:14,633 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=14, data=problem_id=42 user_answer=36
+2026-04-08 14:38:19,960 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=14, data=problem_id=42 user_answer=36
+2026-04-08 14:38:36,815 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=14, data=problem_id=42 user_answer=36
+2026-04-08 15:42:29,494 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:55 - MathBuddy API starting up...
+2026-04-08 15:42:29,506 - root - INFO - C:\Users\reeve\Documents\Github\math-buddy\main.py:57 - Database initialized
+2026-04-08 15:42:57,161 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 15:43:00,648 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=15, data=problem_id=43 user_answer=8
+2026-04-08 15:43:02,227 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 15:43:04,372 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=15, data=problem_id=44 user_answer=8
+2026-04-08 15:43:05,950 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 15:43:11,074 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=15, data=problem_id=45 user_answer=12
+2026-04-08 15:43:12,631 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 15:43:14,272 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=15, data=problem_id=46 user_answer=11
+2026-04-08 15:43:15,840 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 15:43:17,373 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=15, data=problem_id=47 user_answer=4
+2026-04-08 15:43:18,934 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 15:43:21,361 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=15, data=problem_id=48 user_answer=11
+2026-04-08 15:43:22,923 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 15:43:24,579 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=15, data=problem_id=49 user_answer=2
+2026-04-08 15:43:26,144 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 15:43:28,489 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=15, data=problem_id=50 user_answer=4
+2026-04-08 15:43:30,063 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 15:43:32,111 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=15, data=problem_id=51 user_answer=5
+2026-04-08 15:43:33,679 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-08 15:43:37,576 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=15, data=problem_id=52 user_answer=4
+2026-04-08 15:43:53,084 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=division, diff=easy
