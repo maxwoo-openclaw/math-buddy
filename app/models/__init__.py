@@ -1,3 +1,3 @@
-from .models import User, MathProblem, PracticeSession, SessionAnswer
+from .models import User, MathProblem, PracticeSession, SessionAnswer, ParentStudentLink
 
-__all__ = ["User", "MathProblem", "PracticeSession", "SessionAnswer"]
+__all__ = ["User", "MathProblem", "PracticeSession", "SessionAnswer", "ParentStudentLink"]
