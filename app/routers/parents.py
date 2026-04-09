@@ -17,7 +17,7 @@ def get_parent_user(current_user: User = Depends(get_current_user)) -> User:
 @router.post("/generate-code")
 async def generate_invite_code(
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_parent_user),
+    current_user: User = Depends(get_current_user),
 ):
     if current_user.role != "student":
         raise HTTPException(status_code=400, detail="Only students can generate invite codes")
