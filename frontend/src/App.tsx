@@ -4,6 +4,7 @@ import Auth from './pages/Auth';
 import Dashboard from './pages/Dashboard';
 import Practice from './pages/Practice';
 import Admin from './pages/Admin';
+import ParentDashboard from './pages/ParentDashboard';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -17,6 +18,14 @@ function AdminRoute({ children }: { children: React.ReactNode }) {
   if (loading) return <div className="loading">Loading...</div>;
   if (!user) return <Navigate to="/auth" replace />;
   if (user.role !== 'admin') return <Navigate to="/dashboard" replace />;
+  return <>{children}</>;
+}
+
+function ParentRoute({ children }: { children: React.ReactNode }) {
+  const { user, loading } = useAuth();
+  if (loading) return <div className="loading">Loading...</div>;
+  if (!user) return <Navigate to="/auth" replace />;
+  if (user.role !== 'parent' && user.role !== 'admin') return <Navigate to="/dashboard" replace />;
   return <>{children}</>;
 }
 
@@ -47,6 +56,14 @@ function App() {
             <AdminRoute>
               <Admin />
             </AdminRoute>
+          }
+        />
+        <Route
+          path="/parent"
+          element={
+            <ParentRoute>
+              <ParentDashboard />
+            </ParentRoute>
           }
         />
         <Route path="/" element={<Navigate to="/dashboard" replace />} />

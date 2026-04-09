@@ -103,8 +103,10 @@ export interface User {
   id: number;
   username: string;
   email: string;
-  role: 'student' | 'admin';
+  role: 'student' | 'admin' | 'parent';
   created_at: string;
+  invite_code?: string;
+  invite_expires_at?: string;
 }
 
 export interface Problem {
