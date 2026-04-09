@@ -2,7 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from app.models import MathProblem, PracticeSession, SessionAnswer, User
 from app.schemas import SessionCreate, AnswerSubmit, AnswerResponse
-from datetime import datetime
+from datetime import datetime, timezone
 import random
 import logging
 
@@ -190,5 +190,5 @@ class PracticeService:
         if session.user_id != user_id:
             raise ValueError("Unauthorized")
         if session:
-            session.completed_at = datetime.utcnow()
+            session.completed_at = datetime.now(timezone.utc)
             await self.db.commit()
