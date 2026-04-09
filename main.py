@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from app.database import init_db
-from app.routers import auth, users, problems, practice
+from app.routers import auth, users, problems, practice, parents
 from app.routers.auth import limiter
 from app.config import settings
 
@@ -70,6 +70,7 @@ app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(problems.router)
 app.include_router(practice.router)
+app.include_router(parents.router)
 
 
 @app.get("/")
