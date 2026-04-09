@@ -9,6 +9,7 @@ from slowapi.errors import RateLimitExceeded
 from app.database import init_db
 from app.routers import auth, users, problems, practice
 from app.routers.auth import limiter
+from app.config import settings
 
 
 def setup_logging():
@@ -18,30 +19,17 @@ def setup_logging():
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
 
-    # Suppress known passlib/bcrypt version detection warning (passlib 1.7.4
-    # uses _bcrypt.__about__.__version__ which bcrypt 4.x removed - harmless)
     class PasslibBcryptWarningFilter(logging.Filter):
         def filter(self, record):
             msg = record.getMessage()
             return not ("(trapped) error reading bcrypt version" in msg)
 
-    # Console handler
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.INFO)
-    console_handler.addFilter(PasslibBcryptWarningFilter())
-    console_formatter = logging.Formatter(
-        "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    )
-    console_handler.setFormatter(console_formatter)
-
-    # File handler (rotating, max 5MB per file, keep 5 files)
     file_handler = logging.handlers.RotatingFileHandler(
-        os.path.join(log_dir, "app.log"),
-        maxBytes=5 * 1024 * 1024,
-        backupCount=5,
+        f"{log_dir}/app.log", maxBytes=10 * 1024 * 1024, backupCount=5
     )
-    file_handler.setLevel(logging.INFO)
-    file_handler.addFilter(PasslibBcryptWarningFilter())
+    file_handler.setLevel(logging.DEBUG)
     file_formatter = logging.Formatter(
         "%(asctime)s - %(name)s - %(levelname)s - %(pathname)s:%(lineno)d - %(message)s"
     )
@@ -63,13 +51,16 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="MathBuddy API", lifespan=lifespan)
-app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 logger = setup_logging()
 
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+# CORS - explicit origins from settings (no wildcard)
+origins = [o.strip() for o in settings.ALLOWED_ORIGINS.split(",")]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

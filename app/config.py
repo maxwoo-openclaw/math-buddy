@@ -8,12 +8,12 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "math-buddy-secret-key-change-in-production"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 24 hours
+    ALLOWED_ORIGINS: str = "http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173"
 
     @field_validator("SECRET_KEY")
     @classmethod
     def validate_secret_key(cls, v: str) -> str:
         if v == "math-buddy-secret-key-change-in-production":
-            # Only raise in production when no proper env var is set
             if os.environ.get("ENVIRONMENT") == "production":
                 raise ValueError(
                     "SECRET_KEY must be changed from default in production. "
