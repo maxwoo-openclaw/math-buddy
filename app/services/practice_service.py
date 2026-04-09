@@ -95,6 +95,7 @@ class PracticeService:
     async def submit_answer(
         self,
         session_id: int,
+        user_id: int,
         data: AnswerSubmit,
     ) -> AnswerResponse:
         result = await self.db.execute(
@@ -103,6 +104,8 @@ class PracticeService:
         session = result.scalar_one_or_none()
         if not session:
             raise ValueError("Session not found")
+        if session.user_id != user_id:
+            raise ValueError("Unauthorized")
 
         result = await self.db.execute(
             select(MathProblem).where(MathProblem.id == data.problem_id)
@@ -135,13 +138,15 @@ class PracticeService:
             is_correct=is_correct,
         )
 
-    async def get_session_stats(self, session_id: int) -> dict:
+    async def get_session_stats(self, session_id: int, user_id: int) -> dict:
         result = await self.db.execute(
             select(PracticeSession).where(PracticeSession.id == session_id)
         )
         session = result.scalar_one_or_none()
         if not session:
             raise ValueError("Session not found")
+        if session.user_id != user_id:
+            raise ValueError("Unauthorized")
 
         result = await self.db.execute(
             select(SessionAnswer).where(SessionAnswer.session_id == session_id)
@@ -175,11 +180,15 @@ class PracticeService:
             "answers": answer_responses,
         }
 
-    async def complete_session(self, session_id: int):
+    async def complete_session(self, session_id: int, user_id: int):
         result = await self.db.execute(
             select(PracticeSession).where(PracticeSession.id == session_id)
         )
         session = result.scalar_one_or_none()
+        if not session:
+            raise ValueError("Session not found")
+        if session.user_id != user_id:
+            raise ValueError("Unauthorized")
         if session:
             session.completed_at = datetime.utcnow()
             await self.db.commit()

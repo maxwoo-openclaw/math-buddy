@@ -33,7 +33,7 @@ async def submit_answer(
     logger.info(f"[submit_answer] session_id={session_id}, data={data}")
     service = PracticeService(db)
     try:
-        result = await service.submit_answer(session_id, data)
+        result = await service.submit_answer(session_id, current_user.id, data)
         return result
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
@@ -47,7 +47,7 @@ async def get_session_stats(
 ):
     service = PracticeService(db)
     try:
-        stats = await service.get_session_stats(session_id)
+        stats = await service.get_session_stats(session_id, current_user.id)
         return SessionStatsResponse(**stats)
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
@@ -79,5 +79,5 @@ async def complete_session(
     current_user: User = Depends(get_current_user),
 ):
     service = PracticeService(db)
-    await service.complete_session(session_id)
+    await service.complete_session(session_id, current_user.id)
     return {"message": "Session completed"}
