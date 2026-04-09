@@ -11,11 +11,14 @@ class User(Base):
     username = Column(String, unique=True, index=True, nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
     password_hash = Column(String, nullable=False)
-    role = Column(String, default="student")  # 'student' or 'admin'
+    role = Column(String, default="student")  # 'student' | 'admin' | 'parent'
+    invite_code = Column(String, unique=True, nullable=True, index=True)
+    invite_expires_at = Column(DateTime, nullable=True)
     created_at = Column(DateTime, server_default=func.now())
 
     problems = relationship("MathProblem", back_populates="creator")
     sessions = relationship("PracticeSession", back_populates="user")
+    parent_links = relationship("ParentStudentLink", foreign_keys="ParentStudentLink.parent_id")
 
 
 class MathProblem(Base):
@@ -61,3 +64,16 @@ class SessionAnswer(Base):
 
     session = relationship("PracticeSession", back_populates="answers")
     problem = relationship("MathProblem", back_populates="answers")
+
+
+class ParentStudentLink(Base):
+    __tablename__ = "parent_student_links"
+
+    id = Column(Integer, primary_key=True, index=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    student_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    linked_at = Column(DateTime, server_default=func.now())
+    linked_by = Column(String)  # 'admin' | 'self'
+
+    parent = relationship("User", foreign_keys=[parent_id], overlaps="parent_links")
+    student = relationship("User", foreign_keys=[student_id])
