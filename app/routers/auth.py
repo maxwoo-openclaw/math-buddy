@@ -26,7 +26,7 @@ async def register(data: UserCreate, db: AsyncSession = Depends(get_db)):
         username=data.username,
         email=data.email,
         password_hash=hash_password(data.password),
-        role=data.role or "student",
+        role="student",  # Always student on self-registration
     )
     db.add(user)
     await db.commit()
