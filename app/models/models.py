@@ -37,7 +37,7 @@ class PracticeSession(Base):
     __tablename__ = "practice_sessions"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
+    user_id = Column(Integer, ForeignKey("users.id"), index=True)
     operation_filter = Column(String, nullable=True)  # null = all operations
     difficulty_filter = Column(String, nullable=True)  # null = all difficulties
     total_problems = Column(Integer, default=0)
@@ -53,8 +53,8 @@ class SessionAnswer(Base):
     __tablename__ = "session_answers"
 
     id = Column(Integer, primary_key=True, index=True)
-    session_id = Column(Integer, ForeignKey("practice_sessions.id"))
-    problem_id = Column(Integer, ForeignKey("math_problems.id"))
+    session_id = Column(Integer, ForeignKey("practice_sessions.id"), index=True)
+    problem_id = Column(Integer, ForeignKey("math_problems.id"), index=True)
     user_answer = Column(Integer)
     is_correct = Column(Integer)  # 0 or 1 (SQLite doesn't have bool)
     answered_at = Column(DateTime, server_default=func.now())
