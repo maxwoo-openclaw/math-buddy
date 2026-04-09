@@ -18,6 +18,7 @@ class User(Base):
 
     problems = relationship("MathProblem", back_populates="creator")
     sessions = relationship("PracticeSession", back_populates="user")
+    achievements = relationship("UserAchievement", back_populates="user")
     parent_links = relationship("ParentStudentLink", foreign_keys="ParentStudentLink.parent_id")
 
 

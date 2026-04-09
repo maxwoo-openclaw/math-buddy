@@ -192,3 +192,6 @@ class PracticeService:
         if session:
             session.completed_at = datetime.now(timezone.utc)
             await self.db.commit()
+        # Check for new achievements
+        achievement_service = AchievementService(self.db)
+        await achievement_service.check_and_award(user_id, session_id)
