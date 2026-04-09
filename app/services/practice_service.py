@@ -153,13 +153,17 @@ class PracticeService:
         )
         answers = list(result.scalars().all())
 
+        # Batch-fetch all problems (fix N+1 query)
+        problem_ids = [a.problem_id for a in answers]
+        result = await self.db.execute(
+            select(MathProblem).where(MathProblem.id.in_(problem_ids))
+        )
+        problems = {p.id: p for p in result.scalars().all()}
+
         # Get problem details
         answer_responses = []
         for a in answers:
-            result = await self.db.execute(
-                select(MathProblem).where(MathProblem.id == a.problem_id)
-            )
-            problem = result.scalar_one_or_none()
+            problem = problems.get(a.problem_id)
             if problem:
                 answer_responses.append(AnswerResponse(
                     problem_id=a.problem_id,
