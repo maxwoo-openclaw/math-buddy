@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../store/authContext';
-import { getUsers } from '../services/api';
+import { getUsers, getAchievements } from '../services/api';
 import type { User, SessionStats } from '../types';
+import type { Achievement, NewAchievement } from '../services/api';
+import AchievementBadge from '../components/achievements/AchievementBadge';
+import AchievementToast from '../components/achievements/AchievementToast';
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
@@ -10,17 +13,20 @@ export default function Dashboard() {
   const [sessions, setSessions] = useState<SessionStats[]>([]);
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<User[]>([]);
+  const [achievements, setAchievements] = useState<{achievements: Achievement[]; earned_count: number; total_count: number} | null>(null);
+  const [newAchievement, setNewAchievement] = useState<NewAchievement | null>(null);
 
   useEffect(() => {
     if (user?.role === 'admin') {
       getUsers().then(setUsers).catch(console.error);
     }
-    // For now, we'll show stats from localStorage or just show placeholder
     const storedStats = localStorage.getItem('mathbuddy_stats');
     if (storedStats) {
       setSessions(JSON.parse(storedStats));
     }
     setLoading(false);
+    // Load achievements
+    getAchievements().then(setAchievements).catch(console.error);
   }, [user]);
 
   const totalProblems = sessions.reduce((acc, s) => acc + s.total_problems, 0);
@@ -97,6 +103,25 @@ export default function Dashboard() {
             : "Every practice makes you stronger! Keep going! 🌟"}
         </div>
       </div>
+
+      {/* Achievement Panel */}
+      {achievements && (
+        <div className="achievement-section" style={{ marginTop: '2rem' }}>
+          <h2 className="page-title" style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>🏆 成就</h2>
+          <div style={{ background: 'white', borderRadius: '1rem', padding: '1.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
+            <p style={{ color: '#6b7280', marginBottom: '1rem', fontSize: '0.875rem' }}>
+              {achievements.earned_count} / {achievements.total_count} 已解锁
+            </p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+              {achievements.achievements.map(ach => (
+                <AchievementBadge key={ach.key} achievement={ach} />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      <AchievementToast achievement={newAchievement} onClose={() => setNewAchievement(null)} />
     </div>
   );
 }

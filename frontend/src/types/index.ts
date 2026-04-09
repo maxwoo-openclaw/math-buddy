@@ -98,3 +98,27 @@ export interface TrendPoint {
   accuracy: number;
   problems: number;
 }
+
+export interface Achievement {
+  key: string;
+  name: string;
+  icon: string;
+  description: string;
+  category: 'consistency' | 'operation' | 'milestone';
+  earned: boolean;
+  earned_at: string | null;
+}
+
+export interface AchievementsResponse {
+  achievements: Achievement[];
+  earned_count: number;
+  total_count: number;
+}
+
+export interface NewAchievement {
+  key: string;
+  name: string;
+  icon: string;
+  description: string;
+  category: string;
+}

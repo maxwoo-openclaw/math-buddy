@@ -98,7 +98,34 @@ export const getSessionStats = (sessionId: number) =>
 export const completeSession = (sessionId: number) =>
   request<{ message: string }>(`/practice/session/${sessionId}/complete`, { method: 'POST' });
 
+// Achievements
+export const getAchievements = () =>
+  request<{ achievements: Achievement[]; earned_count: number; total_count: number }>('/achievements/');
+
+export const checkAchievements = (sessionId?: number) =>
+  request<{ new_achievements: NewAchievement[] }>('/achievements/check' + (sessionId ? `?session_id=${sessionId}` : ''), { method: 'POST' });
+
+export const getStudentAchievements = (studentId: number) =>
+  request<{ achievements: Achievement[]; earned_count: number; total_count: number }>(`/achievements/parent/${studentId}`);
+
 // Types
+export interface Achievement {
+  key: string;
+  name: string;
+  icon: string;
+  description: string;
+  category: 'consistency' | 'operation' | 'milestone';
+  earned: boolean;
+  earned_at: string | null;
+}
+
+export interface NewAchievement {
+  key: string;
+  name: string;
+  icon: string;
+  description: string;
+  category: string;
+}
 export interface User {
   id: number;
   username: string;
