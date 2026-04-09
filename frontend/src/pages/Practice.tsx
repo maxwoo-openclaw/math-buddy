@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { startSession, getNextProblem, submitAnswer, completeSession, getSessionStats } from '../services/api';
+import { startSession, getNextProblem, submitAnswer, completeSession, getSessionStats, recordWeakness } from '../services/api';
 import type { ProblemDTO, AnswerResult, SessionStats } from '../types';
 
 const OPERATIONS = [
@@ -76,6 +76,13 @@ export default function Practice() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  /** Parse operands from a question string like "7 × 8 = ?" or "15 ÷ 3 = ?" */
+  function parseOperands(question: string): { operation: string; operandA: number; operandB: number } | null {
+    const match = question.match(/^\s*([\d.]+)\s*([×÷+\-*])\s*([\d.]+)\s*=\s*\?\s*$/);
+    if (!match) return null;
+    return { operation: match[2], operandA: parseFloat(match[1]), operandB: parseFloat(match[3]) };
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentProblem || !sessionId || answer === '' || isSubmitting) return;
@@ -97,6 +104,20 @@ export default function Practice() {
         correct: s.correct + (isCorrect ? 1 : 0),
         total: s.total,
       }));
+
+      // Record attempt for weakness tracking (non-blocking)
+      if (currentProblem) {
+        const parsed = parseOperands(currentProblem.question);
+        if (parsed) {
+          recordWeakness(
+            parsed.operation,
+            parsed.operandA,
+            parsed.operandB,
+            userAnswer,
+            result.correct_answer,
+          ).catch((err) => console.error('Failed to record weakness:', err));
+        }
+      }
 
       // Update localStorage stats
       const stored = localStorage.getItem('mathbuddy_stats');

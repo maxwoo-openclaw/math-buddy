@@ -98,6 +98,18 @@ export const getSessionStats = (sessionId: number) =>
 export const completeSession = (sessionId: number) =>
   request<{ message: string }>(`/practice/session/${sessionId}/complete`, { method: 'POST' });
 
+export const recordWeakness = (
+  operation: string,
+  operandA: number,
+  operandB: number,
+  userAnswer: number,
+  correctAnswer: number,
+) =>
+  request<{ weakness_confirmed: boolean; weakness: any }>('/weaknesses/record', {
+    method: 'POST',
+    body: { operation, operand_a: operandA, operand_b: operandB, user_answer: userAnswer, correct_answer: correctAnswer },
+  });
+
 // Achievements
 export const getAchievements = () =>
   request<{ achievements: Achievement[]; earned_count: number; total_count: number }>('/achievements/');
