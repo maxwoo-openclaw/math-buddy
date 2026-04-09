@@ -356,3 +356,32 @@ AttributeError: module 'bcrypt' has no attribute '__about__'
 2026-04-08 15:43:33,679 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
 2026-04-08 15:43:37,576 - app.routers.practice - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\routers\practice.py:33 - [submit_answer] session_id=15, data=problem_id=52 user_answer=4
 2026-04-08 15:43:53,084 - app.services.practice_service - INFO - C:\Users\reeve\Documents\Github\math-buddy\app\services\practice_service.py:88 - [get_random_problem] generating new problem: op=division, diff=easy
+2026-04-09 09:08:17,423 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: POST http://test/api/auth/register "HTTP/1.1 200 OK"
+2026-04-09 09:08:17,729 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: POST http://test/api/auth/register "HTTP/1.1 400 Bad Request"
+2026-04-09 09:08:18,321 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-09 09:08:18,912 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 401 Unauthorized"
+2026-04-09 09:08:19,503 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-09 09:08:19,508 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: GET http://test/api/users/me "HTTP/1.1 200 OK"
+2026-04-09 09:08:19,530 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: GET http://test/api/users/me "HTTP/1.1 401 Unauthorized"
+2026-04-09 09:19:36,663 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-09 09:19:36,674 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: POST http://test/api/practice/session "HTTP/1.1 201 Created"
+2026-04-09 09:19:37,270 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-09 09:19:37,282 - app.routers.practice - INFO - /home/reeve/math-buddy/app/routers/practice.py:33 - [submit_answer] session_id=1, data=problem_id=1 user_answer=4
+2026-04-09 09:19:37,291 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: POST http://test/api/practice/session/1/answer "HTTP/1.1 200 OK"
+2026-04-09 09:19:37,888 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-09 09:19:37,898 - app.routers.practice - INFO - /home/reeve/math-buddy/app/routers/practice.py:33 - [submit_answer] session_id=1, data=problem_id=1 user_answer=99
+2026-04-09 09:19:37,902 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: POST http://test/api/practice/session/1/answer "HTTP/1.1 200 OK"
+2026-04-09 09:19:38,498 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-09 09:19:38,511 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: GET http://test/api/practice/session/1/stats "HTTP/1.1 200 OK"
+2026-04-09 09:19:39,106 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-09 09:19:39,112 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: GET http://test/api/practice/session/99999/stats "HTTP/1.1 404 Not Found"
+2026-04-09 09:19:39,708 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-09 09:19:39,712 - app.services.practice_service - INFO - /home/reeve/math-buddy/app/services/practice_service.py:88 - [get_random_problem] generating new problem: op=addition, diff=easy
+2026-04-09 09:19:39,716 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: GET http://test/api/practice/problem?operation=addition "HTTP/1.1 200 OK"
+2026-04-09 09:41:34,544 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: POST http://test/api/auth/register "HTTP/1.1 200 OK"
+2026-04-09 09:41:34,856 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: POST http://test/api/auth/register "HTTP/1.1 400 Bad Request"
+2026-04-09 09:41:35,454 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-09 09:41:36,074 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 401 Unauthorized"
+2026-04-09 09:41:36,680 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: POST http://test/api/auth/login "HTTP/1.1 200 OK"
+2026-04-09 09:41:36,686 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: GET http://test/api/users/me "HTTP/1.1 200 OK"
+2026-04-09 09:41:36,714 - httpx - INFO - /home/reeve/.local/lib/python3.13/site-packages/httpx/_client.py:1740 - HTTP Request: GET http://test/api/users/me "HTTP/1.1 401 Unauthorized"

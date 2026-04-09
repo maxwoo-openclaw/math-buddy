@@ -4,8 +4,11 @@ import os
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
 from app.database import init_db
 from app.routers import auth, users, problems, practice
+from app.routers.auth import limiter
 
 
 def setup_logging():
@@ -60,6 +63,8 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="MathBuddy API", lifespan=lifespan)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 logger = setup_logging()
 
 app.add_middleware(
