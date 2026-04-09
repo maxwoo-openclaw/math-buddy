@@ -15,11 +15,15 @@ router = APIRouter(prefix="/api/problems", tags=["problems"])
 async def list_problems(
     operation: Optional[str] = None,
     difficulty: Optional[str] = None,
+    skip: int = 0,
+    limit: int = 100,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
     service = ProblemService(db)
-    problems = await service.list_problems(operation=operation, difficulty=difficulty)
+    problems = await service.list_problems(
+        operation=operation, difficulty=difficulty, skip=skip, limit=limit
+    )
     return [ProblemResponse.model_validate(p) for p in problems]
 
 

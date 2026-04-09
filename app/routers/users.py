@@ -50,10 +50,12 @@ async def get_me(current_user: User = Depends(get_current_user)):
 
 @router.get("/", response_model=list[UserResponse])
 async def list_users(
+    skip: int = 0,
+    limit: int = 100,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_admin_user),
 ):
-    result = await db.execute(select(User))
+    result = await db.execute(select(User).offset(skip).limit(limit))
     users = result.scalars().all()
     return [UserResponse.model_validate(u) for u in users]
 

@@ -13,12 +13,15 @@ class ProblemService:
         self,
         operation: Optional[str] = None,
         difficulty: Optional[str] = None,
+        skip: int = 0,
+        limit: int = 100,
     ) -> list[MathProblem]:
         query = select(MathProblem)
         if operation:
             query = query.where(MathProblem.operation_type == operation)
         if difficulty:
             query = query.where(MathProblem.difficulty == difficulty)
+        query = query.offset(skip).limit(limit)
         result = await self.db.execute(query)
         return list(result.scalars().all())
 
