@@ -5,6 +5,7 @@ from datetime import datetime, timezone, timedelta
 import secrets
 
 from app.models import User, ParentStudentLink, PracticeSession, SessionAnswer, MathProblem
+from app.services.weakness_service import WeaknessService
 
 
 class ParentService:
@@ -35,7 +36,7 @@ class ParentService:
         if not student:
             raise ValueError("Invalid invite code")
 
-        if student.invite_expires_at < datetime.now(timezone.utc):
+        if student.invite_expires_at < datetime.now(timezone.utc).replace(tzinfo=None):
             raise ValueError("Invite code expired")
 
         # Check if already linked
@@ -179,12 +180,17 @@ class ParentService:
         else:
             weakest = strongest = (None, 0)
 
+        # Get weaknesses from weakness service
+        weakness_service = WeaknessService(self.db)
+        weaknesses = await weakness_service.get_weaknesses(student_id, limit=5)
+
         return {
             "student_id": student_id,
             "operation_breakdown": operation_breakdown,
             "difficulty_breakdown": difficulty_breakdown,
             "weakest_operation": weakest[0],
-            "strongest_operation": strongest[0]
+            "strongest_operation": strongest[0],
+            "weaknesses": weaknesses,
         }
 
     async def get_student_trends(self, student_id: int, days: int) -> list[dict]:
