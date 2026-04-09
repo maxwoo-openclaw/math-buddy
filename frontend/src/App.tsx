@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard';
 import Practice from './pages/Practice';
 import Admin from './pages/Admin';
 import ParentDashboard from './pages/ParentDashboard';
+import LeaderboardPage from './pages/LeaderboardPage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -64,6 +65,14 @@ function App() {
             <ParentRoute>
               <ParentDashboard />
             </ParentRoute>
+          }
+        />
+        <Route
+          path="/leaderboard"
+          element={
+            <ProtectedRoute>
+              <LeaderboardPage />
+            </ProtectedRoute>
           }
         />
         <Route path="/" element={<Navigate to="/dashboard" replace />} />

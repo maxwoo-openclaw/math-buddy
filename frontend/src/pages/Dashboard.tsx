@@ -81,6 +81,13 @@ export default function Dashboard() {
           <span className="action-btn">Let's Go! →</span>
         </div>
 
+        <div className="action-card" onClick={() => navigate('/leaderboard')} style={{ cursor: 'pointer' }}>
+          <div className="action-icon">🏆</div>
+          <h2>Leaderboard</h2>
+          <p>See how you rank against other students</p>
+          <span className="action-btn">View Rankings →</span>
+        </div>
+
         {user?.role === 'admin' && (
           <div className="action-card action-card-admin" onClick={() => navigate('/admin')}>
             <div className="action-icon">⚙️</div>

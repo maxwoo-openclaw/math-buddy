@@ -108,6 +108,13 @@ export const checkAchievements = (sessionId?: number) =>
 export const getStudentAchievements = (studentId: number) =>
   request<{ achievements: Achievement[]; earned_count: number; total_count: number }>(`/achievements/parent/${studentId}`);
 
+// Leaderboard
+export const getLeaderboard = (filter: 'all' | 'weekly' = 'all') =>
+  request<LeaderboardResponse>(`/leaderboard/?filter=${filter}`);
+
+export const getMyRank = (filter: 'all' | 'weekly' = 'all') =>
+  request<{ rank: LeaderboardEntry | null }>(`/leaderboard/me?filter=${filter}`);
+
 // Types
 export interface Achievement {
   key: string;
@@ -175,4 +182,19 @@ export interface SessionStats {
   started_at: string;
   completed_at?: string;
   answers: AnswerResult[];
+}
+
+export interface LeaderboardEntry {
+  rank: number;
+  user_id: number;
+  username: string;
+  stars: number;
+  tier: string;
+  tier_icon: string;
+}
+
+export interface LeaderboardResponse {
+  filter: 'all' | 'weekly';
+  entries: LeaderboardEntry[];
+  total_participants: number;
 }
