@@ -2,6 +2,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from app.models import MathProblem, PracticeSession, SessionAnswer, User
 from app.schemas import SessionCreate, AnswerSubmit, AnswerResponse
+from app.services.achievement_service import AchievementService
+from app.services.gamification_service import GamificationService
 from datetime import datetime, timezone
 import random
 import logging
@@ -199,3 +201,7 @@ class PracticeService:
         # Check for new achievements
         achievement_service = AchievementService(self.db)
         await achievement_service.check_and_award(user_id, session_id)
+
+        # Record streak
+        gamification_service = GamificationService(self.db)
+        await gamification_service.record_practice_day(user_id)

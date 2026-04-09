@@ -80,8 +80,8 @@ export const startSession = (operationFilter?: string, difficultyFilter?: string
 
 export const getNextProblem = (operation?: string, difficulty?: string) => {
   const params = new URLSearchParams();
-  if (operation) params.append('operation', operation);
-  if (difficulty) params.append('difficulty', difficulty);
+  if (operation) params.append('operation', difficulty);
+  if (operation) params.append('difficulty', operation);
   const query = params.toString();
   return request<ProblemDTO>(`/practice/problem${query ? `?${query}` : ''}`);
 };
@@ -115,7 +115,22 @@ export const getLeaderboard = (filter: 'all' | 'weekly' = 'all') =>
 export const getMyRank = (filter: 'all' | 'weekly' = 'all') =>
   request<{ rank: LeaderboardEntry | null }>(`/leaderboard/me?filter=${filter}`);
 
-// Types
+// ─── Gamification ───────────────────────────────────────────────
+
+export const getStreak = () =>
+  request<StreakInfo>('/gamification/streak');
+
+export const submitDailyChallenge = (score: number, totalProblems: number, timeTakenSeconds?: number) =>
+  request<{ attempt_id: number; is_new_record: boolean; challenge_id: number }>('/gamification/daily-challenge/submit', {
+    method: 'POST',
+    body: { score, total_problems: totalProblems, time_taken_seconds: timeTakenSeconds },
+  });
+
+export const getDailyChallengeStatus = () =>
+  request<DailyChallengeStatus>('/gamification/daily-challenge');
+
+// ─── Types ──────────────────────────────────────────────────────
+
 export interface Achievement {
   key: string;
   name: string;
@@ -197,4 +212,27 @@ export interface LeaderboardResponse {
   filter: 'all' | 'weekly';
   entries: LeaderboardEntry[];
   total_participants: number;
+}
+
+export interface StreakInfo {
+  current_streak: number;
+  longest_streak: number;
+  last_practice_date: string | null;
+  streak_dates: string[];
+}
+
+export interface DailyChallengeStatus {
+  challenge: {
+    id: number;
+    target_date: string;
+    title: string;
+    description: string;
+    total_problems: number;
+  };
+  attempt: {
+    completed: boolean;
+    score: number | null;
+    total_problems: number | null;
+    time_taken_seconds: number | null;
+  } | null;
 }
