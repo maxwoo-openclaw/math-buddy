@@ -2,8 +2,10 @@ export interface User {
   id: number;
   username: string;
   email: string;
-  role: 'student' | 'admin';
+  role: 'student' | 'admin' | 'parent';
   created_at: string;
+  invite_code?: string;
+  invite_expires_at?: string;
 }
 
 export interface MathProblem {
@@ -57,3 +59,42 @@ export interface ProblemDTO {
 
 export type OperationType = '+' | '-' | '*' | '/';
 export type Difficulty = 'easy' | 'medium' | 'hard';
+
+export interface LinkedStudent {
+  id: number;
+  username: string;
+  total_sessions: number;
+  total_problems: number;
+  overall_accuracy: number;
+}
+
+export interface DashboardResponse {
+  students: LinkedStudent[];
+}
+
+export interface OperationBreakdown {
+  addition: { attempted: number; accuracy: number };
+  subtraction: { attempted: number; accuracy: number };
+  multiplication: { attempted: number; accuracy: number };
+  division: { attempted: number; accuracy: number };
+}
+
+export interface DifficultyBreakdown {
+  easy: { attempted: number; accuracy: number };
+  medium: { attempted: number; accuracy: number };
+  hard: { attempted: number; accuracy: number };
+}
+
+export interface StudentAnalysis {
+  student_id: number;
+  operation_breakdown: OperationBreakdown;
+  difficulty_breakdown: DifficultyBreakdown;
+  weakest_operation: string | null;
+  strongest_operation: string | null;
+}
+
+export interface TrendPoint {
+  date: string;
+  accuracy: number;
+  problems: number;
+}
