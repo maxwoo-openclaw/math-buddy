@@ -64,6 +64,12 @@
 - `GET /skill-tree` - Get user's skill tree (levels, XP, progress per operation)
 - `POST /skill-tree/xp` - Award XP for a correct answer
 
+#### Weakness Detection (`/api/weaknesses`)
+- `POST /record` - Record a problem attempt, returns weakness if confirmed (2+ wrong)
+- `GET /` - Get top student weaknesses (pairs with highest wrong ratio)
+- `GET /operation-accuracy` - Per-operation accuracy for skill tree
+- `POST /{review_id}/answer` - Submit weakness review answer (3 correct = mastered)
+
 ### Frontend Pages
 
 #### Auth Pages
@@ -176,6 +182,32 @@ operation: str ('addition' | 'subtraction' | 'multiplication' | 'division')
 level: int (1-10)
 xp: int (current XP towards next level)
 total_xp: int (lifetime XP)
+```
+
+#### MistakePattern (Weakness Detection)
+```
+id: int (PK)
+user_id: int (FK -> user.id)
+operation: str
+operand_a: int
+operand_b: int
+wrong_count: int
+correct_count: int
+last_attempted: int (timestamp)
+history: str (JSON list of {date, user_answer, correct_answer, is_correct})
+```
+
+#### WeaknessReview (Targeted Practice)
+```
+id: int (PK)
+user_id: int (FK -> user.id)
+mistake_pattern_id: int (FK -> mistake_patterns.id)
+question: str
+correct_answer: int
+is_mastered: int (0=not mastered, 1=mastered)
+attempts: int
+created_at: datetime
+mastered_at: datetime (nullable)
 ```
 
 ## UI Design Notes
