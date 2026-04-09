@@ -16,7 +16,8 @@
       "Bash(.venv/Scripts/python -m pytest tests/test_practice.py::test_get_problem_with_operation_filter_only -v)",
       "Bash(npm run:*)",
       "Bash(npx tsc:*)",
-      "Bash(node_modules/.bin/tsc --noEmit)"
+      "Bash(node_modules/.bin/tsc --noEmit)",
+      "Bash(.venv/Scripts/pip install:*)"
     ]
   }
 }
