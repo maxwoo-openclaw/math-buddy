@@ -46,10 +46,13 @@
 - `PUT /{id}` - Admin: update problem
 - `DELETE /{id}` - Admin: delete problem
 
-#### Practice (`/api/practice`)
-- `POST /session` - Start a practice session
-- `POST /session/{id}/answer` - Submit an answer
-- `GET /session/{id}/stats` - Get session results
+#### Parents (`/api/parents`)
+- `POST /generate-code` - Student: generate invite code for parent
+- `POST /link` - Parent: link via code, or admin: link parent to student
+- `GET /students` - Parent: list linked students with core metrics
+- `GET /dashboard` - Parent: full dashboard with student list
+- `GET /dashboard/analysis/{student_id}` - Detailed analysis including weaknesses + operation stats
+- `GET /dashboard/trends/{student_id}` - Accuracy trend over N days
 
 #### Gamification (`/api/gamification`)
 - `GET /streak` - Get current and longest streak info
