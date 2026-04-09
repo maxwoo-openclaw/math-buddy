@@ -44,6 +44,18 @@ async def override_get_db():
 app.dependency_overrides[get_db] = override_get_db
 
 
+@pytest_asyncio.fixture(scope="function", autouse=True)
+async def reset_rate_limiter():
+    """Reset rate limiter storage between tests to avoid rate limit accumulation."""
+    try:
+        limiter_storage = getattr(app.state, 'limiter', None)
+        if limiter_storage and hasattr(limiter_storage, 'reset'):
+            limiter_storage.reset()
+    except Exception:
+        pass
+    yield
+
+
 @pytest_asyncio.fixture(scope="function")
 async def db_session():
     async with test_engine.begin() as conn:
