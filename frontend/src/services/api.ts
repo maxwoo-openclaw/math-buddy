@@ -80,8 +80,8 @@ export const startSession = (operationFilter?: string, difficultyFilter?: string
 
 export const getNextProblem = (operation?: string, difficulty?: string) => {
   const params = new URLSearchParams();
-  if (operation) params.append('operation', difficulty);
-  if (operation) params.append('difficulty', operation);
+  if (operation) params.append('operation', operation);
+  if (difficulty) params.append('difficulty', difficulty);
   const query = params.toString();
   return request<ProblemDTO>(`/practice/problem${query ? `?${query}` : ''}`);
 };
