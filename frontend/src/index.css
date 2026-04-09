@@ -364,6 +364,8 @@ body {
 
 .feedback.correct { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); color: #2e7d32; }
 .feedback.incorrect { background: linear-gradient(135deg, #ffebee, #ffcdd2); color: #c62828; }
+.feedback.warning { background: linear-gradient(135deg, #fff8e1, #ffecb3); color: #e65100; }
+.feedback.warning .btn-hint { background: #ff9800; color: #fff; border: none; border-radius: 12px; cursor: pointer; }
 
 .score-display { font-size: 22px; color: var(--text); margin-top: 5px; font-weight: 600; }
 .score-display strong { color: var(--primary); }

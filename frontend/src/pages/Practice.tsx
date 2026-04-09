@@ -30,6 +30,8 @@ export default function Practice() {
   const [loading, setLoading] = useState(false);
   const [sessionComplete, setSessionComplete] = useState(false);
   const [sessionStats, setSessionStats] = useState<SessionStats | null>(null);
+  const [suggestedDifficulty, setSuggestedDifficulty] = useState<string | null>(null);
+  const [weaknessAlert, setWeaknessAlert] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
@@ -115,7 +117,20 @@ export default function Practice() {
             parsed.operandB,
             userAnswer,
             result.correct_answer,
-          ).catch((err) => console.error('Failed to record weakness:', err));
+          ).then((res) => {
+            if (res.weakness_confirmed) {
+              const w = res.weakness;
+              setWeaknessAlert(
+                `💡 提示：你對「${w.operation} · ${w.question.replace(' = ?', '')}」比較陌生，係時候多啲練習！`
+              );
+              // Suggest dropping difficulty if currently hard
+              if (difficulty === 'hard') {
+                setSuggestedDifficulty('medium');
+              }
+              // Clear alert after 5s
+              setTimeout(() => setWeaknessAlert(null), 5000);
+            }
+          }).catch((err) => console.error('Failed to record weakness:', err));
         }
       }
 
@@ -330,6 +345,24 @@ export default function Practice() {
             {feedback && (
               <div className={`feedback ${feedback.correct ? 'correct' : 'incorrect'}`}>
                 {feedback.message}
+              </div>
+            )}
+
+            {weaknessAlert && (
+              <div className="feedback warning">
+                {weaknessAlert}
+                {suggestedDifficulty && (
+                  <button
+                    className="btn-hint"
+                    onClick={() => {
+                      setDifficulty(suggestedDifficulty);
+                      setSuggestedDifficulty(null);
+                    }}
+                    style={{ marginTop: 8, fontSize: '0.85em', padding: '4px 12px' }}
+                  >
+                    轉去 {suggestedDifficulty === 'medium' ? '🌟 中等' : '🔥 困難'}
+                  </button>
+                )}
               </div>
             )}
           </>
