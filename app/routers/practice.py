@@ -81,3 +81,14 @@ async def complete_session(
     service = PracticeService(db)
     await service.complete_session(session_id, current_user.id)
     return {"message": "Session completed"}
+
+
+@router.get("/sessions", response_model=list[SessionStatsResponse])
+async def get_user_sessions(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Get all practice sessions for the current user."""
+    service = PracticeService(db)
+    sessions = await service.get_user_sessions(current_user.id)
+    return [SessionStatsResponse(**s) for s in sessions]

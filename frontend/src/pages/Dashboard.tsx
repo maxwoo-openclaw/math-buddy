@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../store/authContext';
-import { getUsers, getAchievements, getStreak, getDailyChallengeStatus, submitDailyChallenge, getNextProblem, submitAnswer, completeSession } from '../services/api';
+import { getUsers, getAchievements, getStreak, getDailyChallengeStatus, submitDailyChallenge, getNextProblem, submitAnswer, completeSession, getUserSessions } from '../services/api';
 import type { User, SessionStats } from '../types';
 import type { Achievement, NewAchievement, StreakInfo, DailyChallengeStatus } from '../services/api';
 import AchievementBadge from '../components/achievements/AchievementBadge';
@@ -26,10 +26,7 @@ export default function Dashboard() {
     if (user?.role === 'admin') {
       getUsers().then(setUsers).catch(console.error);
     }
-    const storedStats = localStorage.getItem('mathbuddy_stats');
-    if (storedStats) {
-      setSessions(JSON.parse(storedStats));
-    }
+    getUserSessions().then(setSessions).catch(console.error);
     setLoading(false);
     // Load achievements
     getAchievements().then(setAchievements).catch(console.error);

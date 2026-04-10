@@ -98,6 +98,9 @@ export const getSessionStats = (sessionId: number) =>
 export const completeSession = (sessionId: number) =>
   request<{ message: string }>(`/practice/session/${sessionId}/complete`, { method: 'POST' });
 
+export const getUserSessions = () =>
+  request<SessionStats[]>('/practice/sessions');
+
 export const recordWeakness = (
   operation: string,
   operandA: number,

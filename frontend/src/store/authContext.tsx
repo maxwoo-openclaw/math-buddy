@@ -36,6 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (username: string, password: string) => {
     const response = await apiLogin(username, password);
     localStorage.setItem('token', response.access_token);
+    localStorage.removeItem('mathbuddy_stats');
     setToken(response.access_token);
     setUser(response.user);
   };
@@ -43,12 +44,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const register = async (username: string, email: string, password: string, role: string = 'student') => {
     const response = await apiRegister(username, email, password, role);
     localStorage.setItem('token', response.access_token);
+    localStorage.removeItem('mathbuddy_stats');
     setToken(response.access_token);
     setUser(response.user);
   };
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('mathbuddy_stats');
     setToken(null);
     setUser(null);
   };

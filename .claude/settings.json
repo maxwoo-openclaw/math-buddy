@@ -17,7 +17,11 @@
       "Bash(npm run:*)",
       "Bash(npx tsc:*)",
       "Bash(node_modules/.bin/tsc --noEmit)",
-      "Bash(.venv/Scripts/pip install:*)"
+      "Bash(.venv/Scripts/pip install:*)",
+      "Bash(sqlite3 mathbuddy.db \".schema users\")",
+      "Bash(python -c \"import sqlite3; conn = sqlite3.connect\\('mathbuddy.db'\\); cursor = conn.execute\\(\\\\\"SELECT sql FROM sqlite_master WHERE name='users'\\\\\"\\); print\\(cursor.fetchone\\(\\)\\); conn.close\\(\\)\")",
+      "Bash(python -c ':*)",
+      "Bash(python -c \"import sqlite3; conn = sqlite3.connect\\('mathbuddy.db'\\); print\\(conn.execute\\(\\\\\"SELECT sql FROM sqlite_master WHERE name='users'\\\\\"\\).fetchone\\(\\)[0]\\); conn.close\\(\\)\")"
     ]
   }
 }

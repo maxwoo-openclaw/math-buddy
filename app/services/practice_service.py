@@ -215,3 +215,25 @@ class PracticeService:
             total_problems=session.total_problems,
             correct_count=session.correct_count,
         )
+
+    async def get_user_sessions(self, user_id: int) -> list[dict]:
+        """Get all completed sessions for a user."""
+        result = await self.db.execute(
+            select(PracticeSession)
+            .where(PracticeSession.user_id == user_id)
+            .where(PracticeSession.completed_at.isnot(None))
+            .order_by(PracticeSession.started_at.desc())
+        )
+        sessions = result.scalars().all()
+        return [
+            {
+                "session_id": s.id,
+                "total_problems": s.total_problems,
+                "correct_count": s.correct_count,
+                "accuracy": round((s.correct_count / s.total_problems * 100) if s.total_problems > 0 else 0, 1),
+                "started_at": s.started_at,
+                "completed_at": s.completed_at,
+                "answers": [],
+            }
+            for s in sessions
+        ]
