@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_db
 from app.models import User
@@ -116,6 +117,114 @@ async def mark_notification_read(
     if not success:
         raise HTTPException(status_code=404, detail="Notification not found")
     return {"success": True}
+
+
+class EmailPreferenceRequest(BaseModel):
+    weekly_summary: bool = True
+    achievement_alerts: bool = True
+    enabled: bool = True
+
+
+@router.get("/email-preferences")
+async def get_email_preferences(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_parent_user),
+):
+    """Get parent's email notification preferences."""
+    from app.models.email_preference import EmailPreference
+    result = await db.execute(
+        select(EmailPreference).where(EmailPreference.user_id == current_user.id)
+    )
+    pref = result.scalar_one_or_none()
+    if not pref:
+        return {"weekly_summary": True, "achievement_alerts": True, "enabled": True}
+    return {
+        "weekly_summary": bool(pref.weekly_summary),
+        "achievement_alerts": bool(pref.achievement_alerts),
+        "enabled": bool(pref.enabled),
+    }
+
+
+@router.put("/email-preferences")
+async def update_email_preferences(
+    prefs: EmailPreferenceRequest,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_parent_user),
+):
+    """Update parent's email notification preferences."""
+    from app.models.email_preference import EmailPreference
+    result = await db.execute(
+        select(EmailPreference).where(EmailPreference.user_id == current_user.id)
+    )
+    pref = result.scalar_one_or_none()
+    if not pref:
+        pref = EmailPreference(user_id=current_user.id)
+        db.add(pref)
+    pref.weekly_summary = prefs.weekly_summary
+    pref.achievement_alerts = prefs.achievement_alerts
+    pref.enabled = prefs.enabled
+    await db.commit()
+    return {"success": True}
+
+
+@router.get("/weekly-summary/{student_id}")
+async def get_weekly_summary(
+    student_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_parent_user),
+):
+    """
+    Generate a weekly summary for a student's practice.
+    Returns a formatted summary of the week's activity.
+    """
+    from app.services.parent_service import ParentService
+    service = ParentService(db)
+    # Get last 7 days of trends
+    trends = await service.get_student_trends(student_id, days=7)
+    analysis = await service.get_student_analysis(student_id)
+
+    # Build summary text
+    if not trends.get("trends"):
+        return {
+            "summary": "本週沒有練習記錄 📭",
+            "details": {},
+        }
+
+    days = trends.get("trends", [])
+    total_problems = sum(d.get("problems", 0) for d in days)
+    total_correct = sum(d.get("correct", 0) for d in days)
+    accuracy = round(total_correct / total_problems * 100, 1) if total_problems > 0 else 0
+    stars = "⭐" * min(3, round(accuracy / 33.3))
+
+    summary_lines = [
+        f"📊 本週 {student_id} 練習摘要",
+        f"總答題: {total_problems} 題",
+        f"正確率: {accuracy}% {stars}",
+    ]
+
+    # Best day
+    best_day = max(days, key=lambda d: d.get("accuracy", 0), default=None)
+    if best_day:
+        summary_lines.append(f"最佳表現: {best_day.get('date', 'N/A')} ({best_day.get('accuracy', 0)}%)")
+
+    # Weaknesses
+    weaknesses = analysis.get("weaknesses", [])[:3]
+    if weaknesses:
+        summary_lines.append("需要加強的題型:")
+        for w in weaknesses:
+            summary_lines.append(f"  • {w.get('question', 'N/A')} (錯{w.get('wrong_count', 0)}次)")
+
+    return {
+        "summary": "\n".join(summary_lines),
+        "details": {
+            "total_problems": total_problems,
+            "total_correct": total_correct,
+            "accuracy": accuracy,
+            "days_practiced": len([d for d in days if d.get('problems', 0) > 0]),
+            "best_day": best_day,
+            "weaknesses": weaknesses,
+        },
+    }
 
 
 @router.get("/dashboard/trends/{student_id}")
