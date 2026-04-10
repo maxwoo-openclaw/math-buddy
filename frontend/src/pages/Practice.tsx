@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { startSession, getNextProblem, submitAnswer, completeSession, getSessionStats, recordWeakness } from '../services/api';
+import { startSession, getNextProblem, submitAnswer, completeSession, getSessionStats, recordWeakness, getWeaknesses } from '../services/api';
 import { playSound } from '../utils/sound';
 import type { ProblemDTO, AnswerResult, SessionStats } from '../types';
 
@@ -34,16 +34,22 @@ export default function Practice() {
   const [suggestedDifficulty, setSuggestedDifficulty] = useState<string | null>(null);
   const [weaknessAlert, setWeaknessAlert] = useState<string | null>(null);
   const [correctStreak, setCorrectStreak] = useState(0);
+  const [focusMode, setFocusMode] = useState<{ operation: string; operandA: number; operandB: number }[]>([]);
+  const [focusIndex, setFocusIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
-  // Load stats from localStorage for dashboard
+  // Load weaknesses on mount — for Focus Mode
   useEffect(() => {
-    const stored = localStorage.getItem('mathbuddy_stats');
-    const stats: SessionStats[] = stored ? JSON.parse(stored) : [];
-    const totalProblems = stats.reduce((acc, s) => acc + s.total_problems, 0);
-    const totalCorrect = stats.reduce((acc, s) => acc + s.correct_count, 0);
-    setScore({ correct: totalCorrect, total: totalProblems });
+    getWeaknesses(5).then((weaknesses) => {
+      if (weaknesses.length > 0) {
+        setFocusMode(weaknesses.map((w: any) => ({
+          operation: w.operation,
+          operandA: w.operand_a,
+          operandB: w.operand_b,
+        })));
+      }
+    }).catch(console.error);
   }, []);
 
   const startNewSession = async () => {
@@ -65,6 +71,17 @@ export default function Practice() {
   const loadNextProblem = async () => {
     setLoading(true);
     try {
+      // If focus mode active and more pairs to practice, use targeted problem
+      if (focusMode.length > 0 && focusIndex < focusMode.length) {
+        const focus = focusMode[focusIndex];
+        const problem = await getNextProblem(focus.operation, difficulty, focus.operandA, focus.operandB);
+        setCurrentProblem(problem);
+        setAnswer('');
+        inputRef.current?.focus();
+        setLoading(false);
+        return;
+      }
+      // Normal random problem
       const problem = await getNextProblem(operation || undefined, difficulty);
       setCurrentProblem(problem);
       setAnswer('');
@@ -178,6 +195,10 @@ export default function Practice() {
         } else {
           console.log('[setTimeout] calling loadNextProblem');
           await loadNextProblem();
+          // Advance focus mode index if in focus mode
+          if (focusMode.length > 0 && focusIndex < focusMode.length) {
+            setFocusIndex((i) => Math.min(i + 1, focusMode.length - 1));
+          }
           console.log('[setTimeout] loadNextProblem done');
           setIsSubmitting(false);
         }
@@ -209,6 +230,7 @@ export default function Practice() {
     setFeedback(null);
     setCorrectStreak(0);
     setWeaknessAlert(null);
+    setFocusIndex(0);
     startNewSession();
   };
 
@@ -262,6 +284,36 @@ export default function Practice() {
         <p className="practice-intro">Choose your challenge settings and start practicing!</p>
 
         <div className="practice-card">
+          {focusMode.length > 0 && (
+            <div className="setup-section">
+              <h3>🎯 Focus Mode</h3>
+              <div style={{ background: '#fff8e1', borderRadius: '0.75rem', padding: '0.75rem', marginBottom: '0.5rem' }}>
+                <p style={{ fontSize: '0.8rem', color: '#e65100', marginBottom: '0.5rem' }}>
+                  🔥 針對你的弱點練習 {focusMode.length} 個題型
+                </p>
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  {focusMode.map((f, i) => (
+                    <span key={i} style={{
+                      background: i === focusIndex ? '#ff9800' : '#ffe0b2',
+                      color: i === focusIndex ? 'white' : '#e65100',
+                      borderRadius: '1rem',
+                      padding: '2px 10px',
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                    }}>
+                      {f.operation === 'multiplication' ? '✖️' : f.operation === 'division' ? '➗' : f.operation === 'addition' ? '➕' : '➖'} {f.operandA}{f.operation === 'multiplication' ? '×' : f.operation === 'division' ? '÷' : '+'}{f.operandB}
+                    </span>
+                  ))}
+                </div>
+                {focusIndex < focusMode.length && (
+                  <p style={{ fontSize: '0.7rem', color: '#999', marginTop: '0.25rem' }}>
+                    已練習 {focusIndex}/{focusMode.length}
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+
           <div className="setup-section">
             <h3>🎯 Operation</h3>
             <div className="operation-grid">

@@ -1,5 +1,5 @@
 import logging
-from fastapi import APIRouter, Depends, HTTPException, Header
+from fastapi import APIRouter, Depends, HTTPException, Header, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_db
 from app.models import User
@@ -57,11 +57,17 @@ async def get_session_stats(
 async def get_problem(
     operation: str | None = None,
     difficulty: str | None = None,
+    operand_a: int | None = Query(None, ge=1, le=9999),
+    operand_b: int | None = Query(None, ge=1, le=9999),
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
+    """
+    Get a random problem. If operand_a and operand_b are provided,
+    generates a targeted problem for practicing a specific pair (e.g. weakness practice).
+    """
     service = PracticeService(db)
-    problem = await service.get_random_problem(operation, difficulty)
+    problem = await service.get_random_problem(operation, difficulty, operand_a, operand_b)
     if not problem:
         raise HTTPException(status_code=404, detail="No problem available")
     return {

@@ -78,10 +78,12 @@ export const startSession = (operationFilter?: string, difficultyFilter?: string
     body: { operation_filter: operationFilter, difficulty_filter: difficultyFilter },
   });
 
-export const getNextProblem = (operation?: string, difficulty?: string) => {
+export const getNextProblem = (operation?: string, difficulty?: string, operandA?: number, operandB?: number) => {
   const params = new URLSearchParams();
   if (operation) params.append('operation', operation);
   if (difficulty) params.append('difficulty', difficulty);
+  if (operandA != null) params.append('operand_a', String(operandA));
+  if (operandB != null) params.append('operand_b', String(operandB));
   const query = params.toString();
   return request<ProblemDTO>(`/practice/problem${query ? `?${query}` : ''}`);
 };
@@ -149,6 +151,9 @@ export const getSkillTree = () =>
 
 export const getOperationAccuracy = () =>
   request<Record<string, { accuracy: number; total_attempts: number }>>('/weaknesses/operation-accuracy');
+
+export const getWeaknesses = (limit = 5) =>
+  request<any[]>('/weaknesses/?' + new URLSearchParams({ limit: String(limit) }).toString());
 
 // ─── Types ──────────────────────────────────────────────────────
 

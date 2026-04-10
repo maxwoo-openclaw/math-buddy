@@ -62,6 +62,38 @@ class PracticeService:
             created_by=None,
         )
 
+    async def _generate_targeted_problem(
+        self, operation: str, difficulty: str, operand_a: int, operand_b: int
+    ) -> MathProblem:
+        """Generate a targeted problem for a specific pair of operands (weakness practice)."""
+        if operation == "addition":
+            answer = operand_a + operand_b
+            question = f"{operand_a} + {operand_b} = ?"
+        elif operation == "subtraction":
+            # Ensure positive result
+            if operand_a < operand_b:
+                operand_a, operand_b = operand_b, operand_a
+            answer = operand_a - operand_b
+            question = f"{operand_a} - {operand_b} = ?"
+        elif operation == "multiplication":
+            answer = operand_a * operand_b
+            question = f"{operand_a} × {operand_b} = ?"
+        elif operation == "division":
+            # Ensure exact division
+            answer = operand_a
+            operand_a = operand_a * operand_b
+            question = f"{operand_a} ÷ {operand_b} = ?"
+        else:
+            answer = operand_a + operand_b
+            question = f"{operand_a} + {operand_b} = ?"
+        return MathProblem(
+            operation_type=operation,
+            difficulty=difficulty,
+            question=question,
+            answer=answer,
+            created_by=None,
+        )
+
     async def start_session(self, user_id: int, data: SessionCreate) -> PracticeSession:
         session = PracticeSession(
             user_id=user_id,
@@ -79,6 +111,8 @@ class PracticeService:
         self,
         operation_filter: str | None = None,
         difficulty_filter: str | None = None,
+        operand_a: int | None = None,
+        operand_b: int | None = None,
     ) -> MathProblem | None:
         # Normalize operation symbols to names
         op_map = {"+": "addition", "-": "subtraction", "*": "multiplication", "/": "division"}
@@ -88,6 +122,15 @@ class PracticeService:
         difficulties = ["easy", "medium", "hard"]
         op = operation_filter or random.choice(operations)
         diff = difficulty_filter or random.choice(difficulties)
+        # If specific operands provided, generate a targeted problem
+        if operand_a is not None and operand_b is not None:
+            logger.info(f"[get_random_problem] targeted: op={op}, a={operand_a}, b={operand_b}")
+            problem = await self._generate_targeted_problem(op, diff, operand_a, operand_b)
+            self.db.add(problem)
+            await self.db.commit()
+            await self.db.refresh(problem)
+            return problem
+
         logger.info(f"[get_random_problem] generating new problem: op={op}, diff={diff}")
         problem = await self._generate_problem(op, diff)
         self.db.add(problem)
