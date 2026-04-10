@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { startSession, getNextProblem, submitAnswer, completeSession, getSessionStats, recordWeakness } from '../services/api';
+import { playSound } from '../utils/sound';
 import type { ProblemDTO, AnswerResult, SessionStats } from '../types';
 
 const OPERATIONS = [
@@ -32,6 +33,7 @@ export default function Practice() {
   const [sessionStats, setSessionStats] = useState<SessionStats | null>(null);
   const [suggestedDifficulty, setSuggestedDifficulty] = useState<string | null>(null);
   const [weaknessAlert, setWeaknessAlert] = useState<string | null>(null);
+  const [correctStreak, setCorrectStreak] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
@@ -97,6 +99,8 @@ export default function Practice() {
       const result = await submitAnswer(sessionId, currentProblem.id, userAnswer);
       const isCorrect = result.is_correct;
 
+      playSound(isCorrect ? 'correct' : 'incorrect');
+
       setFeedback({
         correct: isCorrect,
         message: isCorrect ? '🎉 Correct! Amazing!' : `❌ Oops! The answer was ${result.correct_answer}`,
@@ -106,6 +110,17 @@ export default function Practice() {
         correct: s.correct + (isCorrect ? 1 : 0),
         total: s.total,
       }));
+
+      // Track streak and play streak sounds
+      if (isCorrect) {
+        const newStreak = correctStreak + 1;
+        setCorrectStreak(newStreak);
+        if (newStreak === 5) playSound('levelup');
+        if (newStreak >= 10) playSound('levelup');
+      } else {
+        setCorrectStreak(0);
+        if (correctStreak >= 3) playSound('wrongstreak');
+      }
 
       // Record attempt for weakness tracking (non-blocking)
       if (currentProblem) {
@@ -150,6 +165,7 @@ export default function Practice() {
             const finalStats = await getSessionStats(sessionId);
             setSessionStats(finalStats);
             setSessionComplete(true);
+            playSound('complete');
 
             // Save to localStorage
             stats.push(finalStats);
@@ -191,6 +207,8 @@ export default function Practice() {
     setScore({ correct: 0, total: PROBLEMS_PER_SESSION });
     setSessionComplete(false);
     setFeedback(null);
+    setCorrectStreak(0);
+    setWeaknessAlert(null);
     startNewSession();
   };
 
@@ -301,6 +319,11 @@ export default function Practice() {
         <div className="score-display">
           Score: <strong>{score.correct}</strong> / <strong>{score.total}</strong>
         </div>
+        {correctStreak >= 3 && (
+          <div className="score-display" style={{ color: '#ff9800' }}>
+            🔥 連續 {correctStreak} 題！
+          </div>
+        )}
       </div>
 
       {operation && difficulty && (
