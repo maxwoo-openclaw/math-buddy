@@ -4,6 +4,7 @@ from app.models import MathProblem, PracticeSession, SessionAnswer, User
 from app.schemas import SessionCreate, AnswerSubmit, AnswerResponse
 from app.services.achievement_service import AchievementService
 from app.services.gamification_service import GamificationService
+from app.services.notification_service import NotificationService
 from datetime import datetime, timezone
 import random
 import logging
@@ -205,3 +206,12 @@ class PracticeService:
         # Record streak
         gamification_service = GamificationService(self.db)
         await gamification_service.record_practice_day(user_id)
+
+        # Notify parent of session completion
+        notification_service = NotificationService(self.db)
+        await notification_service.notify_session_complete(
+            student_id=user_id,
+            session_id=session_id,
+            total_problems=session.total_problems,
+            correct_count=session.correct_count,
+        )

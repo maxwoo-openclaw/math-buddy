@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_db
 from app.models import User
 from app.services.parent_service import ParentService
+from app.services.notification_service import NotificationService
 from app.routers.users import get_current_user
 
 router = APIRouter(prefix="/api/parents", tags=["parents"])
@@ -85,6 +86,36 @@ async def get_student_analysis(
 ):
     service = ParentService(db)
     return await service.get_student_analysis(student_id)
+
+
+@router.get("/notifications")
+async def get_notifications(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_parent_user),
+    limit: int = Query(20, ge=1, le=100),
+    offset: int = Query(0, ge=0),
+):
+    """
+    Get notifications for a parent (when a child completes a session or earns achievement).
+    """
+    service = NotificationService(db)
+    notifications = await service.get_notifications(current_user.id, limit, offset)
+    unread_count = await service.get_unread_count(current_user.id)
+    return {"notifications": notifications, "unread_count": unread_count}
+
+
+@router.patch("/notifications/{notification_id}/read")
+async def mark_notification_read(
+    notification_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_parent_user),
+):
+    """Mark a notification as read."""
+    service = NotificationService(db)
+    success = await service.mark_as_read(notification_id, current_user.id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Notification not found")
+    return {"success": True}
 
 
 @router.get("/dashboard/trends/{student_id}")
