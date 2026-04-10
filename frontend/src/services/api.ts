@@ -141,6 +141,12 @@ export const submitDailyChallenge = (score: number, totalProblems: number, timeT
 export const getDailyChallengeStatus = () =>
   request<DailyChallengeStatus>('/gamification/daily-challenge');
 
+export const getSkillTree = () =>
+  request<{ skills: any[]; operation_stats: any }>('/gamification/skill-tree');
+
+export const getOperationAccuracy = () =>
+  request<Record<string, { accuracy: number; total_attempts: number }>>('/weaknesses/operation-accuracy');
+
 // ─── Types ──────────────────────────────────────────────────────
 
 export interface Achievement {

@@ -588,3 +588,12 @@ body {
   .dashboard-header { flex-direction: column; gap: 15px; }
   .admin-header { flex-direction: column; gap: 15px; }
 }
+
+/* Skill Tree Card (Hour 6) */
+.skill-tree-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+  border: 1px solid #e5e7eb;
+}

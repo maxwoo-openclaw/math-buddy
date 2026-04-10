@@ -7,6 +7,7 @@ import type { Achievement, NewAchievement, StreakInfo, DailyChallengeStatus } fr
 import AchievementBadge from '../components/achievements/AchievementBadge';
 import AchievementToast from '../components/achievements/AchievementToast';
 import StreakCard from '../components/gamification/StreakCard';
+import SkillTreeCard from '../components/gamification/SkillTreeCard';
 import DailyChallengeCard from '../components/gamification/DailyChallengeCard';
 
 export default function Dashboard() {
@@ -100,6 +101,11 @@ export default function Dashboard() {
           />
         </div>
       )}
+
+      {/* Skill Tree Card */}
+      <div style={{ margin: '1rem 0' }}>
+        <SkillTreeCard />
+      </div>
 
       <div className="action-cards">
         <div className="action-card action-card-practice" onClick={() => navigate('/practice')}>
