@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getLeaderboard, getMyRank, type LeaderboardEntry, type LeaderboardResponse } from '../services/api';
+import WeeklyResetBanner from '../components/gamification/WeeklyResetBanner';
 
 export default function LeaderboardPage() {
   const navigate = useNavigate();
@@ -76,6 +77,8 @@ export default function LeaderboardPage() {
           This Week 本週
         </button>
       </div>
+
+      <WeeklyResetBanner filter={filter} />
 
       {loading ? (
         <p style={{ textAlign: 'center', color: '#6b7280' }}>Loading...</p>
