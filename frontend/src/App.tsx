@@ -6,6 +6,7 @@ import Practice from './pages/Practice';
 import Admin from './pages/Admin';
 import ParentDashboard from './pages/ParentDashboard';
 import LeaderboardPage from './pages/LeaderboardPage';
+import SpeedRunPage from './pages/SpeedRunPage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -72,6 +73,14 @@ function App() {
           element={
             <ProtectedRoute>
               <LeaderboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/speedrun"
+          element={
+            <ProtectedRoute>
+              <SpeedRunPage />
             </ProtectedRoute>
           }
         />

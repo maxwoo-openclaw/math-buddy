@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../store/authContext';
-import { getUsers, getAchievements, getStreak, getDailyChallengeStatus, submitDailyChallenge, getNextProblem, submitAnswer, completeSession, getUserSessions } from '../services/api';
+import { getUsers, getAchievements, getStreak, getDailyChallengeStatus, submitDailyChallenge, getNextProblem, submitAnswer, completeSession, getUserSessions, startSession } from '../services/api';
 import type { User, SessionStats } from '../types';
 import type { Achievement, NewAchievement, StreakInfo, DailyChallengeStatus } from '../services/api';
 import AchievementBadge from '../components/achievements/AchievementBadge';
@@ -110,6 +110,13 @@ export default function Dashboard() {
           <h2>Start Practice!</h2>
           <p>Challenge yourself with fun math problems</p>
           <span className="action-btn">Let's Go! →</span>
+        </div>
+
+        <div className="action-card" onClick={() => navigate('/speedrun')} style={{ cursor: 'pointer', background: 'linear-gradient(135deg, #FF9800 0%, #FF5722 100%)', color: 'white' }}>
+          <div className="action-icon">⚡</div>
+          <h2>Speed Run!</h2>
+          <p>Race against the clock — how many can you solve?</p>
+          <span className="action-btn" style={{ color: 'white' }}>Start Now →</span>
         </div>
 
         <div className="action-card" onClick={() => navigate('/leaderboard')} style={{ cursor: 'pointer' }}>
