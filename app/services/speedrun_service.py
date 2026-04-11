@@ -52,14 +52,61 @@ class SpeedRunService:
         return result.scalar_one_or_none()
 
     async def get_leaderboard(self, time_limit_seconds: int, limit: int = 10) -> list:
+        # Subquery: each user's best (max score) per time_limit
+        best_subq = (
+            select(
+                SpeedRunResult.user_id,
+                sql_func.max(SpeedRunResult.score).label("best_score"),
+            )
+            .where(SpeedRunResult.time_limit_seconds == time_limit_seconds)
+            .group_by(SpeedRunResult.user_id)
+            .subquery()
+        )
         result = await self.db.execute(
-            select(SpeedRunResult.user_id, SpeedRunResult.score, User.username)
+            select(
+                SpeedRunResult.user_id,
+                User.username,
+                best_subq.c.best_score,
+            )
+            .join(best_subq, SpeedRunResult.user_id == best_subq.c.user_id)
             .join(User, SpeedRunResult.user_id == User.id)
             .where(SpeedRunResult.time_limit_seconds == time_limit_seconds)
-            .order_by(SpeedRunResult.score.desc())
+            .where(SpeedRunResult.score == best_subq.c.best_score)
+            .order_by(best_subq.c.best_score.desc(), SpeedRunResult.time_taken_seconds.asc().nullslast())
             .limit(limit)
         )
-        return result.all()
+        rows = result.all()
+        return rows
+
+    async def get_user_rank(self, user_id: int, time_limit_seconds: int) -> int | None:
+        """Get the rank of a specific user (1-indexed)."""
+        best_subq = (
+            select(
+                SpeedRunResult.user_id,
+                sql_func.max(SpeedRunResult.score).label("best_score"),
+            )
+            .where(SpeedRunResult.time_limit_seconds == time_limit_seconds)
+            .group_by(SpeedRunResult.user_id)
+            .subquery()
+        )
+        result = await self.db.execute(
+            select(sql_func.count())
+            .select_from(best_subq)
+            .where(best_subq.c.best_score > (
+                select(best_subq.c.best_score)
+                .where(best_subq.c.user_id == user_id)
+            ))
+        )
+        rank = result.scalar()
+        return (rank + 1) if rank is not None else None
+
+    async def get_total_participants(self, time_limit_seconds: int) -> int:
+        """Count unique users who have a score for this time limit."""
+        result = await self.db.execute(
+            select(sql_func.count(sql_func.distinct(SpeedRunResult.user_id)))
+            .where(SpeedRunResult.time_limit_seconds == time_limit_seconds)
+        )
+        return result.scalar() or 0
 
 
 class SkillTreeService:

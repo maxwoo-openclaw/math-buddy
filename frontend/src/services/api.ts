@@ -172,7 +172,11 @@ export const getBestSpeedRun = (timeLimit: 60 | 120) =>
   request<any>(`/gamification/speed-run/best?time_limit=${timeLimit}`);
 
 export const getSpeedRunLeaderboard = (timeLimit: 60 | 120, limit = 10) =>
-  request<{ user_id: number; username: string; score: number }[]>(`/gamification/speed-run/leaderboard?time_limit=${timeLimit}&limit=${limit}`);
+  request<{
+    leaderboard: { user_id: number; username: string; score: number }[];
+    my_rank: number | null;
+    total_participants: number;
+  }>(`/gamification/speed-run/leaderboard?time_limit=${timeLimit}&limit=${limit}`);
 
 // ─── Types ──────────────────────────────────────────────────────
 

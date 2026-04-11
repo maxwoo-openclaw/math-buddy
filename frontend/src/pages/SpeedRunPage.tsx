@@ -48,6 +48,8 @@ export default function SpeedRunPage() {
   const [best60, setBest60] = useState<any>(null);
   const [best120, setBest120] = useState<any>(null);
   const [leaderboard, setLeaderboard] = useState<{ user_id: number; username: string; score: number }[]>([]);
+  const [myRank, setMyRank] = useState<number | null>(null);
+  const [totalParticipants, setTotalParticipants] = useState(0);
   const [lastResult, setLastResult] = useState<any>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -61,7 +63,11 @@ export default function SpeedRunPage() {
   }, []);
 
   const loadLeaderboard = (limit: 60 | 120) => {
-    getSpeedRunLeaderboard(limit, 10).then(setLeaderboard).catch(() => {});
+    getSpeedRunLeaderboard(limit, 10).then((data) => {
+      setLeaderboard(data.leaderboard);
+      setMyRank(data.my_rank);
+      setTotalParticipants(data.total_participants);
+    }).catch(() => {});
   };
 
   const selectTimeLimit = (limit: 60 | 120) => {
@@ -236,20 +242,33 @@ export default function SpeedRunPage() {
             </div>
           )}
 
-          {/* Leaderboard Preview */}
+          {/* Leaderboard Preview — Top 10 */}
           <div style={{ marginBottom: '2rem' }}>
-            <h4 style={{ marginBottom: '0.5rem' }}>{t.leaderboardTitle} {t.seconds(timeLimit)}</h4>
+            <h4 style={{ marginBottom: '0.5rem' }}>{t.leaderboardTitle} {t.seconds(timeLimit)} — {t.top10 || 'Top 10'}</h4>
             {leaderboard.length === 0 ? (
               <div style={{ color: '#888', fontSize: '0.9rem' }}>{t.noRecords}</div>
             ) : (
               <div style={{ textAlign: 'left', maxWidth: 300, margin: '0 auto' }}>
-                {leaderboard.slice(0, 5).map((entry, i) => (
-                  <div key={entry.user_id} className="leaderboard-row">
-                    <span className="rank">{i + 1}</span>
+                {leaderboard.slice(0, 10).map((entry, i) => (
+                  <div
+                    key={entry.user_id}
+                    className="leaderboard-row"
+                    style={{ background: i < 3 ? 'rgba(255,200,0,0.08)' : undefined }}
+                  >
+                    <span className="rank" style={{ color: i === 0 ? '#FFD700' : i === 1 ? '#C0C0C0' : i === 2 ? '#CD7F32' : '#888' }}>
+                      {i + 1}
+                    </span>
                     <span className="username">{entry.username}</span>
                     <span className="score">{entry.score} 題</span>
                   </div>
                 ))}
+                {myRank && myRank > 10 && (
+                  <div className="leaderboard-row" style={{ opacity: 0.6, borderTop: '1px dashed #ccc', marginTop: 4, paddingTop: 4 }}>
+                    <span className="rank">...</span>
+                    <span className="username">{t.you || 'You'}</span>
+                    <span className="score">#{myRank} ({totalParticipants} {t.participants || 'total'})</span>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -370,14 +389,14 @@ export default function SpeedRunPage() {
             </div>
           )}
 
-          {/* Leaderboard */}
+          {/* Leaderboard — Top 10 */}
           <div style={{ marginBottom: '1.5rem' }}>
-            <h4 style={{ marginBottom: '0.5rem' }}>{t.leaderboardTitle} {t.seconds(timeLimit)}</h4>
+            <h4 style={{ marginBottom: '0.5rem' }}>{t.leaderboardTitle} {t.seconds(timeLimit)} — {t.top10 || 'Top 10'}</h4>
             {leaderboard.length === 0 ? (
               <div style={{ color: '#888' }}>{t.noRecords}</div>
             ) : (
               <div style={{ textAlign: 'left', maxWidth: 300, margin: '0 auto' }}>
-                {leaderboard.map((entry, i) => (
+                {leaderboard.slice(0, 10).map((entry, i) => (
                   <div
                     key={entry.user_id}
                     className="leaderboard-row"
@@ -385,7 +404,7 @@ export default function SpeedRunPage() {
                       background: entry.user_id === lastResult.id ? 'rgba(76, 175, 80, 0.2)' : undefined,
                     }}
                   >
-                    <span className="rank">{i + 1}</span>
+                    <span className="rank" style={{ color: i === 0 ? '#FFD700' : i === 1 ? '#C0C0C0' : i === 2 ? '#CD7F32' : '#888' }}>{i + 1}</span>
                     <span className="username">{entry.username}</span>
                     <span className="score">{entry.score} 題</span>
                   </div>
