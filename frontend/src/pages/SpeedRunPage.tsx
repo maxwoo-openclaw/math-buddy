@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../store/authContext';
+import { useTheme } from '../store/themeContext';
 import { submitSpeedRun, getBestSpeedRun, getSpeedRunLeaderboard, getNextProblem } from '../services/api';
 import { useLocale } from '../store/localeContext';
 import type { ProblemDTO } from '../types';
@@ -40,7 +42,9 @@ function getOperationLabel(symbol: string): string {
 }
 
 export default function SpeedRunPage() {
-  const { t } = useLocale();
+  const { t, locale, setLocale } = useLocale();
+  const { logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [phase, setPhase] = useState<'select' | 'countdown' | 'playing' | 'result'>('select');
   const [timeLimit, setTimeLimit] = useState<60 | 120>(60);
@@ -254,10 +258,14 @@ export default function SpeedRunPage() {
   return (
     <div className="page-container">
       {/* Header */}
-      <div className="flex-between" style={{ marginBottom: '1rem' }}>
-        <button onClick={() => navigate('/dashboard')} className="btn-secondary">← 返回</button>
-        <h2>⚡ Speed Run</h2>
-        <div style={{ width: 80 }} />
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+        <button onClick={() => navigate('/dashboard')} className="btn-secondary">← {t.back}</button>
+        <h2 style={{ margin: 0 }}>⚡ {t.speedRun}</h2>
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <button onClick={toggleTheme} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '18px', padding: '4px 8px' }} title="Toggle dark mode">{theme === 'dark' ? '☀️' : '🌙'}</button>
+          <button onClick={() => setLocale(locale === 'en' ? 'zhTW' : 'en')} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', fontWeight: 700, padding: '4px 8px', color: '#666' }} title="Toggle language">{locale === 'en' ? '中文' : 'EN'}</button>
+          <button onClick={() => { logout(); navigate('/auth'); }} className="btn-secondary" style={{ padding: '4px 10px', fontSize: '13px' }}>{t.logout?.split(' ')[0] || 'Logout'}</button>
+        </div>
       </div>
 
       {/* Phase: Select Time Limit */}

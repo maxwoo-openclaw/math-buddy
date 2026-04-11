@@ -100,7 +100,7 @@ export const en = {
   // Speed Run
   speedRunTitle: '⚡ Speed Run',
   selectTimeChallenge: 'Select Time Challenge',
-  seconds: (n: number) => `${n}秒`,
+  seconds: (n: number) => `${n}s`,
   bestScore: '🏆 Best Score',
   secondsUnit: '秒',
   noRecords: 'No records yet',
