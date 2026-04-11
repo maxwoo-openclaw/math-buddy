@@ -1,3 +1,4 @@
+import { useLocale } from '../../store/localeContext';
 import type { DailyChallengeStatus } from '../../services/api';
 
 interface Props {
@@ -6,9 +7,17 @@ interface Props {
 }
 
 export default function DailyChallengeCard({ status, onStart }: Props) {
+  const { t } = useLocale();
   const completed = status.attempt?.completed;
   const score = status.attempt?.score;
   const total = status.challenge.total_problems;
+
+  const mins = status.attempt?.time_taken_seconds
+    ? Math.floor(status.attempt.time_taken_seconds / 60)
+    : 0;
+  const secs = status.attempt?.time_taken_seconds
+    ? status.attempt.time_taken_seconds % 60
+    : 0;
 
   return (
     <div style={{
@@ -20,20 +29,24 @@ export default function DailyChallengeCard({ status, onStart }: Props) {
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
         <span style={{ fontSize: '2rem' }}>🎯</span>
         <div>
-          <div style={{ fontWeight: 700, fontSize: '1.1rem' }}>每日挑戰</div>
+          <div style={{ fontWeight: 700, fontSize: '1.1rem' }}>
+            {t.dailyChallenge || 'Daily Challenge'}
+          </div>
           <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>{status.challenge.title}</div>
         </div>
       </div>
 
       {completed ? (
         <div>
-          <div style={{ fontSize: '0.85rem', opacity: 0.9, marginBottom: '0.5rem' }}>挑戰完成！</div>
+          <div style={{ fontSize: '0.85rem', opacity: 0.9, marginBottom: '0.5rem' }}>
+            {t.challengeComplete || 'Challenge Complete!'}
+          </div>
           <div style={{ fontSize: '1.5rem', fontWeight: 700 }}>
-            {score} / {total} 题正确 🎉
+            {score} / {total} {t.accuracy || 'correct'}{' '}🎉
           </div>
           {status.attempt?.time_taken_seconds && (
             <div style={{ fontSize: '0.8rem', opacity: 0.8, marginTop: '0.25rem' }}>
-              用時 {Math.floor(status.attempt.time_taken_seconds / 60)}分 {status.attempt.time_taken_seconds % 60}秒
+              {t.timeTaken || 'Time'}: {mins > 0 ? `${mins}m ` : ''}{secs}s
             </div>
           )}
           <div style={{
@@ -44,16 +57,16 @@ export default function DailyChallengeCard({ status, onStart }: Props) {
             display: 'inline-block',
             fontSize: '0.8rem',
           }}>
-            ✅ 明日再来
+            ✅ {t.comingBack || 'See you tomorrow!'}
           </div>
         </div>
       ) : (
         <div>
           <div style={{ fontSize: '0.85rem', opacity: 0.9, marginBottom: '0.5rem' }}>
-            今日还没挑战！快来试试 🎯
+            {t.noChallengeToday || "You haven't done today's challenge yet! 🎯"}
           </div>
           <div style={{ fontSize: '0.8rem', opacity: 0.8, marginBottom: '0.75rem' }}>
-            共 {total} 题 · 不限时间
+            {total} {t.problems || 'problems'} · {t.noTimeLimit || 'no time limit'}
           </div>
           <button
             onClick={onStart}
@@ -68,7 +81,7 @@ export default function DailyChallengeCard({ status, onStart }: Props) {
               fontSize: '0.9rem',
             }}
           >
-            開始挑戰 →
+            {(t.startChallenge || 'Start Challenge!')}
           </button>
         </div>
       )}

@@ -1,3 +1,4 @@
+import { useLocale } from '../../store/localeContext';
 import type { StreakInfo } from '../../services/api';
 
 interface Props {
@@ -5,6 +6,7 @@ interface Props {
 }
 
 export default function StreakCard({ streak }: Props) {
+  const { t } = useLocale();
   const today = new Date().toISOString().split('T')[0];
   const practicedToday = streak.streak_dates?.includes(today);
 
@@ -24,15 +26,15 @@ export default function StreakCard({ streak }: Props) {
           {streak.current_streak}
         </div>
         <div style={{ fontSize: '0.8rem', opacity: 0.9, marginTop: '0.25rem' }}>
-          日連續
+          {t.dayStreak || 'day streak'}
         </div>
       </div>
       <div style={{ marginLeft: 'auto', textAlign: 'right' }}>
-        <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>最長</div>
-        <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>{streak.longest_streak} 天</div>
+        <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>{t.longest || 'Longest'}</div>
+        <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>{streak.longest_streak} {t.days || 'days'}</div>
         {practicedToday && (
           <div style={{ fontSize: '0.7rem', marginTop: '0.25rem', background: 'rgba(255,255,255,0.25)', borderRadius: '99px', padding: '2px 8px', display: 'inline-block' }}>
-            ✅ 今天已完成
+            ✅ {t.doneToday || "Done today!"}
           </div>
         )}
       </div>
