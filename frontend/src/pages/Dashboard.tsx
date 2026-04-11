@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../store/authContext';
 import { useTheme } from '../store/themeContext';
-import { getUsers, getAchievements, getStreak, getDailyChallengeStatus, submitDailyChallenge, getNextProblem, submitAnswer, completeSession, getUserSessions, startSession } from '../services/api';
+import { useLocale } from '../store/localeContext';
+import { getUsers, getAchievements, getStreak, getDailyChallengeStatus, getUserSessions, startSession } from '../services/api';
 import type { User, SessionStats } from '../types';
 import type { Achievement, NewAchievement, StreakInfo, DailyChallengeStatus } from '../services/api';
 import AchievementBadge from '../components/achievements/AchievementBadge';
@@ -14,6 +15,7 @@ import DailyChallengeCard from '../components/gamification/DailyChallengeCard';
 export default function Dashboard() {
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
+  const { t, locale, setLocale } = useLocale();
   const navigate = useNavigate();
   const [sessions, setSessions] = useState<SessionStats[]>([]);
   const [loading, setLoading] = useState(true);
@@ -30,7 +32,6 @@ export default function Dashboard() {
     }
     getUserSessions().then(setSessions).catch(console.error);
     setLoading(false);
-    // Load achievements
     getAchievements().then(setAchievements).catch(console.error);
     getStreak().then(setStreak).catch(console.error);
     getDailyChallengeStatus().then(setDailyChallenge).catch(console.error);
@@ -55,15 +56,23 @@ export default function Dashboard() {
     navigate('/auth');
   };
 
+  const mascotMessage = totalProblems === 0
+    ? t.mascotNoPractice
+    : overallAccuracy >= 80
+    ? t.mascotGreat
+    : overallAccuracy >= 50
+    ? t.mascotGood
+    : t.mascotKeepGoing;
+
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
         <div className="welcome-section">
-          <h1 className="page-title">🎉 Welcome, {user?.username}!</h1>
-          <p className="welcome-subtitle">Ready to practice some math today?</p>
+          <h1 className="page-title">{t.welcome(user?.username || '')}</h1>
+          <p className="welcome-subtitle">{t.readyToPractice}</p>
         </div>
         <button className="btn btn-logout" onClick={handleLogout}>
-          Logout 👋
+          {t.logout}
         </button>
         <button
           className="btn btn-secondary"
@@ -73,6 +82,14 @@ export default function Dashboard() {
         >
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
+        <button
+          className="btn btn-secondary"
+          onClick={() => setLocale(locale === 'en' ? 'zhTW' : 'en')}
+          style={{ padding: '10px 14px', fontSize: '14px', fontWeight: 700 }}
+          title="Toggle language"
+        >
+          {locale === 'en' ? '中文' : 'EN'}
+        </button>
       </div>
 
       <div className="stats-grid">
@@ -80,36 +97,31 @@ export default function Dashboard() {
         <div className="stat-card">
           <div className="stat-icon">📚</div>
           <div className="stat-value">{totalProblems}</div>
-          <div className="stat-label">Problems Solved</div>
+          <div className="stat-label">{t.problemsSolved}</div>
         </div>
         <div className="stat-card">
           <div className="stat-icon">✅</div>
           <div className="stat-value">{totalCorrect}</div>
-          <div className="stat-label">Correct Answers</div>
+          <div className="stat-label">{t.accuracy}</div>
         </div>
         <div className="stat-card">
           <div className="stat-icon">🎯</div>
           <div className="stat-value">{overallAccuracy}%</div>
-          <div className="stat-label">Accuracy</div>
+          <div className="stat-label">{t.accuracy}</div>
         </div>
         <div className="stat-card">
           <div className="stat-icon">🔥</div>
           <div className="stat-value">{sessions.length}</div>
-          <div className="stat-label">Sessions Completed</div>
+          <div className="stat-label">{t.sessionsCompleted || 'Sessions Completed'}</div>
         </div>
       </div>
 
-      {/* Daily Challenge */}
       {dailyChallenge && (
         <div style={{ margin: '1rem 0' }}>
-          <DailyChallengeCard
-            status={dailyChallenge}
-            onStart={startDailyChallenge}
-          />
+          <DailyChallengeCard status={dailyChallenge} onStart={startDailyChallenge} />
         </div>
       )}
 
-      {/* Skill Tree Card */}
       <div style={{ margin: '1rem 0' }}>
         <SkillTreeCard />
       </div>
@@ -117,55 +129,46 @@ export default function Dashboard() {
       <div className="action-cards">
         <div className="action-card action-card-practice" onClick={() => navigate('/practice')}>
           <div className="action-icon">🧮</div>
-          <h2>Start Practice!</h2>
-          <p>Challenge yourself with fun math problems</p>
-          <span className="action-btn">Let's Go! →</span>
+          <h2>{t.startPractice}</h2>
+          <p>{t.challengeYourself}</p>
+          <span className="action-btn">{t.goButton}</span>
         </div>
 
         <div className="action-card" onClick={() => navigate('/speedrun')} style={{ cursor: 'pointer', background: 'linear-gradient(135deg, #FF9800 0%, #FF5722 100%)', color: 'white' }}>
           <div className="action-icon">⚡</div>
-          <h2>Speed Run!</h2>
-          <p>Race against the clock — how many can you solve?</p>
-          <span className="action-btn" style={{ color: 'white' }}>Start Now →</span>
+          <h2>{t.speedRun}</h2>
+          <p>{t.speedRunDesc}</p>
+          <span className="action-btn" style={{ color: 'white' }}>{t.startNow}</span>
         </div>
 
         <div className="action-card" onClick={() => navigate('/leaderboard')} style={{ cursor: 'pointer' }}>
           <div className="action-icon">🏆</div>
-          <h2>Leaderboard</h2>
-          <p>See how you rank against other students</p>
-          <span className="action-btn">View Rankings →</span>
+          <h2>{t.leaderboard}</h2>
+          <p>{t.leaderboardDesc}</p>
+          <span className="action-btn">{t.viewRankings}</span>
         </div>
 
         {user?.role === 'admin' && (
           <div className="action-card action-card-admin" onClick={() => navigate('/admin')}>
             <div className="action-icon">⚙️</div>
-            <h2>Admin Panel</h2>
-            <p>Manage users and problems ({users.length} users)</p>
-            <span className="action-btn">Manage →</span>
+            <h2>{t.adminPanel}</h2>
+            <p>{t.adminPanelDesc(users.length)}</p>
+            <span className="action-btn">{t.manage}</span>
           </div>
         )}
       </div>
 
       <div className="mascot-section">
         <div className="mascot">🦊</div>
-        <div className="mascot-speech">
-          {totalProblems === 0
-            ? "Wow, you haven't practiced yet! Click 'Start Practice' to begin your math adventure!"
-            : overallAccuracy >= 80
-            ? "Amazing work! You're a math superstar! ⭐"
-            : overallAccuracy >= 50
-            ? "Great job! Keep practicing and you'll get even better! 💪"
-            : "Every practice makes you stronger! Keep going! 🌟"}
-        </div>
+        <div className="mascot-speech">{mascotMessage}</div>
       </div>
 
-      {/* Achievement Panel */}
       {achievements && (
         <div className="achievement-section" style={{ marginTop: '2rem' }}>
-          <h2 className="page-title" style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>🏆 成就</h2>
+          <h2 className="page-title" style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>{t.achievements}</h2>
           <div style={{ background: 'white', borderRadius: '1rem', padding: '1.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
             <p style={{ color: '#6b7280', marginBottom: '1rem', fontSize: '0.875rem' }}>
-              {achievements.earned_count} / {achievements.total_count} 已解锁
+              {t.earned(achievements.earned_count, achievements.total_count)}
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
               {achievements.achievements.map(ach => (

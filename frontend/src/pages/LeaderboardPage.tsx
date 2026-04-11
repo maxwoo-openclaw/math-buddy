@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getLeaderboard, getMyRank, type LeaderboardEntry, type LeaderboardResponse } from '../services/api';
+import { useLocale } from '../store/localeContext';
 import WeeklyResetBanner from '../components/gamification/WeeklyResetBanner';
 
 export default function LeaderboardPage() {
+  const { t } = useLocale();
   const navigate = useNavigate();
   const [filter, setFilter] = useState<'all' | 'weekly'>('all');
   const [data, setData] = useState<LeaderboardResponse | null>(null);
@@ -41,7 +43,7 @@ export default function LeaderboardPage() {
         >
           ←
         </button>
-        <h1 style={{ fontSize: '1.75rem', fontWeight: 'bold' }}>🏆 排行榜</h1>
+        <h1 style={{ fontSize: '1.75rem', fontWeight: 'bold' }}>{t.leaderboardTitle2}</h1>
       </div>
 
       {/* Filter Tabs */}
@@ -59,7 +61,7 @@ export default function LeaderboardPage() {
             color: filter === 'all' ? 'white' : '#374151',
           }}
         >
-          All-Time 總榜
+          {t.allTimeFilter}
         </button>
         <button
           onClick={() => setFilter('weekly')}
@@ -74,18 +76,18 @@ export default function LeaderboardPage() {
             color: filter === 'weekly' ? 'white' : '#374151',
           }}
         >
-          This Week 本週
+          {t.weeklyFilter}
         </button>
       </div>
 
       <WeeklyResetBanner filter={filter} />
 
       {loading ? (
-        <p style={{ textAlign: 'center', color: '#6b7280' }}>Loading...</p>
+        <p style={{ textAlign: 'center', color: '#6b7280' }}>{t.loading}</p>
       ) : data ? (
         <>
           <p style={{ color: '#6b7280', fontSize: '0.875rem', marginBottom: '1rem' }}>
-            {data.total_participants} 位學生參與
+            {data.total_participants} students participated
           </p>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>

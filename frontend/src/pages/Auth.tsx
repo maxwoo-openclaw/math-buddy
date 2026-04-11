@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../store/authContext';
+import { useLocale } from '../store/localeContext';
 
 export default function Auth() {
   const [isRegister, setIsRegister] = useState(false);
@@ -12,6 +13,7 @@ export default function Auth() {
   const [loading, setLoading] = useState(false);
 
   const { login, register } = useAuth();
+  const { t } = useLocale();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -26,7 +28,7 @@ export default function Auth() {
       }
       navigate('/dashboard');
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Something went wrong');
+      setError(err instanceof Error ? err.message : t.loginErrorGeneric);
     } finally {
       setLoading(false);
     }
@@ -35,64 +37,64 @@ export default function Auth() {
   return (
     <div className="auth-container">
       <div className="auth-icon">🎯</div>
-      <h1 className="auth-title">{isRegister ? 'Join MathBuddy! 🎉' : 'Welcome Back! 👋'}</h1>
+      <h1 className="auth-title">{isRegister ? t.joinMathbuddy : t.welcomeBack}</h1>
       <p className="auth-subtitle">
-        {isRegister ? 'Create your account and start learning!' : 'Ready to practice math?'}
+        {isRegister ? t.registerSubtitle : t.loginSubtitle}
       </p>
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Username</label>
+          <label>{t.username}</label>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            placeholder="Enter your username"
+            placeholder={t.enterUsername}
             required
           />
         </div>
 
         {isRegister && (
           <div className="form-group">
-            <label>Email</label>
+            <label>{t.email}</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
+              placeholder={t.enterEmail}
               required
             />
           </div>
         )}
 
         <div className="form-group">
-          <label>Password</label>
+          <label>{t.password}</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
+            placeholder={t.enterPassword}
             required
           />
         </div>
 
         {isRegister && (
           <div className="form-group">
-            <label>I am a...</label>
+            <label>{t.iAmA}</label>
             <div className="role-selector">
               <button
                 type="button"
                 className={`role-btn ${role === 'student' ? 'active' : ''}`}
                 onClick={() => setRole('student')}
               >
-                👧 Student
+                👧 {t.student}
               </button>
               <button
                 type="button"
                 className={`role-btn ${role === 'admin' ? 'active' : ''}`}
                 onClick={() => setRole('admin')}
               >
-                👩‍🏫 Teacher
+                👩‍🏫 {t.teacher}
               </button>
             </div>
           </div>
@@ -101,20 +103,20 @@ export default function Auth() {
         {error && <div className="error">{error}</div>}
 
         <button type="submit" className="btn btn-primary" disabled={loading}>
-          {loading ? '⏳ Please wait...' : isRegister ? 'Create Account 🚀' : 'Login 🎮'}
+          {loading ? t.pleaseWait : isRegister ? t.createAccount : `${t.login} 🎮`}
         </button>
       </form>
 
       <div className="auth-switch">
         {isRegister ? (
           <>
-            Already have an account?{' '}
-            <a href="#" onClick={() => setIsRegister(false)}>Login here</a>
+            {t.hasAccount}
+            <a href="#" onClick={() => setIsRegister(false)}>{t.loginLink}</a>
           </>
         ) : (
           <>
-            New here?{' '}
-            <a href="#" onClick={() => setIsRegister(true)}>Create an account</a>
+            {t.noAccount}
+            <a href="#" onClick={() => setIsRegister(true)}>{t.registerLink}</a>
           </>
         )}
       </div>

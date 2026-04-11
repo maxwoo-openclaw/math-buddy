@@ -2,24 +2,26 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { startSession, getNextProblem, submitAnswer, completeSession, getSessionStats, recordWeakness, getWeaknesses } from '../services/api';
 import { playSound } from '../utils/sound';
+import { useLocale } from '../store/localeContext';
 import type { ProblemDTO, AnswerResult, SessionStats } from '../types';
 
-const OPERATIONS = [
-  { symbol: '+', label: 'Addition', icon: '➕' },
-  { symbol: '-', label: 'Subtraction', icon: '➖' },
-  { symbol: '*', label: 'Multiplication', icon: '✖️' },
-  { symbol: '/', label: 'Division', icon: '➗' },
+const OPERATIONS = (t: ReturnType<typeof useLocale>['t']) => [
+  { symbol: '+', label: t.addition, icon: '➕' },
+  { symbol: '-', label: t.subtraction, icon: '➖' },
+  { symbol: '*', label: t.multiplication, icon: '✖️' },
+  { symbol: '/', label: t.division, icon: '➗' },
 ];
 
-const DIFFICULTIES = [
-  { value: 'easy', label: 'Easy', icon: '🌟', color: '#4CAF50' },
-  { value: 'medium', label: 'Medium', icon: '🌙', color: '#FF9800' },
-  { value: 'hard', label: 'Hard', icon: '🔥', color: '#f44336' },
+const DIFFICULTIES = (t: ReturnType<typeof useLocale>['t']) => [
+  { value: 'easy', label: t.easy, icon: '🌟', color: '#4CAF50' },
+  { value: 'medium', label: t.medium, icon: '🌙', color: '#FF9800' },
+  { value: 'hard', label: t.hard, icon: '🔥', color: '#f44336' },
 ];
 
 const PROBLEMS_PER_SESSION = 10;
 
 export default function Practice() {
+  const { t } = useLocale();
   const [sessionId, setSessionId] = useState<number | null>(null);
   const [currentProblem, setCurrentProblem] = useState<ProblemDTO | null>(null);
   const [answer, setAnswer] = useState('');
@@ -120,7 +122,7 @@ export default function Practice() {
 
       setFeedback({
         correct: isCorrect,
-        message: isCorrect ? '🎉 Correct! Amazing!' : `❌ Oops! The answer was ${result.correct_answer}`,
+        message: isCorrect ? t.correct : t.incorrect(result.correct_answer),
       });
 
       setScore((s) => ({
@@ -153,7 +155,7 @@ export default function Practice() {
             if (res.weakness_confirmed) {
               const w = res.weakness;
               setWeaknessAlert(
-                `💡 提示：你對「${w.operation} · ${w.question.replace(' = ?', '')}」比較陌生，係時候多啲練習！`
+                `💡 ${t.focusMode} — ${w.operation} · ${w.question.replace(' = ?', '')}`
               );
               // Suggest dropping difficulty if currently hard
               if (difficulty === 'hard') {
@@ -243,7 +245,7 @@ export default function Practice() {
           <div className="complete-icon">
             {stars === 3 ? '🏆' : stars === 2 ? '🌟' : '💪'}
           </div>
-          <h2 className="complete-title">Session Complete!</h2>
+          <h2 className="complete-title">{t.sessionComplete}</h2>
           <div className="stars-display">
             {[1, 2, 3].map((i) => (
               <span key={i} className={`star ${i <= stars ? 'earned' : 'empty'}`}>
@@ -258,17 +260,17 @@ export default function Practice() {
           </div>
           <p className="complete-message">
             {stars === 3
-              ? "PERFECT! You're a math champion! 🏆"
+              ? `${t.mascotGreat}`
               : stars === 2
-              ? 'Great job! Keep up the fantastic work! 🌟'
-              : 'Good effort! Practice makes perfect! 💪'}
+              ? `${t.mascotGood}`
+              : `${t.mascotKeepGoing}`}
           </p>
           <div className="complete-actions">
             <button className="btn btn-primary" onClick={handleStartSession}>
-              Practice Again! 🔄
+              {t.practiceAgain} 🔄
             </button>
             <button className="btn btn-secondary" onClick={() => navigate('/dashboard')}>
-              Back to Dashboard 🏠
+              {t.backToDashboard} 🏠
             </button>
           </div>
         </div>
@@ -280,8 +282,8 @@ export default function Practice() {
   if (!sessionId) {
     return (
       <div className="practice-container">
-        <h1 className="page-title">🧮 Practice Mode</h1>
-        <p className="practice-intro">Choose your challenge settings and start practicing!</p>
+        <h1 className="page-title">🧮 {t.startPractice}</h1>
+        <p className="practice-intro">{t.selectFiltersFirst}</p>
 
         <div className="practice-card">
           {focusMode.length > 0 && (
@@ -289,7 +291,7 @@ export default function Practice() {
               <h3>🎯 Focus Mode</h3>
               <div style={{ background: '#fff8e1', borderRadius: '0.75rem', padding: '0.75rem', marginBottom: '0.5rem' }}>
                 <p style={{ fontSize: '0.8rem', color: '#e65100', marginBottom: '0.5rem' }}>
-                  🔥 針對你的弱點練習 {focusMode.length} 個題型
+                  {t.focusMode} ({focusMode.length} {t.focusProgress(focusIndex, focusMode.length).split(' ')[2] || 'pairs'})
                 </p>
                 <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                   {focusMode.map((f, i) => (
@@ -307,7 +309,7 @@ export default function Practice() {
                 </div>
                 {focusIndex < focusMode.length && (
                   <p style={{ fontSize: '0.7rem', color: '#999', marginTop: '0.25rem' }}>
-                    已練習 {focusIndex}/{focusMode.length}
+                    {t.focusProgress(focusIndex, focusMode.length)}
                   </p>
                 )}
               </div>
@@ -315,9 +317,9 @@ export default function Practice() {
           )}
 
           <div className="setup-section">
-            <h3>🎯 Operation</h3>
+            <h3>🎯 {t.selectOperation}</h3>
             <div className="operation-grid">
-              {OPERATIONS.map((op) => (
+              {OPERATIONS(t).map((op) => (
                 <button
                   key={op.symbol}
                   className={`op-btn ${operation === op.symbol ? 'active' : ''}`}
@@ -331,9 +333,9 @@ export default function Practice() {
           </div>
 
           <div className="setup-section">
-            <h3>⚡ Difficulty</h3>
+            <h3>⚡ {t.selectDifficulty}</h3>
             <div className="difficulty-grid">
-              {DIFFICULTIES.map((d) => (
+              {DIFFICULTIES(t).map((d) => (
                 <button
                   key={d.value}
                   className={`diff-btn ${difficulty === d.value ? 'active' : ''}`}
@@ -348,7 +350,7 @@ export default function Practice() {
           </div>
 
           <button className="btn btn-success btn-start" onClick={handleStartSession} disabled={loading}>
-            {loading ? 'Starting...' : `Start ${PROBLEMS_PER_SESSION} Problems! 🚀`}
+            {loading ? t.pleaseWait : `${t.start} 🚀`}
           </button>
         </div>
       </div>
@@ -360,7 +362,7 @@ export default function Practice() {
     <div className="practice-container">
       <div className="practice-header">
         <div className="practice-progress">
-          <span>Problem {problemNumber} of {PROBLEMS_PER_SESSION}</span>
+          <span>{t.problemOf(problemNumber)}</span>
           <div className="progress-bar">
             <div
               className="progress-fill"
@@ -369,11 +371,11 @@ export default function Practice() {
           </div>
         </div>
         <div className="score-display">
-          Score: <strong>{score.correct}</strong> / <strong>{score.total}</strong>
+          {t.accuracy}: <strong>{score.correct}</strong> / <strong>{score.total}</strong>
         </div>
         {correctStreak >= 3 && (
           <div className="score-display" style={{ color: '#ff9800' }}>
-            🔥 連續 {correctStreak} 題！
+            🔥 {correctStreak} in a row!
           </div>
         )}
       </div>
@@ -381,13 +383,13 @@ export default function Practice() {
       {operation && difficulty && (
         <div className="current-filters">
           <span className="filter-badge">
-            {OPERATIONS.find((o) => o.symbol === operation)?.icon} {OPERATIONS.find((o) => o.symbol === operation)?.label}
+            {OPERATIONS(t).find((o) => o.symbol === operation)?.icon} {OPERATIONS(t).find((o) => o.symbol === operation)?.label}
           </span>
           <span
             className="filter-badge"
-            style={{ background: DIFFICULTIES.find((d) => d.value === difficulty)?.color }}
+            style={{ background: DIFFICULTIES(t).find((d) => d.value === difficulty)?.color }}
           >
-            {DIFFICULTIES.find((d) => d.value === difficulty)?.icon} {DIFFICULTIES.find((d) => d.value === difficulty)?.label}
+            {DIFFICULTIES(t).find((d) => d.value === difficulty)?.icon} {DIFFICULTIES(t).find((d) => d.value === difficulty)?.label}
           </span>
         </div>
       )}
@@ -413,7 +415,7 @@ export default function Practice() {
                 className="btn btn-success btn-answer"
                 disabled={loading || answer === '' || isSubmitting}
               >
-                Check Answer! ✅
+                {t.submit} ✅
               </button>
             </form>
 

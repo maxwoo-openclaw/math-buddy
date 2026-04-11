@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './store/authContext';
 import { ThemeProvider } from './store/themeContext';
+import { LocaleProvider } from './store/localeContext';
 import Auth from './pages/Auth';
 import Dashboard from './pages/Dashboard';
 import Practice from './pages/Practice';
@@ -35,6 +36,7 @@ function ParentRoute({ children }: { children: React.ReactNode }) {
 function App() {
   return (
     <ThemeProvider>
+    <LocaleProvider>
     <div className="app">
       <Routes>
         <Route path="/auth" element={<Auth />} />
@@ -90,6 +92,7 @@ function App() {
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </div>
+    </LocaleProvider>
     </ThemeProvider>
   );
 }

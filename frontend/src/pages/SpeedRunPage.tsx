@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { submitSpeedRun, getBestSpeedRun, getSpeedRunLeaderboard, getNextProblem } from '../services/api';
+import { useLocale } from '../store/localeContext';
 import type { ProblemDTO } from '../types';
 
 const TIME_LIMITS = [
@@ -33,6 +34,7 @@ function getOperationLabel(symbol: string): string {
 }
 
 export default function SpeedRunPage() {
+  const { t } = useLocale();
   const navigate = useNavigate();
   const [phase, setPhase] = useState<'select' | 'countdown' | 'playing' | 'result'>('select');
   const [timeLimit, setTimeLimit] = useState<60 | 120>(60);
@@ -191,7 +193,7 @@ export default function SpeedRunPage() {
       {/* Phase: Select Time Limit */}
       {phase === 'select' && (
         <div className="card" style={{ textAlign: 'center', padding: '2rem' }}>
-          <h3 style={{ marginBottom: '1.5rem' }}>選擇時間挑戰</h3>
+          <h3 style={{ marginBottom: '1.5rem' }}>{t.selectTimeChallenge}</h3>
           <div className="flex-center gap-1" style={{ marginBottom: '2rem' }}>
             {TIME_LIMITS.map((tl) => (
               <button
@@ -212,15 +214,15 @@ export default function SpeedRunPage() {
           {/* Best Score */}
           {(best60 || best120) && (
             <div style={{ marginBottom: '1.5rem' }}>
-              <h4 style={{ marginBottom: '0.5rem' }}>🏆 最佳成績</h4>
+              <h4 style={{ marginBottom: '0.5rem' }}>{t.bestScore}</h4>
               {best60 && (
                 <div className="stat-chip" style={{ marginBottom: '0.5rem' }}>
-                  60秒: {best60.score} 題 (準確率 {best60.accuracy}%)
+                  {t.seconds(60)}: {best60.score} 題 ({t.accuracyLabel} {best60.accuracy}%)
                 </div>
               )}
               {best120 && (
                 <div className="stat-chip">
-                  120秒: {best120.score} 題 (準確率 {best120.accuracy}%)
+                  {t.seconds(120)}: {best120.score} 題 ({t.accuracyLabel} {best120.accuracy}%)
                 </div>
               )}
             </div>
@@ -228,9 +230,9 @@ export default function SpeedRunPage() {
 
           {/* Leaderboard Preview */}
           <div style={{ marginBottom: '2rem' }}>
-            <h4 style={{ marginBottom: '0.5rem' }}>📊 {timeLimit}秒排行榜</h4>
+            <h4 style={{ marginBottom: '0.5rem' }}>{t.leaderboardTitle} {t.seconds(timeLimit)}</h4>
             {leaderboard.length === 0 ? (
-              <div style={{ color: '#888', fontSize: '0.9rem' }}>暫時沒有記錄</div>
+              <div style={{ color: '#888', fontSize: '0.9rem' }}>{t.noRecords}</div>
             ) : (
               <div style={{ textAlign: 'left', maxWidth: 300, margin: '0 auto' }}>
                 {leaderboard.slice(0, 5).map((entry, i) => (
@@ -249,7 +251,7 @@ export default function SpeedRunPage() {
             className="btn-primary"
             style={{ padding: '1rem 3rem', fontSize: '1.2rem' }}
           >
-            開始挑戰！
+            {t.startChallenge}
           </button>
         </div>
       )}
@@ -260,7 +262,7 @@ export default function SpeedRunPage() {
           <div style={{ fontSize: '5rem', fontWeight: 'bold', color: '#FF9800' }}>
             {countdown}
           </div>
-          <div style={{ marginTop: '1rem', color: '#888' }}>準備好了嗎？</div>
+          <div style={{ marginTop: '1rem', color: '#888' }}>{t.getReady}</div>
         </div>
       )}
 
@@ -278,7 +280,7 @@ export default function SpeedRunPage() {
             >
               {formatTime(timeLeft)}
             </div>
-            <div className="stat-chip">已答 {problemCount} 題 | 正確 {score} 題</div>
+            <div className="stat-chip">{t.problemsAnswered} {problemCount} | {t.correctShort} {score}</div>
           </div>
 
           {/* Problem */}
@@ -301,7 +303,7 @@ export default function SpeedRunPage() {
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
               className="answer-input"
-              placeholder="輸入答案"
+              placeholder={t.yourAnswer}
               autoFocus
               style={{
                 fontSize: '2rem',
@@ -315,7 +317,7 @@ export default function SpeedRunPage() {
               className="btn-primary"
               style={{ marginLeft: '0.5rem', padding: '0.75rem 1.5rem' }}
             >
-              回答
+              {t.submit}
             </button>
           </form>
 
@@ -337,15 +339,15 @@ export default function SpeedRunPage() {
       {/* Phase: Result */}
       {phase === 'result' && lastResult && (
         <div className="card" style={{ textAlign: 'center', padding: '2rem' }}>
-          <h3 style={{ marginBottom: '1rem' }}>🎉 挑戰完成！</h3>
+          <h3 style={{ marginBottom: '1rem' }}>{t.challengeComplete}</h3>
 
           <div style={{ fontSize: '4rem', fontWeight: 'bold', color: '#FF9800', margin: '1rem 0' }}>
             {lastResult.score} 題
           </div>
 
           <div className="flex-center gap-1" style={{ justifyContent: 'center', marginBottom: '1.5rem' }}>
-            <div className="stat-chip">準確率 {lastResult.accuracy}%</div>
-            <div className="stat-chip">用時 {lastResult.time_taken_seconds || timeLimit}秒</div>
+            <div className="stat-chip">{t.accuracyLabel} {lastResult.accuracy}%</div>
+            <div className="stat-chip">{t.timeTaken} {lastResult.time_taken_seconds || timeLimit}{t.secondsUnit}</div>
           </div>
 
           {/* New Best */}
@@ -362,9 +364,9 @@ export default function SpeedRunPage() {
 
           {/* Leaderboard */}
           <div style={{ marginBottom: '1.5rem' }}>
-            <h4 style={{ marginBottom: '0.5rem' }}>📊 {timeLimit}秒排行榜</h4>
+            <h4 style={{ marginBottom: '0.5rem' }}>{t.leaderboardTitle} {t.seconds(timeLimit)}</h4>
             {leaderboard.length === 0 ? (
-              <div style={{ color: '#888' }}>暫時沒有記錄</div>
+              <div style={{ color: '#888' }}>{t.noRecords}</div>
             ) : (
               <div style={{ textAlign: 'left', maxWidth: 300, margin: '0 auto' }}>
                 {leaderboard.map((entry, i) => (
@@ -386,10 +388,10 @@ export default function SpeedRunPage() {
 
           <div className="flex-center gap-1" style={{ justifyContent: 'center' }}>
             <button onClick={() => setPhase('select')} className="btn-secondary">
-              返回
+              {t.back}
             </button>
             <button onClick={startCountdown} className="btn-primary">
-              再來一次！
+              {t.tryAgain}
             </button>
           </div>
         </div>
