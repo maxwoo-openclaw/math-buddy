@@ -10,8 +10,14 @@ from app.models.models import PracticeSession
 
 
 CHALLENGE_TITLES = [
-    "🎯 精準挑戰", "⚡ 速度之戰", "🧮 數學馬拉松", "🌟 智慧考驗",
-    "🔥 熱身行動", "💪 刻苦訓練", "🏆 冠軍之路", "🧠 頭腦風暴",
+    ("🎯 精準挑戰", "🎯 Precision Challenge"),
+    ("⚡ 速度之戰", "⚡ Speed Battle"),
+    ("🧮 數學馬拉松", "🧮 Math Marathon"),
+    ("🌟 智慧考驗", "🌟 Wisdom Test"),
+    ("🔥 熱身行動", "🔥 Warm-Up Drill"),
+    ("💪 刻苦訓練", "💪 Intensive Training"),
+    ("🏆 冠軍之路", "🏆 Champion's Journey"),
+    ("🧠 頭腦風暴", "🧠 Brainstorm"),
 ]
 
 
@@ -92,9 +98,10 @@ class GamificationService:
             return challenge
 
         # Generate new challenge
+        pair = random.choice(CHALLENGE_TITLES)
         challenge = DailyChallenge(
             target_date=today_str,
-            title=random.choice(CHALLENGE_TITLES),
+            title=pair[0],
             description="每日數學挑戰，等你嚟挑戰！",
             total_problems=10,
         )
@@ -158,6 +165,7 @@ class GamificationService:
                 "id": challenge.id,
                 "target_date": challenge.target_date,
                 "title": challenge.title,
+                "title_en": next((pair[1] for pair in CHALLENGE_TITLES if pair[0] == challenge.title), None),
                 "description": challenge.description,
                 "total_problems": challenge.total_problems,
             },

@@ -271,6 +271,7 @@ export interface DailyChallengeStatus {
     id: number;
     target_date: string;
     title: string;
+    title_en?: string;
     description: string;
     total_problems: number;
   };

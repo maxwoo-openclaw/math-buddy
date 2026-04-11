@@ -32,7 +32,7 @@ export default function DailyChallengeCard({ status, onStart }: Props) {
           <div style={{ fontWeight: 700, fontSize: '1.1rem' }}>
             {t.dailyChallenge || 'Daily Challenge'}
           </div>
-          <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>{status.challenge.title}</div>
+          <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>{status.challenge.title_en || status.challenge.title}</div>
         </div>
       </div>
 
