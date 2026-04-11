@@ -17,14 +17,16 @@ function StudentInviteCodeCard() {
   const { t } = useLocale();
   const [code, setCode] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const generate = async () => {
     setLoading(true);
+    setError('');
     try {
       const data = await parentApi.generateInviteCode();
       setCode(data.invite_code);
-    } catch (e) {
-      console.error(e);
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : String(e));
     } finally {
       setLoading(false);
     }
@@ -74,6 +76,7 @@ function StudentInviteCodeCard() {
           {loading ? (t.pleaseWait || '...') : (t.generateCode || 'Generate Invite Code')}
         </button>
       )}
+      {error && <div style={{ color: '#ff6b6b', marginTop: '0.5rem', fontSize: '0.85rem' }}>⚠️ {error}</div>}
     </div>
   );
 }
