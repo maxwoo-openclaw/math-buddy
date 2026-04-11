@@ -52,35 +52,31 @@ class SpeedRunService:
         return result.scalar_one_or_none()
 
     async def get_leaderboard(self, time_limit_seconds: int, limit: int = 10) -> list:
-        from sqlalchemy import func, distinct, over
-        from sqlalchemy.orm import aliased
-
-        # Window function: rank each user's runs by score desc, time asc
-        ranked_subq = (
+        # Each user appears only once — their best score.
+        # Tiebreaker: fastest time.
+        best = (
             select(
-                SpeedRunResult.id,
                 SpeedRunResult.user_id,
-                User.username,
-                SpeedRunResult.score,
-                over(
-                    func.row_number().over(
-                        partition_by=SpeedRunResult.user_id,
-                        order_by=[SpeedRunResult.score.desc(), SpeedRunResult.time_taken_seconds.asc().nullslast()]
-                    ).label("rank")
-                ),
+                sql_func.max(SpeedRunResult.score).label("best_score"),
             )
-            .join(User, SpeedRunResult.user_id == User.id)
             .where(SpeedRunResult.time_limit_seconds == time_limit_seconds)
-            .subquery()
-        )
+            .group_by(SpeedRunResult.user_id)
+        ).subquery()
+
         result = await self.db.execute(
             select(
-                ranked_subq.c.user_id,
-                ranked_subq.c.username,
-                ranked_subq.c.score,
+                SpeedRunResult.user_id,
+                User.username,
+                sql_func.max(SpeedRunResult.score).label("best_score"),
             )
-            .where(ranked_subq.c.rank == 1)
-            .order_by(ranked_subq.c.score.desc())
+            .join(User, SpeedRunResult.user_id == User.id)
+            .join(best, SpeedRunResult.user_id == best.c.user_id)
+            .where(
+                SpeedRunResult.time_limit_seconds == time_limit_seconds,
+                SpeedRunResult.score == best.c.best_score,
+            )
+            .group_by(SpeedRunResult.user_id, User.username)
+            .order_by(sql_func.max(SpeedRunResult.score).desc())
             .limit(limit)
         )
         return result.all()
