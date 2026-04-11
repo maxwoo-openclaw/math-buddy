@@ -74,6 +74,7 @@ export const zhTW = {
   // Practice
   selectOperation: '選擇運算',
   selectDifficulty: '選擇難度',
+  selected: '已選擇',
   addition: '加法',
   subtraction: '減法',
   multiplication: '乘法',

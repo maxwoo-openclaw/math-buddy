@@ -74,6 +74,7 @@ export const en = {
   // Practice
   selectOperation: 'Select Operation',
   selectDifficulty: 'Select Difficulty',
+  selected: '✓ Selected',
   addition: 'Addition',
   subtraction: 'Subtraction',
   multiplication: 'Multiplication',

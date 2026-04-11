@@ -11,6 +11,12 @@ const TIME_LIMITS = [
 
 const OPERATIONS = ['+', '-', '*', '/'];
 
+const DIFFICULTIES = [
+  { value: 'easy', label: 'easy', icon: '🌟', color: '#4CAF50' },
+  { value: 'medium', label: 'medium', icon: '🌙', color: '#FF9800' },
+  { value: 'hard', label: 'hard', icon: '🔥', color: '#f44336' },
+];
+
 /** Parse operands from a question string like "7 × 8 = ?" or "15 ÷ 3 = ?" */
 function parseOperands(question: string): { operation: string; operandA: number; operandB: number } | null {
   const match = question.match(/^\s*([\d.]+)\s*([×÷+\-*])\s*([\d.]+)\s*=\s*\?\s*$/);
@@ -38,11 +44,13 @@ export default function SpeedRunPage() {
   const navigate = useNavigate();
   const [phase, setPhase] = useState<'select' | 'countdown' | 'playing' | 'result'>('select');
   const [timeLimit, setTimeLimit] = useState<60 | 120>(60);
+  const [difficulty, setDifficulty] = useState<string>('medium');
 
   // Use refs for values needed inside timer/setTimeout closures (always fresh)
   const scoreRef = useRef(0);
   const problemCountRef = useRef(0);
   const timeLimitRef = useRef<60 | 120>(60);
+  const difficultyRef = useRef('medium');
   const [timeLeft, setTimeLeft] = useState(60);
   const [score, setScore] = useState(0);
   const [currentProblem, setCurrentProblem] = useState<ProblemDTO | null>(null);
@@ -106,6 +114,7 @@ export default function SpeedRunPage() {
     scoreRef.current = 0;
     problemCountRef.current = 0;
     timeLimitRef.current = timeLimit;
+    difficultyRef.current = difficulty;
     startTimeRef.current = Date.now();
     await loadNextProblem();
   };
@@ -113,7 +122,7 @@ export default function SpeedRunPage() {
   const loadNextProblem = async () => {
     try {
       const op = OPERATIONS[Math.floor(Math.random() * OPERATIONS.length)];
-      const problem = await getNextProblem(op, 'medium');
+      const problem = await getNextProblem(op, difficultyRef.current);
       setCurrentProblem(problem);
       setAnswer('');
       setFeedback(null);
@@ -234,8 +243,24 @@ export default function SpeedRunPage() {
                 <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{tl.icon}</div>
                 <div>{tl.label}</div>
                 {timeLimit === tl.value && (
-                  <div style={{ fontSize: '0.8rem', color: '#4CAF50', marginTop: '0.25rem' }}>已選擇</div>
+                  <div style={{ fontSize: '0.8rem', color: '#4CAF50', marginTop: '0.25rem' }}>{(t as unknown as Record<string, string>).selected || '✓ Selected'}</div>
                 )}
+              </button>
+            ))}
+          </div>
+
+          {/* Difficulty Selector */}
+          <h4 style={{ marginBottom: '0.75rem' }}>{t.selectDifficulty || 'Select Difficulty'}</h4>
+          <div className="flex-center gap-1" style={{ marginBottom: '2rem' }}>
+            {DIFFICULTIES.map((d) => (
+              <button
+                key={d.value}
+                onClick={() => { setDifficulty(d.value); difficultyRef.current = d.value; }}
+                className={`diff-btn ${difficulty === d.value ? 'active' : ''}`}
+                style={difficulty === d.value ? { background: d.color, borderColor: d.color } : {}}
+              >
+                <span className="diff-icon">{d.icon}</span>
+                <span className="diff-label">{(t as unknown as Record<string, string>)[d.value] || d.label}</span>
               </button>
             ))}
           </div>
@@ -322,7 +347,11 @@ export default function SpeedRunPage() {
             >
               {formatTime(timeLeft)}
             </div>
-            <div className="stat-chip">{t.problemsAnswered} {problemCount} | {t.correctShort} {score}</div>
+            <div className="stat-chip" style={{ marginBottom: '0.5rem' }}>{t.problemsAnswered} {problemCount} | {t.correctShort} {score}</div>
+            <div className="stat-chip">
+              {DIFFICULTIES.find(d => d.value === difficulty)?.icon}{' '}
+              {(t as unknown as Record<string, string>)[difficulty] || difficulty}
+            </div>
           </div>
 
           {/* Problem */}
