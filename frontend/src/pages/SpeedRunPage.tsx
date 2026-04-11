@@ -260,7 +260,7 @@ export default function SpeedRunPage() {
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
         <button onClick={() => navigate('/dashboard')} className="btn-secondary">← {t.back}</button>
-        <h2 style={{ margin: 0 }}>⚡ {t.speedRun}</h2>
+        <h2 style={{ margin: 0 }}>{t.speedRun}</h2>
         <div style={{ display: 'flex', gap: '0.5rem' }}>
           <button onClick={toggleTheme} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '18px', padding: '4px 8px' }} title="Toggle dark mode">{theme === 'dark' ? '☀️' : '🌙'}</button>
           <button onClick={() => setLocale(locale === 'en' ? 'zhTW' : 'en')} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', fontWeight: 700, padding: '4px 8px', color: '#666' }} title="Toggle language">{locale === 'en' ? '中文' : 'EN'}</button>
