@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { submitSpeedRun, getBestSpeedRun, getSpeedRunLeaderboard, getNextProblem } from '../services/api';
 import { useLocale } from '../store/localeContext';
@@ -38,6 +38,11 @@ export default function SpeedRunPage() {
   const navigate = useNavigate();
   const [phase, setPhase] = useState<'select' | 'countdown' | 'playing' | 'result'>('select');
   const [timeLimit, setTimeLimit] = useState<60 | 120>(60);
+
+  // Use refs for values needed inside timer/setTimeout closures (always fresh)
+  const scoreRef = useRef(0);
+  const problemCountRef = useRef(0);
+  const timeLimitRef = useRef<60 | 120>(60);
   const [timeLeft, setTimeLeft] = useState(60);
   const [score, setScore] = useState(0);
   const [currentProblem, setCurrentProblem] = useState<ProblemDTO | null>(null);
@@ -72,6 +77,7 @@ export default function SpeedRunPage() {
 
   const selectTimeLimit = (limit: 60 | 120) => {
     setTimeLimit(limit);
+    timeLimitRef.current = limit;
     setTimeLeft(limit);
     loadLeaderboard(limit);
   };
@@ -97,6 +103,9 @@ export default function SpeedRunPage() {
     setAnswer('');
     setFeedback(null);
     setTimeLeft(timeLimit);
+    scoreRef.current = 0;
+    problemCountRef.current = 0;
+    timeLimitRef.current = timeLimit;
     startTimeRef.current = Date.now();
     await loadNextProblem();
   };
@@ -114,13 +123,14 @@ export default function SpeedRunPage() {
     }
   };
 
-  // Timer effect
+  // Timer effect — reads refs so always calls endGame with fresh values
   useEffect(() => {
     if (phase !== 'playing') return;
     timerRef.current = setInterval(() => {
       setTimeLeft((t) => {
         if (t <= 1) {
-          endGame();
+          // endGame reads from refs, always fresh
+          doEndGame();
           return 0;
         }
         return t - 1;
@@ -131,31 +141,34 @@ export default function SpeedRunPage() {
     };
   }, [phase]);
 
-  const endGame = useCallback(async () => {
+  const doEndGame = async () => {
     if (timerRef.current) clearInterval(timerRef.current);
     setPhase('result');
     const timeTaken = Math.floor((Date.now() - startTimeRef.current) / 1000);
+    const currentScore = scoreRef.current;
+    const currentProblems = problemCountRef.current;
+    const currentLimit = timeLimitRef.current;
     try {
       const result = await submitSpeedRun({
-        time_limit_seconds: timeLimit,
-        score,
-        total_problems: problemCount,
+        time_limit_seconds: currentLimit,
+        score: currentScore,
+        total_problems: currentProblems,
         time_taken_seconds: timeTaken,
       });
       setLastResult(result);
       // Refresh best score
-      if (timeLimit === 60) {
+      if (currentLimit === 60) {
         const best = await getBestSpeedRun(60);
         setBest60(best);
       } else {
         const best = await getBestSpeedRun(120);
         setBest120(best);
       }
-      loadLeaderboard(timeLimit);
+      loadLeaderboard(currentLimit);
     } catch (err) {
       console.error('Failed to submit result:', err);
     }
-  }, [score, problemCount, timeLimit]);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -174,11 +187,13 @@ export default function SpeedRunPage() {
     const isCorrect = userNum === correctAnswer;
     if (isCorrect) {
       setScore((s) => s + 1);
+      scoreRef.current += 1;
       setFeedback({ correct: true, message: '✅' });
     } else {
       setFeedback({ correct: false, message: `❌ 答案是 ${correctAnswer}` });
     }
     setProblemCount((c) => c + 1);
+    problemCountRef.current += 1;
     setTimeout(() => {
       loadNextProblem();
     }, 400);
