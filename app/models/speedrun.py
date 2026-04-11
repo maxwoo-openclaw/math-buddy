@@ -10,6 +10,7 @@ class SpeedRunResult(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     time_limit_seconds = Column(Integer, nullable=False)  # 60 | 120
+    difficulty = Column(String, nullable=False)  # 'easy' | 'medium' | 'hard'
     score = Column(Integer, default=0)  # problems solved
     total_problems = Column(Integer, default=0)
     accuracy = Column(Integer, default=0)  # percentage 0-100

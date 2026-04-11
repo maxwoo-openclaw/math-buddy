@@ -159,24 +159,25 @@ export const getWeaknesses = (limit = 5) =>
 
 export const submitSpeedRun = (data: {
   time_limit_seconds: number;
+  difficulty: string;
   score: number;
   total_problems: number;
   time_taken_seconds: number;
 }) =>
-  request<{ id: number; time_limit_seconds: number; score: number; total_problems: number; accuracy: number; time_taken_seconds: number }>('/gamification/speed-run/submit', {
+  request<{ id: number; time_limit_seconds: number; difficulty: string; score: number; total_problems: number; accuracy: number; time_taken_seconds: number }>('/gamification/speed-run/submit', {
     method: 'POST',
     body: data,
   });
 
-export const getBestSpeedRun = (timeLimit: 60 | 120) =>
-  request<any>(`/gamification/speed-run/best?time_limit=${timeLimit}`);
+export const getBestSpeedRun = (timeLimit: 60 | 120, difficulty: string) =>
+  request<any>(`/gamification/speed-run/best?time_limit=${timeLimit}&difficulty=${difficulty}`);
 
-export const getSpeedRunLeaderboard = (timeLimit: 60 | 120, limit = 10) =>
+export const getSpeedRunLeaderboard = (timeLimit: 60 | 120, difficulty: string, limit = 10) =>
   request<{
     leaderboard: { user_id: number; username: string; score: number }[];
     my_rank: number | null;
     total_participants: number;
-  }>(`/gamification/speed-run/leaderboard?time_limit=${timeLimit}&limit=${limit}`);
+  }>(`/gamification/speed-run/leaderboard?time_limit=${timeLimit}&difficulty=${difficulty}&limit=${limit}`);
 
 // ─── Types ──────────────────────────────────────────────────────
 

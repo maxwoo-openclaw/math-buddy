@@ -23,6 +23,7 @@ class SpeedRunService:
         self,
         user_id: int,
         time_limit_seconds: int,
+        difficulty: str,
         score: int,
         total_problems: int,
         time_taken_seconds: Optional[int] = None,
@@ -31,6 +32,7 @@ class SpeedRunService:
         result = SpeedRunResult(
             user_id=user_id,
             time_limit_seconds=time_limit_seconds,
+            difficulty=difficulty,
             score=score,
             total_problems=total_problems,
             accuracy=accuracy,
@@ -41,25 +43,30 @@ class SpeedRunService:
         await self.db.refresh(result)
         return result
 
-    async def get_best_result(self, user_id: int, time_limit_seconds: int) -> Optional[SpeedRunResult]:
+    async def get_best_result(
+        self, user_id: int, time_limit_seconds: int, difficulty: str
+    ) -> Optional[SpeedRunResult]:
         result = await self.db.execute(
             select(SpeedRunResult)
             .where(SpeedRunResult.user_id == user_id)
             .where(SpeedRunResult.time_limit_seconds == time_limit_seconds)
+            .where(SpeedRunResult.difficulty == difficulty)
             .order_by(SpeedRunResult.score.desc())
             .limit(1)
         )
         return result.scalar_one_or_none()
 
-    async def get_leaderboard(self, time_limit_seconds: int, limit: int = 10) -> list:
-        # Each user appears only once — their best score.
-        # Tiebreaker: fastest time.
+    async def get_leaderboard(
+        self, time_limit_seconds: int, difficulty: str, limit: int = 10
+    ) -> list:
+        # Each user appears once — best score for this (time_limit + difficulty).
         best = (
             select(
                 SpeedRunResult.user_id,
                 sql_func.max(SpeedRunResult.score).label("best_score"),
             )
             .where(SpeedRunResult.time_limit_seconds == time_limit_seconds)
+            .where(SpeedRunResult.difficulty == difficulty)
             .group_by(SpeedRunResult.user_id)
         ).subquery()
 
@@ -73,6 +80,7 @@ class SpeedRunService:
             .join(best, SpeedRunResult.user_id == best.c.user_id)
             .where(
                 SpeedRunResult.time_limit_seconds == time_limit_seconds,
+                SpeedRunResult.difficulty == difficulty,
                 SpeedRunResult.score == best.c.best_score,
             )
             .group_by(SpeedRunResult.user_id, User.username)
@@ -81,7 +89,9 @@ class SpeedRunService:
         )
         return result.all()
 
-    async def get_user_rank(self, user_id: int, time_limit_seconds: int) -> int | None:
+    async def get_user_rank(
+        self, user_id: int, time_limit_seconds: int, difficulty: str
+    ) -> int | None:
         """Get the rank of a specific user (1-indexed)."""
         best_subq = (
             select(
@@ -89,25 +99,29 @@ class SpeedRunService:
                 sql_func.max(SpeedRunResult.score).label("best_score"),
             )
             .where(SpeedRunResult.time_limit_seconds == time_limit_seconds)
+            .where(SpeedRunResult.difficulty == difficulty)
             .group_by(SpeedRunResult.user_id)
-            .subquery()
-        )
+        ).subquery()
         result = await self.db.execute(
             select(sql_func.count())
             .select_from(best_subq)
-            .where(best_subq.c.best_score > (
-                select(best_subq.c.best_score)
+            .where(
+                best_subq.c.best_score
+                > select(best_subq.c.best_score)
                 .where(best_subq.c.user_id == user_id)
-            ))
+            )
         )
         rank = result.scalar()
         return (rank + 1) if rank is not None else None
 
-    async def get_total_participants(self, time_limit_seconds: int) -> int:
-        """Count unique users who have a score for this time limit."""
+    async def get_total_participants(
+        self, time_limit_seconds: int, difficulty: str
+    ) -> int:
+        """Count unique users who have a score for this (time_limit + difficulty)."""
         result = await self.db.execute(
             select(sql_func.count(sql_func.distinct(SpeedRunResult.user_id)))
             .where(SpeedRunResult.time_limit_seconds == time_limit_seconds)
+            .where(SpeedRunResult.difficulty == difficulty)
         )
         return result.scalar() or 0
 

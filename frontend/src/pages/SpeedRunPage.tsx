@@ -70,13 +70,13 @@ export default function SpeedRunPage() {
 
   // Load best scores and leaderboard on mount
   useEffect(() => {
-    getBestSpeedRun(60 as 60).then(setBest60).catch(() => {});
-    getBestSpeedRun(120 as 120).then(setBest120).catch(() => {});
-    loadLeaderboard(60);
+    getBestSpeedRun(60 as 60, difficulty).then(setBest60).catch(() => {});
+    getBestSpeedRun(120 as 120, difficulty).then(setBest120).catch(() => {});
+    loadLeaderboard(60, difficulty);
   }, []);
 
-  const loadLeaderboard = (limit: 60 | 120) => {
-    getSpeedRunLeaderboard(limit, 10).then((data) => {
+  const loadLeaderboard = (limit: 60 | 120, diff: string) => {
+    getSpeedRunLeaderboard(limit, diff, 10).then((data) => {
       setLeaderboard(data.leaderboard);
       setMyRank(data.my_rank);
       setTotalParticipants(data.total_participants);
@@ -87,7 +87,7 @@ export default function SpeedRunPage() {
     setTimeLimit(limit);
     timeLimitRef.current = limit;
     setTimeLeft(limit);
-    loadLeaderboard(limit);
+    loadLeaderboard(limit, difficultyRef.current);
   };
 
   const startCountdown = () => {
@@ -160,6 +160,7 @@ export default function SpeedRunPage() {
     try {
       const result = await submitSpeedRun({
         time_limit_seconds: currentLimit,
+        difficulty: difficultyRef.current,
         score: currentScore,
         total_problems: currentProblems,
         time_taken_seconds: timeTaken,
@@ -167,13 +168,13 @@ export default function SpeedRunPage() {
       setLastResult(result);
       // Refresh best score
       if (currentLimit === 60) {
-        const best = await getBestSpeedRun(60);
+        const best = await getBestSpeedRun(60, difficultyRef.current);
         setBest60(best);
       } else {
-        const best = await getBestSpeedRun(120);
+        const best = await getBestSpeedRun(120, difficultyRef.current);
         setBest120(best);
       }
-      loadLeaderboard(currentLimit);
+      loadLeaderboard(currentLimit, difficultyRef.current);
     } catch (err) {
       console.error('Failed to submit result:', err);
     }

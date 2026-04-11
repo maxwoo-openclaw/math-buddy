@@ -16,6 +16,7 @@ router = APIRouter(prefix="/api/gamification", tags=["gamification"])
 
 class SpeedRunSubmitRequest(BaseModel):
     time_limit_seconds: int
+    difficulty: str
     score: int
     total_problems: int
     time_taken_seconds: int | None = None
@@ -40,6 +41,7 @@ async def submit_speed_run(
     result = await service.submit_result(
         user_id=current_user.id,
         time_limit_seconds=data.time_limit_seconds,
+        difficulty=data.difficulty,
         score=data.score,
         total_problems=data.total_problems,
         time_taken_seconds=data.time_taken_seconds,
@@ -57,16 +59,18 @@ async def submit_speed_run(
 @router.get("/speed-run/best")
 async def get_best_speed_run(
     time_limit: int = Query(..., description="60 or 120 seconds"),
+    difficulty: str = Query(..., description="easy, medium, or hard"),
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     service = SpeedRunService(db)
-    result = await service.get_best_result(current_user.id, time_limit)
+    result = await service.get_best_result(current_user.id, time_limit, difficulty)
     if not result:
         return None
     return {
         "id": result.id,
         "time_limit_seconds": result.time_limit_seconds,
+        "difficulty": result.difficulty,
         "score": result.score,
         "total_problems": result.total_problems,
         "accuracy": result.accuracy,
@@ -77,20 +81,21 @@ async def get_best_speed_run(
 @router.get("/speed-run/leaderboard")
 async def get_speed_run_leaderboard(
     time_limit: int = Query(..., description="60 or 120 seconds"),
+    difficulty: str = Query(..., description="easy, medium, or hard"),
     limit: int = Query(10, ge=1, le=50),
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     service = SpeedRunService(db)
-    rows = await service.get_leaderboard(time_limit, limit)
+    rows = await service.get_leaderboard(time_limit, difficulty, limit)
     leaderboard = [
         {"user_id": r.user_id, "username": r.username, "score": r.best_score}
         for r in rows
     ]
 
     # Find current user's rank
-    my_rank = await service.get_user_rank(current_user.id, time_limit)
-    total_users = await service.get_total_participants(time_limit)
+    my_rank = await service.get_user_rank(current_user.id, time_limit, difficulty)
+    total_users = await service.get_total_participants(time_limit, difficulty)
 
     return {
         "leaderboard": leaderboard,
