@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../store/authContext';
+import { useTheme } from '../store/themeContext';
 import { getUsers, getAchievements, getStreak, getDailyChallengeStatus, submitDailyChallenge, getNextProblem, submitAnswer, completeSession, getUserSessions, startSession } from '../services/api';
 import type { User, SessionStats } from '../types';
 import type { Achievement, NewAchievement, StreakInfo, DailyChallengeStatus } from '../services/api';
@@ -12,6 +13,7 @@ import DailyChallengeCard from '../components/gamification/DailyChallengeCard';
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [sessions, setSessions] = useState<SessionStats[]>([]);
   const [loading, setLoading] = useState(true);
@@ -62,6 +64,14 @@ export default function Dashboard() {
         </div>
         <button className="btn btn-logout" onClick={handleLogout}>
           Logout 👋
+        </button>
+        <button
+          className="btn btn-secondary"
+          onClick={toggleTheme}
+          style={{ padding: '10px 14px', fontSize: '18px' }}
+          title="Toggle dark mode"
+        >
+          {theme === 'dark' ? '☀️' : '🌙'}
         </button>
       </div>
 

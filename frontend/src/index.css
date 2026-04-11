@@ -14,6 +14,19 @@
   --orange: #ff5722;
 }
 
+[data-theme="dark"] {
+  --primary: #6ab0f5;
+  --primary-dark: #4a90d9;
+  --success: #66bb6a;
+  --warning: #ffa726;
+  --danger: #ef5350;
+  --bg: #1a1a2e;
+  --card-bg: #16213e;
+  --text: #e0e0e0;
+  --text-light: #9e9e9e;
+  --orange: #ff7043;
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -21,6 +34,84 @@ body {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: var(--text);
   min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
+}
+
+[data-theme="dark"] body {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+[data-theme="dark"] .loading {
+  color: #ccc;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+[data-theme="dark"] .nav a.secondary,
+[data-theme="dark"] .btn-secondary {
+  background: var(--card-bg);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+[data-theme="dark"] .auth-container,
+[data-theme="dark"] .practice-card,
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .action-card,
+[data-theme="dark"] .admin-section,
+[data-theme="dark"] .mascot-section,
+[data-theme="dark"] .practice-header {
+  background: var(--card-bg);
+  color: var(--text);
+}
+
+[data-theme="dark"] .form-group label {
+  color: var(--text);
+}
+
+[data-theme="dark"] .form-group input,
+[data-theme="dark"] .form-group select {
+  background: #1a1a2e;
+  border-color: #444;
+  color: var(--text);
+}
+
+[data-theme="dark"] .op-btn {
+  background: #1a1a2e;
+  border-color: #444;
+  color: var(--text);
+}
+
+[data-theme="dark"] .diff-btn {
+  background: #1a1a2e;
+  border-color: #444;
+  color: var(--text);
+}
+
+[data-theme="dark"] .progress-bar {
+  background: #333;
+}
+
+[data-theme="dark"] .filter-badge,
+[data-theme="dark"] .practice-header,
+[data-theme="dark"] .user-table th {
+  background: #1a1a2e;
+  color: var(--text);
+}
+
+[data-theme="dark"] .user-table tr:hover {
+  background: #1a1a2e;
+}
+
+[data-theme="dark"] .problem-item:hover {
+  background: #1a1a2e;
+}
+
+[data-theme="dark"] .problem-form {
+  background: #1a1a2e;
+}
+
+[data-theme="dark"] .achievement-section > div {
+  background: var(--card-bg);
 }
 
 .app {
