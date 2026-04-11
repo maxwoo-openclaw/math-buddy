@@ -155,9 +155,14 @@ export default function SpeedRunPage() {
     e.preventDefault();
     if (!currentProblem || feedback) return;
     const parsed = parseOperands(currentProblem.question);
-    if (!parsed) return;
+    const userNum = parseInt(answer, 10);
+    if (!parsed || !parsed.operation || isNaN(userNum)) {
+      // Can't parse question — treat as wrong, no feedback
+      return;
+    }
     const correctAnswer = computeAnswer(parsed.operation, parsed.operandA, parsed.operandB);
-    const isCorrect = parseInt(answer) === correctAnswer;
+    if (isNaN(correctAnswer)) return; // Defensive: invalid computed answer
+    const isCorrect = userNum === correctAnswer;
     if (isCorrect) {
       setScore((s) => s + 1);
       setFeedback({ correct: true, message: '✅' });
