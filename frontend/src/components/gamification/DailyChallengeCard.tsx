@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default function DailyChallengeCard({ status, onStart }: Props) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const completed = status.attempt?.completed;
   const score = status.attempt?.score;
   const total = status.challenge.total_problems;
@@ -32,7 +32,9 @@ export default function DailyChallengeCard({ status, onStart }: Props) {
           <div style={{ fontWeight: 700, fontSize: '1.1rem' }}>
             {t.dailyChallenge || 'Daily Challenge'}
           </div>
-          <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>{status.challenge.title_en || status.challenge.title}</div>
+          <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>
+            {locale === 'zhTW' ? status.challenge.title : (status.challenge.title_en || status.challenge.title)}
+          </div>
         </div>
       </div>
 
