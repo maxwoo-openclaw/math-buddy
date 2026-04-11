@@ -36,6 +36,7 @@ export const zhTW = {
   logout: '登出 👋',
   problemsSolved: '已解題目',
   accuracy: '準確率',
+  correctAnswers: '正確答題',
   startPractice: '開始練習！',
   challengeYourself: '用趣味數學題挑戰自己',
   goButton: '開始！→',

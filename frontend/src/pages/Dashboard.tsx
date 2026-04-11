@@ -102,7 +102,7 @@ export default function Dashboard() {
         <div className="stat-card">
           <div className="stat-icon">✅</div>
           <div className="stat-value">{totalCorrect}</div>
-          <div className="stat-label">{t.accuracy}</div>
+          <div className="stat-label">{t.correctAnswers || 'Correct Answers'}</div>
         </div>
         <div className="stat-card">
           <div className="stat-icon">🎯</div>

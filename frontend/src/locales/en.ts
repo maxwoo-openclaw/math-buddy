@@ -36,6 +36,7 @@ export const en = {
   logout: 'Logout 👋',
   problemsSolved: 'Problems Solved',
   accuracy: 'Accuracy',
+  correctAnswers: 'Correct Answers',
   startPractice: 'Start Practice!',
   challengeYourself: 'Challenge yourself with fun math problems',
   goButton: "Let's Go! →",
