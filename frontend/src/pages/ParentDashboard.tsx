@@ -1,9 +1,22 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { useAuth } from '../store/authContext';
+import { useTheme } from '../store/themeContext';
+import { useLocale } from '../store/localeContext';
 import { parentApi } from '../services/parentApi';
 import type { LinkedStudent, StudentAnalysis, TrendPoint } from '../types';
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+
+const OP_ICONS: Record<string, string> = { addition: '➕', subtraction: '➖', multiplication: '✖️', division: '➗' };
+const OP_COLORS: Record<string, string> = { addition: '#4CAF50', subtraction: '#2196F3', multiplication: '#FF9800', division: '#9C27B0' };
 
 export default function ParentDashboard() {
+  const { t } = useLocale();
+  const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
+  const { locale, setLocale } = useLocale();
+  const navigate = useNavigate();
+
   const [students, setStudents] = useState<LinkedStudent[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<number | null>(null);
   const [analysis, setAnalysis] = useState<StudentAnalysis | null>(null);
@@ -13,11 +26,10 @@ export default function ParentDashboard() {
   const [inviteCode, setInviteCode] = useState<string | null>(null);
   const [linkCode, setLinkCode] = useState('');
   const [loading, setLoading] = useState(true);
+  const [linkError, setLinkError] = useState('');
+  const [linkSuccess, setLinkSuccess] = useState('');
 
-  useEffect(() => {
-    loadDashboard();
-  }, []);
-
+  useEffect(() => { loadDashboard(); }, []);
   useEffect(() => {
     if (selectedStudent) {
       loadAnalysis(selectedStudent);
@@ -29,203 +41,236 @@ export default function ParentDashboard() {
     try {
       const data = await parentApi.getDashboard();
       setStudents(data.students);
-      if (data.students.length > 0 && !selectedStudent) {
-        setSelectedStudent(data.students[0].id);
-      }
-    } catch (err) {
-      console.error('Failed to load dashboard', err);
-    } finally {
-      setLoading(false);
-    }
+      if (data.students.length > 0 && !selectedStudent) setSelectedStudent(data.students[0].id);
+    } catch (err) { console.error(err); }
+    finally { setLoading(false); }
   };
 
-  const loadAnalysis = async (studentId: number) => {
-    try {
-      const data = await parentApi.getAnalysis(studentId);
-      setAnalysis(data);
-    } catch (err) {
-      console.error('Failed to load analysis', err);
-    }
+  const loadAnalysis = async (id: number) => {
+    try { const d = await parentApi.getAnalysis(id); setAnalysis(d); } catch (err) { console.error(err); }
   };
 
-  const loadTrends = async (studentId: number, days: number) => {
-    try {
-      const data = await parentApi.getTrends(studentId, days);
-      setTrends(data);
-    } catch (err) {
-      console.error('Failed to load trends', err);
-    }
+  const loadTrends = async (id: number, days: number) => {
+    try { const d = await parentApi.getTrends(id, days); setTrends(d); } catch (err) { console.error(err); }
   };
 
-  const generateCode = async () => {
+  const handleLink = async () => {
+    if (!linkCode.trim()) return;
+    setLinkError(''); setLinkSuccess('');
     try {
-      const result = await parentApi.generateInviteCode();
-      setInviteCode(result.invite_code);
-    } catch (err) {
-      console.error('Failed to generate code', err);
-    }
-  };
-
-  const linkByCode = async () => {
-    try {
-      await parentApi.linkByCode(linkCode);
+      await parentApi.linkByCode(linkCode.trim());
+      setLinkSuccess(t.linkSuccess || 'Student linked successfully!');
       setLinkCode('');
       loadDashboard();
-    } catch (err) {
-      console.error('Failed to link', err);
+    } catch (err: unknown) {
+      setLinkError(err instanceof Error ? err.message : (t.linkFailed || 'Failed to link student'));
     }
   };
 
-  if (loading) return <div className="p-8">Loading...</div>;
+  if (loading) return <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--text)' }}>{t.loading}</div>;
 
-  const currentStudent = students.find(s => s.id === selectedStudent);
+  const current = students.find(s => s.id === selectedStudent);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-800 mb-8">Parent Dashboard</h1>
-
-        {/* Student Selector */}
-        <div className="bg-white rounded-xl shadow p-6 mb-6">
-          <div className="flex gap-4 items-center flex-wrap">
-            <select
-              value={selectedStudent || ''}
-              onChange={e => setSelectedStudent(Number(e.target.value))}
-              className="border rounded-lg px-4 py-2 flex-1"
-            >
-              {students.map(s => (
-                <option key={s.id} value={s.id}>{s.username}</option>
-              ))}
-            </select>
-            <button onClick={generateCode} className="bg-blue-600 text-white px-4 py-2 rounded-lg">
-              Generate Invite Code
-            </button>
-            {inviteCode && (
-              <div className="bg-green-100 px-4 py-2 rounded-lg">
-                Code: <strong>{inviteCode}</strong> (72hr valid)
-              </div>
-            )}
-          </div>
-          <div className="flex gap-4 mt-4">
-            <input
-              type="text"
-              placeholder="Enter student invite code"
-              value={linkCode}
-              onChange={e => setLinkCode(e.target.value)}
-              className="border rounded-lg px-4 py-2 flex-1"
-            />
-            <button onClick={linkByCode} className="bg-green-600 text-white px-4 py-2 rounded-lg">
-              Link Student
-            </button>
-          </div>
+    <div className="dashboard-container">
+      {/* Header */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+        <div>
+          <h1 style={{ fontSize: '1.75rem', fontWeight: 700 }}>👨‍👩‍👧 {t.parentDashboard}</h1>
+          {user && <p style={{ color: '#666', fontSize: '0.9rem', marginTop: '0.25rem' }}>{t.welcome(user.username)}</p>}
         </div>
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <button onClick={toggleTheme} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '18px', padding: '4px 8px' }} title="Toggle dark mode">{theme === 'dark' ? '☀️' : '🌙'}</button>
+          <button onClick={() => setLocale(locale === 'en' ? 'zhTW' : 'en')} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', fontWeight: 700, padding: '4px 8px', color: '#666' }}>{locale === 'en' ? '中文' : 'EN'}</button>
+          <button onClick={() => { logout(); navigate('/auth'); }} className="btn btn-secondary" style={{ padding: '4px 10px', fontSize: '13px' }}>{t.logout?.split(' ')[0] || 'Logout'}</button>
+        </div>
+      </div>
 
-        {currentStudent && (
-          <>
-            {/* Tab Navigation */}
-            <div className="flex gap-2 mb-6">
-              {(['overview', 'analysis', 'trends'] as const).map(t => (
-                <button
-                  key={t}
-                  onClick={() => setTab(t)}
-                  className={`px-6 py-2 rounded-lg font-medium ${tab === t ? 'bg-blue-600 text-white' : 'bg-white text-gray-700'}`}
-                >
-                  {t.charAt(0).toUpperCase() + t.slice(1)}
-                </button>
+      {/* Link Student Card */}
+      <div className="card" style={{ marginBottom: '1.5rem' }}>
+        <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '1rem' }}>🔗 {(t as any).linkStudent || 'Link a Student'}</h3>
+        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+          <input
+            type="text"
+            value={linkCode}
+            onChange={e => setLinkCode(e.target.value)}
+            placeholder={(t as any).enterStudentCode || 'Enter student invite code'}
+            style={{ flex: 1, minWidth: 200, padding: '0.6rem 1rem', border: '2px solid #ddd', borderRadius: '8px', fontSize: '0.95rem' }}
+          />
+          <button onClick={handleLink} className="btn btn-primary" style={{ padding: '0.6rem 1.5rem' }}>
+            {(t as any).linkStudentBtn || 'Link'}
+          </button>
+        </div>
+        {linkError && <div style={{ color: '#f44336', marginTop: '0.5rem', fontSize: '0.85rem' }}>{linkError}</div>}
+        {linkSuccess && <div style={{ color: '#4CAF50', marginTop: '0.5rem', fontSize: '0.85rem' }}>{linkSuccess}</div>}
+      </div>
+
+      {/* No students state */}
+      {students.length === 0 && (
+        <div className="card" style={{ textAlign: 'center', padding: '3rem' }}>
+          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>👶</div>
+          <h3 style={{ marginBottom: '0.5rem' }}>{t.noChildren}</h3>
+          <p style={{ color: '#888', fontSize: '0.9rem' }}>{t.noChildrenHint || 'Ask your child to generate an invite code from their dashboard, then enter it above.'}</p>
+        </div>
+      )}
+
+      {/* Student selector + tabs */}
+      {current && (
+        <>
+          {/* Student tabs */}
+          <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
+            {students.map(s => (
+              <button
+                key={s.id}
+                onClick={() => setSelectedStudent(s.id)}
+                style={{
+                  padding: '0.5rem 1rem',
+                  borderRadius: '8px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontWeight: 600,
+                  background: s.id === selectedStudent ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#f0f0f0',
+                  color: s.id === selectedStudent ? 'white' : '#333',
+                }}
+              >
+                {s.username}
+              </button>
+            ))}
+          </div>
+
+          {/* Tab nav */}
+          <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+            {(['overview', 'analysis', 'trends'] as const).map(t => (
+              <button
+                key={t}
+                onClick={() => setTab(t)}
+                style={{
+                  padding: '0.5rem 1.25rem',
+                  borderRadius: '8px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontWeight: 600,
+                  background: tab === t ? 'var(--primary)' : '#f0f0f0',
+                  color: tab === t ? 'white' : '#666',
+                }}
+              >
+                {t === 'overview' ? ((t as any).overviewTab || ('Overview')) : t === 'analysis' ? ((t as any).analysisTab || ('Analysis')) : ((t as any).trendsTab || ('Trends'))}
+              </button>
+            ))}
+          </div>
+
+          {/* Overview */}
+          {tab === 'overview' && (
+            <div className="stats-grid">
+              <div className="stat-card">
+                <div className="stat-icon">📚</div>
+                <div className="stat-value">{current.total_sessions}</div>
+                <div className="stat-label">{t.totalSessions || 'Total Sessions'}</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-icon">✅</div>
+                <div className="stat-value">{current.total_problems}</div>
+                <div className="stat-label">{t.problemsSolved}</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-icon">🎯</div>
+                <div className="stat-value">{current.overall_accuracy}%</div>
+                <div className="stat-label">{t.accuracy}</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-icon">🔥</div>
+                <div className="stat-value">{current.overall_accuracy || 0}</div>
+                <div className="stat-label">{t.dayStreak || 'Day Streak'}</div>
+              </div>
+            </div>
+          )}
+
+          {/* Analysis */}
+          {tab === 'analysis' && analysis && (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
+              {Object.entries(analysis.operation_breakdown || {}).map(([op, data]: [string, any]) => (
+                <div key={op} className="card">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                    <span style={{ fontSize: '1.5rem' }}>{OP_ICONS[op] || '🔢'}</span>
+                    <span style={{ fontWeight: 700, textTransform: 'capitalize' }}>{op}</span>
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+                    <div style={{ background: '#f9f9f9', borderRadius: '8px', padding: '0.75rem', textAlign: 'center' }}>
+                      <div style={{ fontSize: '1.5rem', fontWeight: 700, color: OP_COLORS[op] || '#333' }}>{data.accuracy || 0}%</div>
+                      <div style={{ fontSize: '0.75rem', color: '#888' }}>{t.accuracy}</div>
+                    </div>
+                    <div style={{ background: '#f9f9f9', borderRadius: '8px', padding: '0.75rem', textAlign: 'center' }}>
+                      <div style={{ fontSize: '1.5rem', fontWeight: 700, color: OP_COLORS[op] || '#333' }}>{data.total_attempts || 0}</div>
+                      <div style={{ fontSize: '0.75rem', color: '#888' }}>{t.problemsSolved}</div>
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
+          )}
 
-            {/* Overview Tab */}
-            {tab === 'overview' && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white rounded-xl shadow p-6">
-                  <h3 className="text-gray-500 text-sm">Total Sessions</h3>
-                  <p className="text-4xl font-bold text-blue-600">{currentStudent.total_sessions}</p>
-                </div>
-                <div className="bg-white rounded-xl shadow p-6">
-                  <h3 className="text-gray-500 text-sm">Problems Solved</h3>
-                  <p className="text-4xl font-bold text-green-600">{currentStudent.total_problems}</p>
-                </div>
-                <div className="bg-white rounded-xl shadow p-6">
-                  <h3 className="text-gray-500 text-sm">Overall Accuracy</h3>
-                  <p className="text-4xl font-bold text-purple-600">{currentStudent.overall_accuracy}%</p>
-                </div>
-              </div>
-            )}
-
-            {/* Analysis Tab */}
-            {tab === 'analysis' && analysis && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-white rounded-xl shadow p-6">
-                  <h3 className="text-lg font-semibold mb-4">By Operation</h3>
-                  <div className="space-y-3">
-                    {Object.entries(analysis.operation_breakdown).map(([op, data]) => (
-                      <div key={op}>
-                        <div className="flex justify-between text-sm mb-1">
-                          <span className="capitalize">{op}</span>
-                          <span>{data.accuracy}%</span>
-                        </div>
-                        <div className="h-2 bg-gray-200 rounded-full">
-                          <div className="h-2 bg-blue-500 rounded-full" style={{ width: `${data.accuracy}%` }} />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="bg-white rounded-xl shadow p-6">
-                  <h3 className="text-lg font-semibold mb-4">By Difficulty</h3>
-                  <div className="space-y-3">
-                    {Object.entries(analysis.difficulty_breakdown).map(([diff, data]) => (
-                      <div key={diff}>
-                        <div className="flex justify-between text-sm mb-1">
-                          <span className="capitalize">{diff}</span>
-                          <span>{data.accuracy}%</span>
-                        </div>
-                        <div className="h-2 bg-gray-200 rounded-full">
-                          <div className="h-2 bg-green-500 rounded-full" style={{ width: `${data.accuracy}%` }} />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  {analysis.weakest_operation && (
-                    <p className="mt-4 text-sm text-gray-600">
-                      Weakest: <strong>{analysis.weakest_operation}</strong> | 
-                      Strongest: <strong>{analysis.strongest_operation}</strong>
-                    </p>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Trends Tab */}
-            {tab === 'trends' && (
-              <div className="bg-white rounded-xl shadow p-6">
-                <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-lg font-semibold">Accuracy Trend</h3>
-                  <div className="flex gap-2">
+          {/* Trends */}
+          {tab === 'trends' && (
+            <div className="card">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                <h3 style={{ margin: 0 }}>📈 {t.weeklyProgress}</h3>
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  {[7, 14, 30].map(d => (
                     <button
-                      onClick={() => setTrendDays(7)}
-                      className={`px-4 py-1 rounded ${trendDays === 7 ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
-                    >7 Days</button>
-                    <button
-                      onClick={() => setTrendDays(30)}
-                      className={`px-4 py-1 rounded ${trendDays === 30 ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
-                    >30 Days</button>
-                  </div>
+                      key={d}
+                      onClick={() => setTrendDays(d)}
+                      style={{
+                        padding: '4px 12px',
+                        borderRadius: '6px',
+                        border: 'none',
+                        cursor: 'pointer',
+                        fontSize: '0.8rem',
+                        fontWeight: 600,
+                        background: trendDays === d ? 'var(--primary)' : '#eee',
+                        color: trendDays === d ? 'white' : '#666',
+                      }}
+                    >
+                      {d}d
+                    </button>
+                  ))}
                 </div>
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={trends}>
-                    <XAxis dataKey="date" />
-                    <YAxis domain={[0, 100]} />
-                    <Tooltip />
-                    <Line type="monotone" dataKey="accuracy" stroke="#4A90D9" strokeWidth={2} />
-                  </LineChart>
-                </ResponsiveContainer>
               </div>
-            )}
-          </>
-        )}
-      </div>
+              {trends.length === 0 ? (
+                <div style={{ textAlign: 'center', padding: '2rem', color: '#888' }}>{t.noData}</div>
+              ) : (
+                <div style={{ height: 200 }}>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={trends}>
+                      <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+                      <YAxis tick={{ fontSize: 12 }} />
+                      <Tooltip />
+                      <Line type="monotone" dataKey="score" stroke="#667eea" strokeWidth={2} dot={{ r: 3 }} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              )}
+            </div>
+          )}
+        </>
+      )}
+
+      <style>{`
+        .dashboard-container { padding: 1rem; max-width: 900px; margin: 0 auto; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+        .stat-card { background: white; border-radius: 1rem; padding: 1.25rem; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .stat-icon { font-size: 2rem; margin-bottom: 0.25rem; }
+        .stat-value { font-size: 2rem; font-weight: 800; color: var(--primary, #667eea); }
+        .stat-label { font-size: 0.8rem; color: #888; margin-top: 0.25rem; }
+        .card { background: white; border-radius: 12px; padding: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .btn { padding: 0.6rem 1.25rem; border-radius: 8px; border: none; cursor: pointer; font-weight: 700; }
+        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .btn-secondary { background: #f0f0f0; color: #333; }
+        [data-theme="dark"] .stat-card, [data-theme="dark"] .card { background: var(--card-bg, #16213e); }
+        [data-theme="dark"] .stat-label { color: #aaa; }
+        [data-theme="dark"] .btn-secondary { background: #1a1a2e; color: #e0e0e0; }
+      `}</style>
     </div>
   );
 }
+
+
