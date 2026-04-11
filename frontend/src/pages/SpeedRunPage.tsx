@@ -156,12 +156,15 @@ export default function SpeedRunPage() {
     if (!currentProblem || feedback) return;
     const parsed = parseOperands(currentProblem.question);
     const userNum = parseInt(answer, 10);
+
+    // Can't parse question — show feedback without revealing correct answer
     if (!parsed || !parsed.operation || isNaN(userNum)) {
-      // Can't parse question — treat as wrong, no feedback
+      setFeedback({ correct: false, message: `❌ ${t.parseError || 'Answer recorded (question format unrecognized)'}` });
+      setProblemCount((c) => c + 1);
+      setTimeout(() => { loadNextProblem(); }, 600);
       return;
     }
     const correctAnswer = computeAnswer(parsed.operation, parsed.operandA, parsed.operandB);
-    if (isNaN(correctAnswer)) return; // Defensive: invalid computed answer
     const isCorrect = userNum === correctAnswer;
     if (isCorrect) {
       setScore((s) => s + 1);

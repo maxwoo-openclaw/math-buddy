@@ -109,6 +109,7 @@ export const en = {
   problemsAnswered: 'Problems answered',
   correctShort: 'Correct',
   yourAnswer: 'Your answer',
+  parseError: 'Answer recorded (question format unrecognized)',
   challengeComplete: '🎉 Challenge Complete!',
   newRecord: '🏆 New Record!',
   accuracyLabel: 'Accuracy',

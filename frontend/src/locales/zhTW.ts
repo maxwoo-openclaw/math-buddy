@@ -109,6 +109,7 @@ export const zhTW = {
   problemsAnswered: '已答',
   correctShort: '正確',
   yourAnswer: '你的答案',
+  parseError: '回答已記錄（題目格式解析失敗）',
   challengeComplete: '🎉 挑戰完成！',
   newRecord: '🏆 新紀錄！',
   accuracyLabel: '準確率',
