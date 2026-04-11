@@ -273,7 +273,7 @@ export default function SpeedRunPage() {
                 style={{ padding: '1.5rem 2rem', fontSize: '1.1rem' }}
               >
                 <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{tl.icon}</div>
-                <div>{tl.label}</div>
+                <div>{t.seconds(tl.value as 60 | 120)}</div>
                 {timeLimit === tl.value && (
                   <div style={{ fontSize: '0.8rem', color: '#4CAF50', marginTop: '0.25rem' }}>{(t as unknown as Record<string, string>).selected || '✓ Selected'}</div>
                 )}
@@ -312,7 +312,7 @@ export default function SpeedRunPage() {
                   </div>
                   {best && (
                     <div style={{ fontSize: '0.7rem', color: '#666', marginBottom: '0.5rem' }}>
-                      {t.bestScore}: {best.score} 題
+                      {t.bestScore}: {best.score} {(t as unknown as Record<string, string>).problemsShort || '題'}
                     </div>
                   )}
                   {lb.length === 0 ? (
@@ -433,7 +433,7 @@ export default function SpeedRunPage() {
           <h3 style={{ marginBottom: '1rem' }}>{t.challengeComplete}</h3>
 
           <div style={{ fontSize: '4rem', fontWeight: 'bold', color: '#FF9800', margin: '1rem 0' }}>
-            {lastResult.score} 題
+            {lastResult.score} {(t as unknown as Record<string, string>).problemsShort || '題'}
           </div>
 
           <div className="flex-center gap-1" style={{ justifyContent: 'center', marginBottom: '1.5rem' }}>
@@ -444,12 +444,12 @@ export default function SpeedRunPage() {
           {/* New Best */}
           {timeLimit === 60 && best60 && lastResult.score >= best60.score && (
             <div style={{ color: '#4CAF50', fontWeight: 'bold', marginBottom: '1rem' }}>
-              🏆 新紀錄！
+              {t.newRecord}
             </div>
           )}
           {timeLimit === 120 && best120 && lastResult.score >= best120.score && (
             <div style={{ color: '#4CAF50', fontWeight: 'bold', marginBottom: '1rem' }}>
-              🏆 新紀錄！
+              {t.newRecord}
             </div>
           )}
 
@@ -470,7 +470,7 @@ export default function SpeedRunPage() {
                     </div>
                     {best && isCurrentDiff && (
                       <div style={{ fontSize: '0.7rem', color: '#666', marginBottom: '0.25rem' }}>
-                        {t.bestScore}: {best.score} 題
+                        {t.bestScore}: {best.score} {(t as unknown as Record<string, string>).problemsShort || '題'}
                       </div>
                     )}
                     {lb.length === 0 ? (

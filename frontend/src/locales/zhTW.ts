@@ -116,6 +116,7 @@ export const zhTW = {
   parseError: '回答已記錄（題目格式解析失敗）',
   challengeComplete: '🎉 挑戰完成！',
   newRecord: '🏆 新紀錄！',
+  problemsShort: '題',
   accuracyLabel: '準確率',
   timeTaken: '用時',
   back: '返回',
