@@ -20,10 +20,10 @@ function parseOperands(question: string): { operation: string; operandA: number;
 
 function computeAnswer(operation: string, a: number, b: number): number {
   switch (operation) {
-    case '+': return a + b;
-    case '-': return a - b;
-    case '*': return a * b;
-    case '/': return Math.round(a / b); // division rounds to nearest
+    case '+': case 'addition': return a + b;
+    case '-': case 'subtraction': return a - b;
+    case '*': case '×': case 'multiplication': return a * b;
+    case '/': case '÷': case 'division': return Math.round(a / b);
     default: return 0;
   }
 }
