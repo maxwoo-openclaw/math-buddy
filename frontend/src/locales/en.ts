@@ -40,7 +40,7 @@ export const en = {
   startPractice: 'Start Practice!',
   challengeYourself: 'Challenge yourself with fun math problems',
   goButton: "Let's Go! →",
-  speedRun: 'Speed Run!',
+  speedRun: '⚡ Speed Run!',
   speedRunDesc: 'Race against the clock — how many can you solve?',
   startNow: 'Start Now →',
   dailyChallenge: 'Daily Challenge',
