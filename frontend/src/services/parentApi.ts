@@ -63,9 +63,9 @@ export const parentApi = {
   },
 
   linkByCode: async (code: string): Promise<{ success: boolean }> => {
-    return request<{ success: boolean }>('/api/parents/link', { 
+    return request<{ success: boolean }>('/api/parents/link', {
       method: 'POST',
-      params: { code }
+      body: { code },
     });
   },
 

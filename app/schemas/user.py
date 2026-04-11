@@ -10,7 +10,7 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     password: str
-    # role removed — self-registration always defaults to "student"
+    role: str = "student"
 
 
 class UserLogin(BaseModel):

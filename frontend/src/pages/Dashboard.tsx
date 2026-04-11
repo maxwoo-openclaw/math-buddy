@@ -4,6 +4,7 @@ import { useAuth } from '../store/authContext';
 import { useTheme } from '../store/themeContext';
 import { useLocale } from '../store/localeContext';
 import { getUsers, getAchievements, getStreak, getDailyChallengeStatus, getUserSessions, startSession } from '../services/api';
+import { parentApi } from '../services/parentApi';
 import type { User, SessionStats } from '../types';
 import type { Achievement, NewAchievement, StreakInfo, DailyChallengeStatus } from '../services/api';
 import AchievementBadge from '../components/achievements/AchievementBadge';
@@ -11,6 +12,71 @@ import AchievementToast from '../components/achievements/AchievementToast';
 import StreakCard from '../components/gamification/StreakCard';
 import SkillTreeCard from '../components/gamification/SkillTreeCard';
 import DailyChallengeCard from '../components/gamification/DailyChallengeCard';
+
+function StudentInviteCodeCard() {
+  const { t } = useLocale();
+  const [code, setCode] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const generate = async () => {
+    setLoading(true);
+    try {
+      const data = await parentApi.generateInviteCode();
+      setCode(data.invite_code);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div style={{
+      background: 'linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%)',
+      borderRadius: '1rem',
+      padding: '1rem 1.25rem',
+      color: 'white',
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: code ? '0.75rem' : 0 }}>
+        <span style={{ fontSize: '1.5rem' }}>🔗</span>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontWeight: 700, fontSize: '1rem' }}>
+            {t.inviteParent || 'Invite Parent'}
+          </div>
+          <div style={{ fontSize: '0.75rem', opacity: 0.8 }}>
+            {t.inviteParentDesc || 'Generate a code for your parent to link their account'}
+          </div>
+        </div>
+      </div>
+      {code ? (
+        <div style={{ background: 'rgba(255,255,255,0.2)', borderRadius: '0.5rem', padding: '0.75rem', textAlign: 'center' }}>
+          <div style={{ fontSize: '0.75rem', opacity: 0.8, marginBottom: '0.25rem' }}>{t.yourInviteCode || 'Your invite code'}</div>
+          <div style={{ fontSize: '1.5rem', fontWeight: 800, letterSpacing: '2px', fontFamily: 'monospace' }}>{code}</div>
+          <div style={{ fontSize: '0.7rem', opacity: 0.7, marginTop: '0.25rem' }}>{t.shareWithParent || 'Share this code with your parent'}</div>
+        </div>
+      ) : (
+        <button
+          onClick={generate}
+          disabled={loading}
+          style={{
+            width: '100%',
+            marginTop: '0.75rem',
+            background: 'rgba(255,255,255,0.25)',
+            color: 'white',
+            border: '2px solid rgba(255,255,255,0.4)',
+            borderRadius: '0.5rem',
+            padding: '0.5rem',
+            fontWeight: 700,
+            cursor: loading ? 'not-allowed' : 'pointer',
+            opacity: loading ? 0.7 : 1,
+          }}
+        >
+          {loading ? (t.pleaseWait || '...') : (t.generateCode || 'Generate Invite Code')}
+        </button>
+      )}
+    </div>
+  );
+}
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
@@ -125,6 +191,13 @@ export default function Dashboard() {
       <div style={{ margin: '1rem 0' }}>
         <SkillTreeCard />
       </div>
+
+      {/* Student Invite Code section */}
+      {user?.role === 'student' && (
+        <div style={{ marginBottom: '1.5rem' }}>
+          <StudentInviteCodeCard />
+        </div>
+      )}
 
       <div className="action-cards">
         <div className="action-card action-card-practice" onClick={() => navigate('/practice')}>

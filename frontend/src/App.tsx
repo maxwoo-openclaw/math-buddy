@@ -17,6 +17,12 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+function DashboardOrRedirect() {
+  const { user } = useAuth();
+  if (user?.role === 'parent') return <Navigate to="/parent" replace />;
+  return <Dashboard />;
+}
+
 function AdminRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
   if (loading) return <div className="loading">Loading...</div>;
@@ -44,7 +50,7 @@ function App() {
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <DashboardOrRedirect />
             </ProtectedRoute>
           }
         />

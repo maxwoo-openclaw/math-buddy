@@ -25,6 +25,7 @@ export const en = {
   createAccount: 'Create Account 🚀',
   iAmA: 'I am a...',
   student: 'Student',
+  parent: 'Parent',
   teacher: 'Teacher',
   newHere: "New here? ",
   createAnAccount: 'Create an account',
@@ -136,7 +137,6 @@ export const en = {
   dashboard: 'Dashboard',
   practice: 'Practice',
   admin: 'Admin',
-  parent: 'Parent',
 
   // Achievements
   achievements: '🏆 Achievements',
@@ -150,6 +150,11 @@ export const en = {
   weeklyProgress: 'Weekly Progress',
 
   // Admin
+  inviteParent: 'Invite Parent',
+  inviteParentDesc: 'Generate a code for your parent to link their account',
+  yourInviteCode: 'Your invite code',
+  shareWithParent: 'Share this code with your parent',
+  generateCode: 'Generate Invite Code',
   adminTitle: '⚙️ Admin Panel',
   manageUsers: 'Manage Users',
   manageProblems: 'Manage Problems',

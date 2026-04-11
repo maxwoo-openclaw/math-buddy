@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Body
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_db
@@ -8,6 +8,12 @@ from app.services.notification_service import NotificationService
 from app.routers.users import get_current_user
 
 router = APIRouter(prefix="/api/parents", tags=["parents"])
+
+
+class LinkRequest(BaseModel):
+    code: str | None = None
+    student_id: int | None = None
+    parent_id: int | None = None
 
 
 def get_parent_user(current_user: User = Depends(get_current_user)) -> User:
@@ -34,13 +40,15 @@ async def generate_invite_code(
 
 @router.post("/link")
 async def link_student(
-    code: str = None,
-    student_id: int = None,
-    parent_id: int = None,
+    body: LinkRequest = Body(...),
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_parent_user),
 ):
     service = ParentService(db)
+
+    code = body.code
+    student_id = body.student_id
+    parent_id = body.parent_id
 
     if code:
         # Link via invite code (parent)

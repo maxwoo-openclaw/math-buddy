@@ -26,12 +26,16 @@ async def register(request: Request, data: UserCreate, db: AsyncSession = Depend
     if result.scalar_one_or_none():
         raise HTTPException(status_code=400, detail="Email already registered")
 
-    # Create user
+    # Determine role: only 'student' or 'parent' allowed for self-registration
+    allowed_roles = ("student", "parent")
+    requested_role = getattr(data, 'role', 'student') or 'student'
+    if requested_role not in allowed_roles:
+        raise HTTPException(status_code=400, detail="Invalid role for self-registration")
     user = User(
         username=data.username,
         email=data.email,
         password_hash=hash_password(data.password),
-        role="student",  # Always student on self-registration
+        role=requested_role,
     )
     db.add(user)
     await db.commit()

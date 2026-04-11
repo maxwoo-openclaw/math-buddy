@@ -12,7 +12,7 @@ export default function Auth() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { login, register } = useAuth();
+  const { login, register, user } = useAuth();
   const { t } = useLocale();
   const navigate = useNavigate();
 
@@ -91,10 +91,10 @@ export default function Auth() {
               </button>
               <button
                 type="button"
-                className={`role-btn ${role === 'admin' ? 'active' : ''}`}
-                onClick={() => setRole('admin')}
+                className={`role-btn ${role === 'parent' ? 'active' : ''}`}
+                onClick={() => setRole('parent')}
               >
-                👩‍🏫 {t.teacher}
+                👨‍👩‍👧 {t.parent}
               </button>
             </div>
           </div>

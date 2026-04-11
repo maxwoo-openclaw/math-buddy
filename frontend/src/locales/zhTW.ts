@@ -150,6 +150,11 @@ export const zhTW = {
   weeklyProgress: '每週進度',
 
   // Admin
+  inviteParent: '邀請家長',
+  inviteParentDesc: '生成邀請碼，讓家長關聯到你嘅帳戶',
+  yourInviteCode: '你的邀請碼',
+  shareWithParent: '將呢個碼分享俾你家長',
+  generateCode: '生成邀請碼',
   adminTitle: '⚙️ 管理員面板',
   manageUsers: '管理用戶',
   manageProblems: '管理題目',
