@@ -52,31 +52,38 @@ class SpeedRunService:
         return result.scalar_one_or_none()
 
     async def get_leaderboard(self, time_limit_seconds: int, limit: int = 10) -> list:
-        # Subquery: each user's best (max score) per time_limit
-        best_subq = (
+        from sqlalchemy import func, distinct, over
+        from sqlalchemy.orm import aliased
+
+        # Window function: rank each user's runs by score desc, time asc
+        ranked_subq = (
             select(
+                SpeedRunResult.id,
                 SpeedRunResult.user_id,
-                sql_func.max(SpeedRunResult.score).label("best_score"),
+                User.username,
+                SpeedRunResult.score,
+                over(
+                    func.row_number().over(
+                        partition_by=SpeedRunResult.user_id,
+                        order_by=[SpeedRunResult.score.desc(), SpeedRunResult.time_taken_seconds.asc().nullslast()]
+                    ).label("rank")
+                ),
             )
+            .join(User, SpeedRunResult.user_id == User.id)
             .where(SpeedRunResult.time_limit_seconds == time_limit_seconds)
-            .group_by(SpeedRunResult.user_id)
             .subquery()
         )
         result = await self.db.execute(
             select(
-                SpeedRunResult.user_id,
-                User.username,
-                best_subq.c.best_score,
+                ranked_subq.c.user_id,
+                ranked_subq.c.username,
+                ranked_subq.c.score,
             )
-            .join(best_subq, SpeedRunResult.user_id == best_subq.c.user_id)
-            .join(User, SpeedRunResult.user_id == User.id)
-            .where(SpeedRunResult.time_limit_seconds == time_limit_seconds)
-            .where(SpeedRunResult.score == best_subq.c.best_score)
-            .order_by(best_subq.c.best_score.desc(), SpeedRunResult.time_taken_seconds.asc().nullslast())
+            .where(ranked_subq.c.rank == 1)
+            .order_by(ranked_subq.c.score.desc())
             .limit(limit)
         )
-        rows = result.all()
-        return rows
+        return result.all()
 
     async def get_user_rank(self, user_id: int, time_limit_seconds: int) -> int | None:
         """Get the rank of a specific user (1-indexed)."""
