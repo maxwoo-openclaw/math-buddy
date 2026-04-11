@@ -63,6 +63,8 @@ export default function SpeedRunPage() {
   const [leaderboard, setLeaderboard] = useState<{ user_id: number; username: string; score: number }[]>([]);
   const [myRank, setMyRank] = useState<number | null>(null);
   const [totalParticipants, setTotalParticipants] = useState(0);
+  const [allLeaderboards, setAllLeaderboards] = useState<Record<string, { user_id: number; username: string; score: number }[]>>({});
+  const [allBestScores, setAllBestScores] = useState<Record<string, any>>({});
   const [lastResult, setLastResult] = useState<any>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -70,9 +72,8 @@ export default function SpeedRunPage() {
 
   // Load best scores and leaderboard on mount
   useEffect(() => {
-    getBestSpeedRun(60 as 60, difficulty).then(setBest60).catch(() => {});
-    getBestSpeedRun(120 as 120, difficulty).then(setBest120).catch(() => {});
-    loadLeaderboard(60, difficulty);
+    loadAllForTimeLimit(60);
+    loadAllForTimeLimit(120);
   }, []);
 
   const loadLeaderboard = (limit: 60 | 120, diff: string) => {
@@ -83,11 +84,36 @@ export default function SpeedRunPage() {
     }).catch(() => {});
   };
 
+  const getBestScoreAndLeaderboard = (limit: 60 | 120, diff: string) => {
+    Promise.all([
+      getBestSpeedRun(limit, diff),
+      getSpeedRunLeaderboard(limit, diff, 10),
+    ]).then(([best, data]) => {
+      setAllBestScores((prev) => ({ ...prev, [`${limit}_${diff}`]: best }));
+      setAllLeaderboards((prev) => ({ ...prev, [`${limit}_${diff}`]: data.leaderboard }));
+    }).catch(() => {});
+  };
+
+  const loadAllForTimeLimit = (limit: 60 | 120) => {
+    const diffs = ['easy', 'medium', 'hard'];
+    diffs.forEach((diff) => getBestScoreAndLeaderboard(limit, diff));
+  };
+
   const selectTimeLimit = (limit: 60 | 120) => {
     setTimeLimit(limit);
     timeLimitRef.current = limit;
     setTimeLeft(limit);
     loadLeaderboard(limit, difficultyRef.current);
+    // Reload all leaderboards for new time limit
+    const diffs = ['easy', 'medium', 'hard'];
+    diffs.forEach((diff) => {
+      getBestSpeedRun(limit, diff).then((best) => {
+        setAllBestScores((prev) => ({ ...prev, [`${limit}_${diff}`]: best }));
+      }).catch(() => {});
+      getSpeedRunLeaderboard(limit, diff, 10).then((data) => {
+        setAllLeaderboards((prev) => ({ ...prev, [`${limit}_${diff}`]: data.leaderboard }));
+      }).catch(() => {});
+    });
   };
 
   const startCountdown = () => {
@@ -175,6 +201,11 @@ export default function SpeedRunPage() {
         setBest120(best);
       }
       loadLeaderboard(currentLimit, difficultyRef.current);
+      // Refresh all leaderboards for the time limit
+      const diffs = ['easy', 'medium', 'hard'];
+      diffs.forEach((diff) => {
+        getBestScoreAndLeaderboard(currentLimit, diff);
+      });
     } catch (err) {
       console.error('Failed to submit result:', err);
     }
@@ -266,52 +297,40 @@ export default function SpeedRunPage() {
             ))}
           </div>
 
-          {/* Best Score */}
-          {(best60 || best120) && (
-            <div style={{ marginBottom: '1.5rem' }}>
-              <h4 style={{ marginBottom: '0.5rem' }}>{t.bestScore}</h4>
-              {best60 && (
-                <div className="stat-chip" style={{ marginBottom: '0.5rem' }}>
-                  {t.seconds(60)}: {best60.score} 題 ({t.accuracyLabel} {best60.accuracy}%)
-                </div>
-              )}
-              {best120 && (
-                <div className="stat-chip">
-                  {t.seconds(120)}: {best120.score} 題 ({t.accuracyLabel} {best120.accuracy}%)
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Leaderboard Preview — Top 10 */}
-          <div style={{ marginBottom: '2rem' }}>
-            <h4 style={{ marginBottom: '0.5rem' }}>{t.leaderboardTitle} {t.seconds(timeLimit)} — {t.top10 || 'Top 10'}</h4>
-            {leaderboard.length === 0 ? (
-              <div style={{ color: '#888', fontSize: '0.9rem' }}>{t.noRecords}</div>
-            ) : (
-              <div style={{ textAlign: 'left', maxWidth: 300, margin: '0 auto' }}>
-                {leaderboard.slice(0, 10).map((entry, i) => (
-                  <div
-                    key={entry.user_id}
-                    className="leaderboard-row"
-                    style={{ background: i < 3 ? 'rgba(255,200,0,0.08)' : undefined }}
-                  >
-                    <span className="rank" style={{ color: i === 0 ? '#FFD700' : i === 1 ? '#C0C0C0' : i === 2 ? '#CD7F32' : '#888' }}>
-                      {i + 1}
-                    </span>
-                    <span className="username">{entry.username}</span>
-                    <span className="score">{entry.score} 題</span>
+          {/* Leaderboard — All 3 difficulties */}
+          <h4 style={{ marginBottom: '0.75rem' }}>{t.leaderboardTitle} {t.seconds(timeLimit)} — {t.top10 || 'Top 10'}</h4>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem', marginBottom: '2rem' }}>
+            {DIFFICULTIES.map((d) => {
+              const lbKey = `${timeLimit}_${d.value}`;
+              const lb = allLeaderboards[lbKey] || [];
+              const best = allBestScores[lbKey];
+              return (
+                <div key={d.value} style={{ background: d.color + '15', borderRadius: '0.75rem', padding: '0.75rem', border: `2px solid ${d.color}` }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                    <span style={{ fontSize: '1.2rem' }}>{d.icon}</span>
+                    <span style={{ fontWeight: 700, color: d.color }}>{(t as unknown as Record<string, string>)[d.value] || d.label}</span>
                   </div>
-                ))}
-                {myRank && myRank > 10 && (
-                  <div className="leaderboard-row" style={{ opacity: 0.6, borderTop: '1px dashed #ccc', marginTop: 4, paddingTop: 4 }}>
-                    <span className="rank">...</span>
-                    <span className="username">{t.you || 'You'}</span>
-                    <span className="score">#{myRank} ({totalParticipants} {t.participants || 'total'})</span>
-                  </div>
-                )}
-              </div>
-            )}
+                  {best && (
+                    <div style={{ fontSize: '0.7rem', color: '#666', marginBottom: '0.5rem' }}>
+                      {t.bestScore}: {best.score} 題
+                    </div>
+                  )}
+                  {lb.length === 0 ? (
+                    <div style={{ color: '#aaa', fontSize: '0.75rem' }}>{t.noRecords}</div>
+                  ) : (
+                    <div>
+                      {lb.slice(0, 5).map((entry, i) => (
+                        <div key={entry.user_id} style={{ display: 'flex', alignItems: 'center', fontSize: '0.75rem', padding: '2px 0' }}>
+                          <span style={{ width: 18, fontWeight: 700, color: i === 0 ? '#FFD700' : i === 1 ? '#C0C0C0' : i === 2 ? '#CD7F32' : '#999' }}>{i + 1}</span>
+                          <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{entry.username}</span>
+                          <span style={{ fontWeight: 600 }}>{entry.score}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
 
           <button
@@ -434,28 +453,43 @@ export default function SpeedRunPage() {
             </div>
           )}
 
-          {/* Leaderboard — Top 10 */}
+          {/* Leaderboard — All 3 difficulties */}
           <div style={{ marginBottom: '1.5rem' }}>
             <h4 style={{ marginBottom: '0.5rem' }}>{t.leaderboardTitle} {t.seconds(timeLimit)} — {t.top10 || 'Top 10'}</h4>
-            {leaderboard.length === 0 ? (
-              <div style={{ color: '#888' }}>{t.noRecords}</div>
-            ) : (
-              <div style={{ textAlign: 'left', maxWidth: 300, margin: '0 auto' }}>
-                {leaderboard.slice(0, 10).map((entry, i) => (
-                  <div
-                    key={entry.user_id}
-                    className="leaderboard-row"
-                    style={{
-                      background: entry.user_id === lastResult.id ? 'rgba(76, 175, 80, 0.2)' : undefined,
-                    }}
-                  >
-                    <span className="rank" style={{ color: i === 0 ? '#FFD700' : i === 1 ? '#C0C0C0' : i === 2 ? '#CD7F32' : '#888' }}>{i + 1}</span>
-                    <span className="username">{entry.username}</span>
-                    <span className="score">{entry.score} 題</span>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem' }}>
+              {DIFFICULTIES.map((d) => {
+                const lbKey = `${timeLimit}_${d.value}`;
+                const lb = allLeaderboards[lbKey] || [];
+                const best = allBestScores[lbKey];
+                const isCurrentDiff = difficultyRef.current === d.value;
+                return (
+                  <div key={d.value} style={{ background: d.color + '15', borderRadius: '0.75rem', padding: '0.75rem', border: `2px solid ${d.color}`, opacity: isCurrentDiff ? 1 : 0.75 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                      <span style={{ fontSize: '1rem' }}>{d.icon}</span>
+                      <span style={{ fontWeight: 700, color: d.color, fontSize: '0.85rem' }}>{(t as unknown as Record<string, string>)[d.value] || d.label}</span>
+                    </div>
+                    {best && isCurrentDiff && (
+                      <div style={{ fontSize: '0.7rem', color: '#666', marginBottom: '0.25rem' }}>
+                        {t.bestScore}: {best.score} 題
+                      </div>
+                    )}
+                    {lb.length === 0 ? (
+                      <div style={{ color: '#aaa', fontSize: '0.7rem' }}>{t.noRecords}</div>
+                    ) : (
+                      <div>
+                        {lb.slice(0, 5).map((entry, i) => (
+                          <div key={entry.user_id} style={{ display: 'flex', alignItems: 'center', fontSize: '0.7rem', padding: '2px 4px', background: entry.user_id === lastResult.id ? 'rgba(76,175,80,0.2)' : undefined, borderRadius: 4 }}>
+                            <span style={{ width: 16, fontWeight: 700, color: i === 0 ? '#FFD700' : i === 1 ? '#C0C0C0' : i === 2 ? '#CD7F32' : '#999' }}>{i + 1}</span>
+                            <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{entry.username}</span>
+                            <span style={{ fontWeight: 600 }}>{entry.score}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                ))}
-              </div>
-            )}
+                );
+              })}
+            </div>
           </div>
 
           <div className="flex-center gap-1" style={{ justifyContent: 'center' }}>
