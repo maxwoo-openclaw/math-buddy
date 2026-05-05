@@ -51,29 +51,29 @@ async function request<T>(endpoint: string, options: RequestOptions = {}): Promi
 
 export const parentApi = {
   getDashboard: async (): Promise<DashboardResponse> => {
-    return request<DashboardResponse>('/api/parents/dashboard');
+    return request<DashboardResponse>('/parents/dashboard');
   },
 
   getLinkedStudents: async (): Promise<LinkedStudent[]> => {
-    return request<LinkedStudent[]>('/api/parents/students');
+    return request<LinkedStudent[]>('/parents/students');
   },
 
   generateInviteCode: async (): Promise<{ invite_code: string; expires_at: string }> => {
-    return request<{ invite_code: string; expires_at: string }>('/api/parents/generate-code', { method: 'POST' });
+    return request<{ invite_code: string; expires_at: string }>('/parents/generate-code', { method: 'POST' });
   },
 
   linkByCode: async (code: string): Promise<{ success: boolean }> => {
-    return request<{ success: boolean }>('/api/parents/link', {
+    return request<{ success: boolean }>('/parents/link', {
       method: 'POST',
       body: { code },
     });
   },
 
   getAnalysis: async (studentId: number): Promise<StudentAnalysis> => {
-    return request<StudentAnalysis>(`/api/parents/dashboard/analysis/${studentId}`);
+    return request<StudentAnalysis>(`/parents/dashboard/analysis/${studentId}`);
   },
 
   getTrends: async (studentId: number, days: number = 7): Promise<TrendPoint[]> => {
-    return request<TrendPoint[]>(`/api/parents/dashboard/trends/${studentId}`, { params: { days } });
+    return request<TrendPoint[]>(`/parents/dashboard/trends/${studentId}`, { params: { days } });
   },
 };

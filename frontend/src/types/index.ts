@@ -66,6 +66,10 @@ export interface LinkedStudent {
   total_sessions: number;
   total_problems: number;
   overall_accuracy: number;
+  current_streak: number;
+  speedrun_total_runs: number;
+  speedrun_best_score: number;
+  speedrun_best_accuracy: number;
 }
 
 export interface DashboardResponse {

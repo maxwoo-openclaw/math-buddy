@@ -179,8 +179,23 @@ export default function ParentDashboard() {
               </div>
               <div className="stat-card">
                 <div className="stat-icon">🔥</div>
-                <div className="stat-value">{current.overall_accuracy || 0}</div>
+                <div className="stat-value">{current.current_streak || 0}</div>
                 <div className="stat-label">{t.dayStreak || 'Day Streak'}</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-icon">⚡</div>
+                <div className="stat-value">{current.speedrun_total_runs || 0}</div>
+                <div className="stat-label">{t.speedrunRuns || 'Speed Runs'}</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-icon">🏆</div>
+                <div className="stat-value">{current.speedrun_best_score || 0}</div>
+                <div className="stat-label">{t.bestScore || 'Best Score'}</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-icon">🎯</div>
+                <div className="stat-value">{current.speedrun_best_accuracy || 0}%</div>
+                <div className="stat-label">{t.bestAccuracy || 'Best Accuracy'}</div>
               </div>
             </div>
           )}

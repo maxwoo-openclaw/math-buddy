@@ -5,7 +5,9 @@ from datetime import datetime, timezone, timedelta
 import secrets
 
 from app.models import User, ParentStudentLink, PracticeSession, SessionAnswer, MathProblem
+from app.models.speedrun import SpeedRunResult
 from app.services.weakness_service import WeaknessService
+from app.services.gamification_service import GamificationService
 
 
 class ParentService:
@@ -94,12 +96,29 @@ class ParentService:
             correct_count = sum(s.correct_count for s in sessions)
             accuracy = (correct_count / total_problems * 100) if total_problems > 0 else 0
 
+            # Get streak
+            gamification_service = GamificationService(self.db)
+            streak_data = await gamification_service.get_streak(student.id)
+
+            # Get speedrun stats
+            speedrun_result = await self.db.execute(
+                select(SpeedRunResult).where(SpeedRunResult.user_id == student.id)
+            )
+            speedrun_runs = speedrun_result.scalars().all()
+            speedrun_total_runs = len(speedrun_runs)
+            speedrun_best_score = max((r.score for r in speedrun_runs), default=0)
+            speedrun_best_accuracy = max((r.accuracy for r in speedrun_runs), default=0)
+
             students_data.append({
                 "id": student.id,
                 "username": student.username,
                 "total_sessions": len(sessions),
                 "total_problems": total_problems,
-                "overall_accuracy": round(accuracy, 1)
+                "overall_accuracy": round(accuracy, 1),
+                "current_streak": streak_data["current_streak"],
+                "speedrun_total_runs": speedrun_total_runs,
+                "speedrun_best_score": speedrun_best_score,
+                "speedrun_best_accuracy": speedrun_best_accuracy,
             })
 
         return students_data

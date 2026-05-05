@@ -28,12 +28,9 @@ export default function SkillTreeCard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([
-      getSkillTree(),
-      getOperationAccuracy(),
-    ]).then(([treeData, accData]) => {
+    getSkillTree().then((treeData) => {
       setSkills(treeData.skills || []);
-      setOpAccuracy(accData || {});
+      setOpAccuracy(treeData.operation_stats || {});
     }).catch(console.error).finally(() => setLoading(false));
   }, []);
 
